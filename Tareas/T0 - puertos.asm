@@ -67,7 +67,7 @@ BACK:   MOV     A, P2
         SJMP    BACK
 
 ; Adicional a las características I/O de P2, en algunos casos se debe utilizar este puerto
-; como para la porción posterior de una dirección de memoria externa de 16 bits.
+; para la porción posterior de una dirección de memoria externa de 16 bits.
 ; Dado el caso, P0 proporcionaría los 8 primeros bits y P2 los subsecuentes. Lo anterior
 ; inhabilitaría la capacidad I/O de P2.
 

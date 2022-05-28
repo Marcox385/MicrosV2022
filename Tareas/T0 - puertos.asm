@@ -83,8 +83,8 @@ BACK:   MOV     A, P2
 ; Pin 13 - P3.3 -> INT1: Interruptor externo 1
 ; Pin 14 - P3.4 -> T0: Temporizador/Contador 0 input externo
 ; Pin 15 - P3.5 -> T1: Temporizador/Contador 1 input externo
-; Pin 16 - P3.6 -> WR: Señal para memoria externa
-; Pin 17 - P3.7 -> RD: Señal para memoria externa
+; Pin 16 - P3.6 -> WR: Señal de escritura para memoria externa
+; Pin 17 - P3.7 -> RD: Señal de lectura para memoria externa
 
 ; P3.6 y P3.7 se utilizan como I/O en algunnos sistemas
 

@@ -1,0 +1,39 @@
+A51 MACRO ASSEMBLER  HELLO_WORLD                                                          05/30/2022 10:43:40 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\hello_world.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE hello_world.asm SET(SMALL) DEBUG PRINT(.\Listings\hello_world.lst) OBJE
+                      CT(.\Objects\hello_world.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+                       4     
+                       5     
+                       6                     
+0000                   7                     ORG     0000H           ; Directiva de compilador que indica
+                       8                                                     ; que el bloque de instrucciones que sigue 
+                             inicia a partir
+                       9                                                     ; de la localidad 0000H
+                      10     
+0000 7590FE           11                     MOV P1, #0FEH   ; # = almohadilla; Asigna FE al puerto 1 bit 0 (1111 1110)
+0003 80FE             12                     SJMP $                  ; Brinca a esta misma línea
+                      13                     END                             ; Fin de programa
+A51 MACRO ASSEMBLER  HELLO_WORLD                                                          05/30/2022 10:43:40 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+P1 . . . . . . . .  D ADDR   0090H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

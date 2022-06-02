@@ -40,3 +40,16 @@
 ; Uso de R0 para replicar ejemplo anterior (indirecto)
     MOV     R0, #5FH
     MOV     A, @R0 ; @ = puntero
+
+; -------------------------------------------------------------------------------------------
+
+; Secciones y rangos (hex) de memoria interna
+;   -> 00 - 07 : Banco default para registros de R0 a R7
+;   -> 08 - 0F : Banco 1
+;   -> 10 - 17 : Banco 2
+;   -> 18 - 1F : Banco 3
+;   -> 20 - 2F : direcciones accesables por bit (00 - 7F)
+;   -> 30 - 7F : RAM de propósito general
+;   -> 80 : P0 (80 - 87)
+;   -> 81 : SP - Stack Pointer (no direccionable por bit)
+;   -> 82 : DPL (no direccionable por bit)

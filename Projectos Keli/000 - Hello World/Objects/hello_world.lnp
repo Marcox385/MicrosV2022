@@ -1,0 +1,3 @@
+".\Objects\hello_world.obj" 
+TO ".\Objects\hello_world" 
+PRINT(".\Listings\hello_world.m51") RAMSIZE(256) 

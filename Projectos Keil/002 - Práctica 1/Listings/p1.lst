@@ -1,0 +1,231 @@
+A51 MACRO ASSEMBLER  P1                                                                   06/07/2022 13:59:37 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\p1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE p1.asm SET(SMALL) DEBUG PRINT(.\Listings\p1.lst) OBJECT(.\Objects\p1.ob
+                      j) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+                       4     
+                       5     
+                       6                             
+0000                   7                             ORG             0000H
+0000 803E              8                             SJMP    RETORNO
+0040                   9                             ORG             0040H
+                      10     
+                      11     
+0040 7C00             12     RETORNO:        MOV             R4, #00H                ; Para conteo de secuencia
+0042 E590             13     INICIO:         MOV             A, P1                   ; Leer valor de los pines del puert
+                             o 1
+                      14                                                                             ; Me interesa saber
+                              qué valor tienen los bits 0 y 1 del p1
+0044 5403             15                             ANL             A, #00000011B   ; Máscara para obtener bits de P1.0
+                              y P1.1
+0046 601B             16                             JZ              LED_ON
+                      17                             
+0048 FF               18                             MOV             R7, A                   ; Guardar contenido del acu
+                             mulador
+0049 6401             19                             XRL             A, #01H                 ; Máscara para obtener bit 
+                             P1.0
+004B 601A             20                             JZ              PARPADEO
+                      21                             
+004D EF               22                             MOV     A, R7                   ; Recuperar valor anterior del acum
+                             ulador
+                      23                             ; PUSH  0E0H                    ; Guardar valor en stack
+004E 9402             24                             SUBB    A, #02H
+0050 601B             25                             JZ              OCHON
+                      26                             ; POP           0E0H            ; Recuperar de stack
+                      27                             
+0052 801E             28                             SJMP    SECUENCIA
+                      29                             
+                      30                     
+                      31                     
+                      32     
+                      33     
+                      34     
+                      35     
+0054 7DFB             36     RETARDO:        MOV             R5, #251
+0056 7EFB             37     CICLO_EXT:      MOV             R6, #251
+0058 00               38     CICLO:          NOP
+0059 00               39                             NOP
+005A 00               40                             NOP
+005B 00               41                             NOP
+005C 00               42                             NOP
+005D 00               43                             NOP
+005E DEF8             44                             DJNZ    R6, CICLO
+0060 DDF4             45                             DJNZ    R5, CICLO_EXT
+0062 22               46                             RET
+                      47     
+                      48                     
+0063 C2B7             49     LED_ON:         CLR             P3.7
+0065 80DB             50                             SJMP    INICIO
+                      51                             
+A51 MACRO ASSEMBLER  P1                                                                   06/07/2022 13:59:37 PAGE     2
+
+                      52     
+0067 B2B6             53     PARPADEO:       CPL             P3.6
+0069 1154             54                             ACALL   RETARDO
+006B 80D5             55                             SJMP    INICIO
+                      56     
+006D 75A001           57     OCHON:          MOV             P2, #00000001B  ; Escribe un 8 en display con nomenclatura 
+                             xabcdefg
+0070 80D0             58                             SJMP    INICIO
+                      59                             
+                      60     
+0072 EC               61     SECUENCIA:      MOV             A, R4                   ; Cargar la cuenta al acumulador pa
+                             ra comparar (ALU)
+0073 602F             62                             JZ              CERO
+                      63                             
+0075 EC               64                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a uno
+0076 6401             65                             XRL             A, #01
+0078 602F             66                             JZ              UNO
+                      67                             
+007A EC               68                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a dos
+007B 6402             69                             XRL             A, #02
+007D 6030             70                             JZ              DOS
+                      71                             
+007F EC               72                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a tres
+0080 6403             73                             XRL             A, #03
+0082 6031             74                             JZ              TRES
+                      75                             
+0084 EC               76                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a cuatro
+0085 6404             77                             XRL             A, #04
+0087 6032             78                             JZ              CUATRO
+                      79                             
+0089 EC               80                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a cinco
+008A 6405             81                             XRL             A, #05
+008C 6033             82                             JZ              CINCO
+                      83                             
+008E EC               84                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a seis
+008F 6406             85                             XRL             A, #06
+0091 6034             86                             JZ              SEIS
+                      87                             
+0093 EC               88                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a siete
+0094 6407             89                             XRL             A, #07
+0096 6035             90                             JZ              SIETE
+                      91                             
+0098 EC               92                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a ocho
+0099 6408             93                             XRL             A, #08
+009B 6036             94                             JZ              OCHO
+                      95                             
+009D EC               96                             MOV             A, R4                   ; Recuperar valor del acumu
+                             lador para comparar a nueve
+009E 6409             97                             XRL             A, #09
+00A0 6037             98                             JZ              NUEVE
+                      99                             
+00A2 809C            100                             SJMP    RETORNO
+                     101                             
+                     102                             
+00A4 75A081          103     CERO:           MOV             P2, #10000001B
+00A7 8036            104                             SJMP    FIN_SEC
+                     105                             
+00A9 EC              106     UNO:            MOV             A, R4
+A51 MACRO ASSEMBLER  P1                                                                   06/07/2022 13:59:37 PAGE     3
+
+00AA 75A0F3          107                             MOV             P2, #11110011B
+00AD 8030            108                             SJMP    FIN_SEC
+                     109                             
+00AF EC              110     DOS:            MOV             A, R4
+00B0 75A049          111                             MOV             P2, #01001001B
+00B3 802A            112                             SJMP    FIN_SEC
+                     113                             
+00B5 EC              114     TRES:           MOV             A, R4
+00B6 75A061          115                             MOV             P2, #01100001B
+00B9 8024            116                             SJMP    FIN_SEC
+                     117     
+00BB EC              118     CUATRO:         MOV             A, R4
+00BC 75A033          119                             MOV             P2, #00110011B
+00BF 801E            120                             SJMP    FIN_SEC
+                     121                             
+00C1 EC              122     CINCO:          MOV             A, R4
+00C2 75A025          123                             MOV             P2, #00100101B
+00C5 8018            124                             SJMP    FIN_SEC
+                     125     
+00C7 EC              126     SEIS:           MOV             A, R4
+00C8 75A005          127                             MOV             P2, #00000101B
+00CB 8012            128                             SJMP    FIN_SEC
+                     129                             
+00CD EC              130     SIETE:          MOV             A, R4
+00CE 75A071          131                             MOV             P2, #01110001B
+00D1 800C            132                             SJMP    FIN_SEC
+                     133     
+00D3 EC              134     OCHO:           MOV             A, R4
+00D4 75A001          135                             MOV             P2, #00000001B
+00D7 8006            136                             SJMP    FIN_SEC
+                     137                             
+00D9 EC              138     NUEVE:          MOV             A, R4
+00DA 75A021          139                             MOV             P2, #00100001B
+00DD 8000            140                             SJMP    FIN_SEC                 
+                     141                             
+00DF 1154            142     FIN_SEC:        ACALL   RETARDO
+00E1 0C              143                             INC             R4
+00E2 0142            144                             JMP             INICIO
+                     145                                                     
+                     146                             
+                     147                             END
+                                                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+A51 MACRO ASSEMBLER  P1                                                                   06/07/2022 13:59:37 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CERO . . . . . . .  C ADDR   00A4H   A   
+CICLO. . . . . . .  C ADDR   0058H   A   
+CICLO_EXT. . . . .  C ADDR   0056H   A   
+CINCO. . . . . . .  C ADDR   00C1H   A   
+CUATRO . . . . . .  C ADDR   00BBH   A   
+DOS. . . . . . . .  C ADDR   00AFH   A   
+FIN_SEC. . . . . .  C ADDR   00DFH   A   
+INICIO . . . . . .  C ADDR   0042H   A   
+LED_ON . . . . . .  C ADDR   0063H   A   
+NUEVE. . . . . . .  C ADDR   00D9H   A   
+OCHO . . . . . . .  C ADDR   00D3H   A   
+OCHON. . . . . . .  C ADDR   006DH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PARPADEO . . . . .  C ADDR   0067H   A   
+RETARDO. . . . . .  C ADDR   0054H   A   
+RETORNO. . . . . .  C ADDR   0040H   A   
+SECUENCIA. . . . .  C ADDR   0072H   A   
+SEIS . . . . . . .  C ADDR   00C7H   A   
+SIETE. . . . . . .  C ADDR   00CDH   A   
+TRES . . . . . . .  C ADDR   00B5H   A   
+UNO. . . . . . . .  C ADDR   00A9H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

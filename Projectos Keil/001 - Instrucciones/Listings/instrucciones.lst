@@ -1,0 +1,105 @@
+A51 MACRO ASSEMBLER  INSTRUCCIONES                                                        06/06/2022 11:02:07 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\instrucciones.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE instrucciones.asm SET(SMALL) DEBUG PRINT(.\Listings\instrucciones.lst) 
+                      OBJECT(.\Objects\instrucciones.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+                       4     
+                       5     
+                       6     
+                       7     
+                       8     
+                       9     
+                      10     
+                      11     
+                      12     
+                      13     
+                      14     
+                      15     
+                      16     
+                      17     
+                      18     
+                      19     
+                      20     
+                      21     
+                      22                             
+                      23                             
+                      24                             
+0000                  25                             ORG             0000H
+0000 803E             26                             SJMP    INICIO
+0040                  27                             ORG             0040H
+                      28     
+                      29     
+0040 E590             30     INICIO:         MOV             A, P1                   ; Leer valor de los pines del puert
+                             o 1
+                      31                                                                             ; Me interesa saber
+                              qué valor tienen los bits 0 y 1 del p1
+0042 5403             32                             ANL             A, #00000011B   ; Máscara para obtener bits de P1.0
+                              y P1.1
+0044 6010             33                             JZ              LED_ON
+                      34                             
+0046 FF               35                             MOV             R7, A                   ; Guardar contenido del acu
+                             mulador
+0047 6401             36                             XRL             A, #01H                 ; Máscara para obtener bit 
+                             P1.0
+0049 600F             37                             JZ              PARPADEO
+                      38                             
+004B EF               39                             MOV     A, R7                   ; Recuperar valor anterior del acum
+                             ulador
+004C C0E0             40                             PUSH    0E0H                    ; Guardar valor en stack
+004E 9402             41                             SUBB    A, #02H
+0050 600C             42                             JZ              OCHON
+0052 D0E0             43                             POP             0E0H                    ; Recuperar de stack
+                      44                             
+0054 800D             45                             SJMP    SECUENCIA
+                      46                             
+                      47                     
+                      48                     
+0056 C2B7             49     LED_ON:         CLR             P3.7
+0058 80E6             50                             SJMP    INICIO
+                      51                             
+A51 MACRO ASSEMBLER  INSTRUCCIONES                                                        06/06/2022 11:02:07 PAGE     2
+
+                      52     
+005A B2B6             53     PARPADEO:       CPL             P3.6
+005C 80E2             54                             SJMP    INICIO
+                      55     
+                      56     
+005E 75A080           57     OCHON:          MOV             P2, #10000000B  ; Escribe un 8 en display con nomenclatura 
+                             xabcdefg
+0061 80DD             58                             SJMP    INICIO
+                      59                             
+                      60     
+0063 00               61     SECUENCIA:      NOP
+0064 80DA             62                             SJMP    INICIO
+                      63                             
+                      64                             END
+A51 MACRO ASSEMBLER  INSTRUCCIONES                                                        06/06/2022 11:02:07 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+INICIO . . . . . .  C ADDR   0040H   A   
+LED_ON . . . . . .  C ADDR   0056H   A   
+OCHON. . . . . . .  C ADDR   005EH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+PARPADEO . . . . .  C ADDR   005AH   A   
+SECUENCIA. . . . .  C ADDR   0063H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

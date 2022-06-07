@@ -1,0 +1,72 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/06/2022  11:02:07  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\instrucciones.obj TO .\Objects\instrucciones PRINT (.\Listings\instrucciones.m51) 
+>> RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\instrucciones.obj (INSTRUCCIONES)
+
+
+LINK MAP OF MODULE:  .\Objects\instrucciones (INSTRUCCIONES)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0066H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\instrucciones (INSTRUCCIONES)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        INSTRUCCIONES
+  C:0040H         SYMBOL        INICIO
+  C:0056H         SYMBOL        LED_ON
+  C:005EH         SYMBOL        OCHON
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  D:00B0H         SYMBOL        P3
+  C:005AH         SYMBOL        PARPADEO
+  C:0063H         SYMBOL        SECUENCIA
+  C:0000H         LINE#         26
+  C:0040H         LINE#         30
+  C:0042H         LINE#         32
+  C:0044H         LINE#         33
+  C:0046H         LINE#         35
+  C:0047H         LINE#         36
+  C:0049H         LINE#         37
+  C:004BH         LINE#         39
+  C:004CH         LINE#         40
+  C:004EH         LINE#         41
+  C:0050H         LINE#         42
+  C:0052H         LINE#         43
+  C:0054H         LINE#         45
+  C:0056H         LINE#         49
+  C:0058H         LINE#         50
+  C:005AH         LINE#         53
+  C:005CH         LINE#         54
+  C:005EH         LINE#         57
+  C:0061H         LINE#         58
+  C:0063H         LINE#         61
+  C:0064H         LINE#         62
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  06/06/2022  11:02:07  PAGE 2
+
+
+  -------         ENDMOD        INSTRUCCIONES
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0028H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=102
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

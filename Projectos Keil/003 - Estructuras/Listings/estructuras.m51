@@ -1,0 +1,61 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/08/2022  10:53:52  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\estructuras.obj TO .\Objects\estructuras PRINT (.\Listings\estructuras.m51) RAMSIZ
+>> E (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\estructuras.obj (ESTRUCTURAS)
+
+
+LINK MAP OF MODULE:  .\Objects\estructuras (ESTRUCTURAS)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     005BH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\estructuras (ESTRUCTURAS)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ESTRUCTURAS
+  N:0077H         SYMBOL        CHE
+  N:0078H         SYMBOL        DA1
+  N:0079H         SYMBOL        DA2
+  C:0040H         SYMBOL        INICIO
+  N:007AH         SYMBOL        RES
+  C:0054H         SYMBOL        SAL1
+  C:005AH         SYMBOL        SAL2
+  C:0000H         LINE#         13
+  C:0040H         LINE#         16
+  C:0043H         LINE#         17
+  C:0046H         LINE#         18
+  C:0048H         LINE#         19
+  C:004AH         LINE#         21
+  C:004CH         LINE#         22
+  C:004EH         LINE#         23
+  C:0050H         LINE#         24
+  C:0052H         LINE#         25
+  C:0054H         LINE#         27
+  C:0056H         LINE#         28
+  C:0058H         LINE#         29
+  C:005AH         LINE#         31
+  -------         ENDMOD        ESTRUCTURAS
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 001DH BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=91
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

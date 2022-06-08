@@ -1,0 +1,64 @@
+A51 MACRO ASSEMBLER  ESTRUCTURAS                                                          06/08/2022 10:53:51 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\estructuras.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE estructuras.asm SET(SMALL) DEBUG PRINT(.\Listings\estructuras.lst) OBJE
+                      CT(.\Objects\estructuras.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+                       4     
+                       5     
+                       6     
+  0077                 7                     CHE     EQU     77H
+  0078                 8                     DA1     EQU 78H
+  0079                 9                     DA2     EQU 79H
+  007A                10                     RES             EQU     7AH
+                      11                     
+0000                  12                     ORG             0000H
+0000 803E             13                     SJMP    INICIO
+0040                  14                     ORG             0040H
+                      15     
+0040 757809           16     INICIO: MOV             DA1, #09H
+0043 757906           17                     MOV             DA2, #06H       ; Carga los datos en memoria
+0046 E577             18                     MOV             A, CHE          ; Lee la posición de memoria 77H
+0048 700A             19                     JNZ             SAL1            ; Si es igual a cero realiza la suma, si no
+                             , salta a efectuar la resta
+                      20                     
+004A E578             21                     MOV             A, DA1          ; Realiza la suma y guarda resultado
+004C 2579             22                     ADD             A, DA2
+004E F57A             23                     MOV             RES, A
+0050 E577             24                     MOV             A, CHE
+0052 6006             25                     JZ              SAL2            ; Salta código de la resta
+                      26     
+0054 E578             27     SAL1:   MOV             A, DA1
+0056 9579             28                     SUBB    A, DA2
+0058 F57A             29                     MOV             RES, A          ; Realiza laresta y guarda resultado
+                      30                     
+005A 00               31     SAL2:   NOP
+                      32                     END
+A51 MACRO ASSEMBLER  ESTRUCTURAS                                                          06/08/2022 10:53:51 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CHE. . . . . . . .  N NUMB   0077H   A   
+DA1. . . . . . . .  N NUMB   0078H   A   
+DA2. . . . . . . .  N NUMB   0079H   A   
+INICIO . . . . . .  C ADDR   0040H   A   
+RES. . . . . . . .  N NUMB   007AH   A   
+SAL1 . . . . . . .  C ADDR   0054H   A   
+SAL2 . . . . . . .  C ADDR   005AH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

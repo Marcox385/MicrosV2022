@@ -1,0 +1,3 @@
+".\Objects\estructuras.obj" 
+TO ".\Objects\estructuras" 
+PRINT(".\Listings\estructuras.m51") RAMSIZE(256) 

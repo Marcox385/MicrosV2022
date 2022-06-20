@@ -7,4 +7,39 @@
         SJMP MAIN
         ORG 0040H
 
-MAIN:
+MAIN:	MOV DPTR, #1900H
+		MOVX A, @DPTR
+		MOV R0, A			; Parte alta de apuntador
+		INC DPTR
+		MOVX A, @DPTR
+		MOV R1, A			; Parte baja de apuntador
+		INC DPTR
+		MOVX A, @DPTR		; Longitud de lista
+		MOV R2, A
+		
+		MOV DPH, R0
+		MOV DPL, R1
+		
+		MOVX A, @DPTR		; Almacena el primer dato en la lista
+		
+		SJMP SOLVE
+
+SOLVE:	MOV B, A			; Almacena número anterior
+		CLR C
+		INC DPTR
+		MOVX A, @DPTR
+		SUBB A, B
+		JB 0D7H, REPLACE
+CONTINUE: DJNZ R2, SOLVE
+		SJMP $
+
+REPLACE: PUSH DPL
+		PUSH DPH
+		MOVX A, @DPTR
+		MOV DPTR, #1903H
+		MOVX @DPTR, A		; Sustituir valor almacenado
+		POP DPH
+		POP DPL
+		SJMP CONTINUE
+
+		END

@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/20/2022  12:22:41  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/20/2022  12:41:51  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -20,7 +20,7 @@ LINK MAP OF MODULE:  .\Objects\Programas (CONTENEDOR)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     0055H     ABSOLUTE     
+            CODE    0000H     006FH     ABSOLUTE     
 
 
 
@@ -30,10 +30,13 @@ SYMBOL TABLE OF MODULE:  .\Objects\Programas (CONTENEDOR)
   ----------------------------------
 
   -------         MODULE        CONTENEDOR
+  D:00F0H         SYMBOL        B
+  C:005CH         SYMBOL        CONTINUE
   D:0083H         SYMBOL        DPH
   D:0082H         SYMBOL        DPL
   C:0040H         SYMBOL        MAIN
-  C:0051H         SYMBOL        SOLVE
+  C:0060H         SYMBOL        REPLACE
+  C:0052H         SYMBOL        SOLVE
   C:0000H         LINE#         333
   C:0040H         LINE#         336
   C:0043H         LINE#         337
@@ -47,14 +50,31 @@ SYMBOL TABLE OF MODULE:  .\Objects\Programas (CONTENEDOR)
   C:004BH         LINE#         346
   C:004DH         LINE#         347
   C:004FH         LINE#         349
-  C:0051H         LINE#         351
-  C:0052H         LINE#         352
-  C:0053H         LINE#         353
+  C:0050H         LINE#         351
+  C:0052H         LINE#         353
+  C:0054H         LINE#         354
+  C:0055H         LINE#         355
+  C:0056H         LINE#         356
+  C:0057H         LINE#         357
+  C:0059H         LINE#         358
+  C:005CH         LINE#         359
+  C:005EH         LINE#         360
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  06/20/2022  12:41:51  PAGE 2
+
+
+  C:0060H         LINE#         362
+  C:0062H         LINE#         363
+  C:0064H         LINE#         364
+  C:0065H         LINE#         365
+  C:0068H         LINE#         366
+  C:0069H         LINE#         367
+  C:006BH         LINE#         368
+  C:006DH         LINE#         369
   -------         ENDMOD        CONTENEDOR
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0017H BYTE ( 1%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0031H BYTE ( 2%) *
 ******************************************************************************
 
-Program Size: data=8.0 xdata=0 code=85
+Program Size: data=8.0 xdata=0 code=111
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

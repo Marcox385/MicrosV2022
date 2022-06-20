@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:22:41 PAGE     1
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
                       54                     
                       55                     
                       56     ; 3)    Hacer un programa para que el acumulador pase de 0 a 10 de uno en uno y luego se re
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:22:41 PAGE     2
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     2
 
                              pita el proceso.
                       57     
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
                      118     
                      119     
                      120     
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:22:41 PAGE     3
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     3
 
                      121     
                      122     
@@ -201,7 +201,7 @@ LOC  OBJ            LINE     SOURCE
                      184     
                      185     
                      186     
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:22:41 PAGE     4
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     4
 
                      187     
                      188     
@@ -269,7 +269,7 @@ LOC  OBJ            LINE     SOURCE
                      250     
                      251     
                      252     
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:22:41 PAGE     5
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     5
 
                      253     
                      254     
@@ -337,7 +337,7 @@ LOC  OBJ            LINE     SOURCE
                      316     
                      317     
                      318     
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:22:41 PAGE     6
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     6
 
                      319     
                      320     
@@ -369,15 +369,31 @@ LOC  OBJ            LINE     SOURCE
 004B 8883            346                     MOV DPH, R0
 004D 8982            347                     MOV DPL, R1
                      348                     
-004F 80FE            349                     SJMP $
-                     350     
-0051 C3              351     SOLVE:  CLR C
-0052 E0              352                     MOVX A, @DPTR
-0053 DAFC            353                     DJNZ R2, SOLVE
-                     354     
-                     355                     END
+004F E0              349                     MOVX A, @DPTR           ; Almacena el primer dato en la lista
+                     350                     
+0050 8000            351                     SJMP SOLVE
+                     352     
+0052 F5F0            353     SOLVE:  MOV B, A                        ; Almacena número anterior
+0054 C3              354                     CLR C
+0055 A3              355                     INC DPTR
+0056 E0              356                     MOVX A, @DPTR
+0057 95F0            357                     SUBB A, B
+0059 20D704          358                     JB 0D7H, REPLACE
+005C DAF4            359     CONTINUE: DJNZ R2, SOLVE
+005E 80FE            360                     SJMP $
+                     361     
+0060 C082            362     REPLACE: PUSH DPL
+0062 C083            363                     PUSH DPH
+0064 E0              364                     MOVX A, @DPTR
+0065 901903          365                     MOV DPTR, #1903H
+0068 F0              366                     MOVX @DPTR, A
+0069 D083            367                     POP DPH
+006B D082            368                     POP DPL
+006D 80ED            369                     SJMP CONTINUE
+                     370     
+                     371                     END
                                              
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:22:41 PAGE     7
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     7
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -385,10 +401,13 @@ SYMBOL TABLE LISTING
 
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
+B. . . . . . . . .  D ADDR   00F0H   A   
+CONTINUE . . . . .  C ADDR   005CH   A   
 DPH. . . . . . . .  D ADDR   0083H   A   
 DPL. . . . . . . .  D ADDR   0082H   A   
 MAIN . . . . . . .  C ADDR   0040H   A   
-SOLVE. . . . . . .  C ADDR   0051H   A   
+REPLACE. . . . . .  C ADDR   0060H   A   
+SOLVE. . . . . . .  C ADDR   0052H   A   
 
 
 REGISTER BANK(S) USED: 0 

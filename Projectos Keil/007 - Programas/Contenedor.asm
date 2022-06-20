@@ -346,11 +346,27 @@ MAIN:	MOV DPTR, #1900H
 		MOV DPH, R0
 		MOV DPL, R1
 		
+		MOVX A, @DPTR		; Almacena el primer dato en la lista
+		
+		SJMP SOLVE
+
+SOLVE:	MOV B, A			; Almacena número anterior
+		CLR C
+		INC DPTR
+		MOVX A, @DPTR
+		SUBB A, B
+		JB 0D7H, REPLACE
+CONTINUE: DJNZ R2, SOLVE
 		SJMP $
 
-SOLVE:	CLR C
+REPLACE: PUSH DPL
+		PUSH DPH
 		MOVX A, @DPTR
-		DJNZ R2, SOLVE
+		MOV DPTR, #1903H
+		MOVX @DPTR, A
+		POP DPH
+		POP DPL
+		SJMP CONTINUE
 
 		END
 		

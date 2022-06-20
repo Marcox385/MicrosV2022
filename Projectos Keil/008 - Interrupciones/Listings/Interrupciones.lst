@@ -1,0 +1,87 @@
+A51 MACRO ASSEMBLER  INTERRUPCIONES                                                       06/20/2022 10:59:40 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Interrupciones.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Interrupciones.asm SET(SMALL) DEBUG PRINT(.\Listings\Interrupciones.lst
+                      ) OBJECT(.\Objects\Interrupciones.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; 1) Programa para generar una onda cuadrada de 10KHz
+                       2     
+                       3     
+                       4     
+                       5     
+                       6     
+                       7     
+                       8     
+                       9     
+                      10     
+                      11     
+                      12     
+                      13     
+                      14     
+                      15     
+                      16     
+                      17     
+                      18     
+                      19     
+                      20                     
+                      21     
+                      22     
+                      23     
+                      24               
+0000                  25                     ORG 0000H
+0000 020030           26                     LJMP MAIN
+000B                  27                     ORG 000BH
+000B 02003F           28                     LJMP T0ISR
+001B                  29                     ORG 001BH
+001B 020042           30                     LJMP T1ISR
+0030                  31                     ORG 0030H
+                      32             
+0030 758912           33     MAIN:   MOV TMOD, #12H
+0033 758CB9           34                     MOV TH0, #-71D
+0036 D28C             35                     SETB TR0
+0038 D28F             36                     SETB TF1
+003A 75A88A           37                     MOV IE, #8AH
+003D 80FE             38                     SJMP $
+                      39             
+003F B297             40     T0ISR:  CPL P1.7
+0041 32               41                     RETI
+                      42                     
+0042 C28E             43     T1ISR:  CLR TR1
+0044 758DF8           44                     MOV TH1, #HIGH(-2000)
+0047 758B30           45                     MOV TL1, #LOW(-2000)
+004A D28E             46                     SETB TR1
+004C B2A7             47                     CPL P2.7
+004E 32               48                     RETI
+                      49                     
+                      50                     END
+A51 MACRO ASSEMBLER  INTERRUPCIONES                                                       06/20/2022 10:59:40 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+MAIN . . . . . . .  C ADDR   0030H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+T0ISR. . . . . . .  C ADDR   003FH   A   
+T1ISR. . . . . . .  C ADDR   0042H   A   
+TF1. . . . . . . .  B ADDR   0088H.7 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

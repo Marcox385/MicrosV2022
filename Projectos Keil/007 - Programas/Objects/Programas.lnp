@@ -1,0 +1,3 @@
+".\Objects\Contenedor.obj" 
+TO ".\Objects\Programas" 
+PRINT(".\Listings\Programas.m51") RAMSIZE(256) 

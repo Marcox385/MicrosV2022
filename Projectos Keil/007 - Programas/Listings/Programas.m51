@@ -1,0 +1,60 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/20/2022  12:22:41  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Contenedor.obj TO .\Objects\Programas PRINT (.\Listings\Programas.m51) RAMSIZE (25
+>> 6)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Contenedor.obj (CONTENEDOR)
+
+
+LINK MAP OF MODULE:  .\Objects\Programas (CONTENEDOR)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0055H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Programas (CONTENEDOR)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        CONTENEDOR
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  C:0040H         SYMBOL        MAIN
+  C:0051H         SYMBOL        SOLVE
+  C:0000H         LINE#         333
+  C:0040H         LINE#         336
+  C:0043H         LINE#         337
+  C:0044H         LINE#         338
+  C:0045H         LINE#         339
+  C:0046H         LINE#         340
+  C:0047H         LINE#         341
+  C:0048H         LINE#         342
+  C:0049H         LINE#         343
+  C:004AH         LINE#         344
+  C:004BH         LINE#         346
+  C:004DH         LINE#         347
+  C:004FH         LINE#         349
+  C:0051H         LINE#         351
+  C:0052H         LINE#         352
+  C:0053H         LINE#         353
+  -------         ENDMOD        CONTENEDOR
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0017H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=85
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

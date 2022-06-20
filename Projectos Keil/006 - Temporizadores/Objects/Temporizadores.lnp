@@ -1,0 +1,3 @@
+".\Objects\delay con temps.obj" 
+TO ".\Objects\Temporizadores" 
+PRINT(".\Listings\Temporizadores.m51") RAMSIZE(256) 

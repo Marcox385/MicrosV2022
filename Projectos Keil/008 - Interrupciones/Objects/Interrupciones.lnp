@@ -1,0 +1,3 @@
+".\Objects\Interrupciones.obj" 
+TO ".\Objects\Interrupciones" 
+PRINT(".\Listings\Interrupciones.m51") RAMSIZE(256) 

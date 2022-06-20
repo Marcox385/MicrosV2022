@@ -1,0 +1,45 @@
+A51 MACRO ASSEMBLER  DELAY_SIN_TEMPS                                                      06/15/2022 10:30:02 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\delay sin temps.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE delay sin temps.asm SET(SMALL) DEBUG PRINT(.\Listings\delay sin temps.l
+                      st) OBJECT(.\Objects\delay sin temps.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+0000                   4                     ORG 0000H
+0000 803E              5                     SJMP MAIN
+0040                   6                     ORG 0040H
+                       7             
+0040 790A              8     MAIN:   MOV R1, #10D
+0042 7864              9     MAIN_C: MOV R0, #100D
+0044 114A             10                     ACALL DELAY
+0046 D9FA             11                     DJNZ R1, MAIN_C
+0048 80FE             12                     SJMP $
+                      13                     
+004A 00               14     DELAY:  NOP
+004B D8FD             15                     DJNZ R0, DELAY
+004D 22               16                     RET
+                      17                     
+                      18                     END
+A51 MACRO ASSEMBLER  DELAY_SIN_TEMPS                                                      06/15/2022 10:30:02 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   004AH   A   
+MAIN . . . . . . .  C ADDR   0040H   A   
+MAIN_C . . . . . .  C ADDR   0042H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

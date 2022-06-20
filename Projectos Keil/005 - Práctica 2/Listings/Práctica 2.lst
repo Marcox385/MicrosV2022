@@ -1,0 +1,85 @@
+A51 MACRO ASSEMBLER  PR_CTICA_2                                                           06/14/2022 12:11:26 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Práctica 2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Práctica 2.asm SET(SMALL) DEBUG PRINT(.\Listings\Práctica 2.lst) OBJECT
+                      (.\Objects\Práctica 2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000 908000            1                             MOV     DPTR,#8000H                     ; Dirección en donde inicia
+                              la RAM
+0003 C290              2                             CLR     P1.0                            ; Señaliza fase de escritur
+                             a (prende el led)
+0005 74AA              3                             MOV A,#0AAh                             ; Dato a escribir en la RAM
+0007 F0                4     escribe:        MOVX @DPTR,A                    ; Escribe el dato en la RAM
+0008 A3                5                             INC     DPTR                            ; Apunta a la siguiente loc
+                             alidad de la RAM
+0009 AE83              6                             MOV R6,83h                              ; Dirección de la parte alt
+                             a del DPTR
+000B BEA0F9            7                             CJNE R6,#0A0H,escribe   ; Compara la parte alta del DPTR con la par
+                             te
+                       8                                                                             ; alta de la primer
+                             a localidad posterior a la última localidad de la RAM. Repite el ciclo,
+                       9                                                                             ; hasta que termine
+                              de escribir toda la RAM
+000E D290             10                             SETB P1.0                               ; Señaliza terminación de l
+                             a fase de escritura
+0010 C291             11                             CLR  P1.1                               ; Señaliza fase de verifica
+                             ción (prende el led)
+0012 908000           12                             MOV     DPTR, #8000H            ; Dirección en donde inicia la RAM
+0015 E0               13     verifica:       MOVX A,@DPTR                    ; Lee el dato
+0016 B4AA14           14                             CJNE A,#0AAh,error              ; Compáralo con el dato original
+                      15                                                                             ; y si no es igual,
+                              es que hay un error
+0019 A3               16                             INC     DPTR                            ; Apunta a la siguiente loc
+                             alidad de la RAM
+001A 7455             17                             MOV     A,#55h                          ; Cambia el AAh por cualqui
+                             er otro valor 
+001C AE83             18                             MOV     R6,83h                          ; Dirección de la parte alt
+                             a del DPTR
+001E BEA0F4           19                             CJNE R6,#0A0H,verifica ; Compara la parte alta del DPTR con la parte
+                      20                                                                             ; alta de la primer
+                             a localidad posterior a la última localidad de la RAM. Repite el ciclo,
+                      21                                                                             ; hasta que termine
+                              de leer toda la RAM
+0021 D291             22                             SETB P1.1                               ; Señaliza terminación de l
+                             a fase de verificación
+0023 C292             23                             CLR     P1.2                            ; Señaliza fase final
+0025 7FFF             24     fin:            MOV     R7,#255d                        ; Inicia ciclo de retardo
+0027 DFFE             25                             DJNZ R7,$                               ;
+0029 B292             26                             CPL     P1.2                            ; Haz que el led de OK parp
+                             adeé
+002B 80F8             27                             JMP     fin                                     ; Brinca al final d
+                             el programa
+002D D291             28     error:          SETB P1.1                               ; Señaliza terminación de la fase d
+                             e verificación
+002F C293             29                             CLR     P1.3                            ; Señaliza fase de error
+0031 7FFF             30     ciclo:          MOV     R7,#255d                        ; Inicia ciclo de retardo
+0033 DFFE             31                             DJNZ R7,$                               ;
+0035 B293             32                             CPL     P1.3                            ; Haz que el led de error p
+                             arpadeé
+0037 80F8             33                             JMP     ciclo                           ; Permanece indefinidamente
+                              en la fase de error
+*** WARNING #A41 IN 33 (Práctica 2.asm, LINE 33): MISSING 'END' STATEMENT
+A51 MACRO ASSEMBLER  PR_CTICA_2                                                           06/14/2022 12:11:26 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CICLO. . . . . . .  C ADDR   0031H   A   
+ERROR. . . . . . .  C ADDR   002DH   A   
+ESCRIBE. . . . . .  C ADDR   0007H   A   
+FIN. . . . . . . .  C ADDR   0025H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+VERIFICA . . . . .  C ADDR   0015H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  1 WARNING(S), 0 ERROR(S)

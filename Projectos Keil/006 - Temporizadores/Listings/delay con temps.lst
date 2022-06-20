@@ -1,0 +1,78 @@
+A51 MACRO ASSEMBLER  DELAY_CON_TEMPS                                                      06/15/2022 10:56:53 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\delay con temps.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE delay con temps.asm SET(SMALL) DEBUG PRINT(.\Listings\delay con temps.l
+                      st) OBJECT(.\Objects\delay con temps.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1                     
+                       2     
+                       3     
+                       4     
+                       5     ; Ejemplo timer 0 disparado por SW modo 1
+                       6     
+                       7     
+                       8     
+                       9     
+                      10     
+                      11     
+                      12     
+                      13     
+                      14     
+                      15     
+                      16     
+                      17     
+                      18     
+                      19     
+                      20     
+                      21     
+                      22                     
+                      23     ; Ejemplo timer 1 disparado por HW modo 0
+                      24     
+                      25     
+                      26     
+                      27     
+                      28                     
+                      29     ; Ejemplo timer 0 en modo autorrecarga disparado por software
+                      30     
+                      31     
+                      32     
+                      33     
+                      34     
+                      35     
+                      36     
+                      37     
+                      38     
+                      39     
+                      40                     
+                      41                     
+                      42     ; Ejemplo de counter con T1 disparador por HW en 16 bits
+0000                  43                     ORG 0000H
+0000 7589D0           44     INICIO: MOV     TMOD, #11010000B
+0003 D28E             45                     SETB TR1
+0005 308FFD           46                     JNB TF1, $
+0008 B28F             47                     CPL TF1
+000A 80F4             48                     SJMP INICIO
+                      49                     
+                      50                     END
+A51 MACRO ASSEMBLER  DELAY_CON_TEMPS                                                      06/15/2022 10:56:53 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+INICIO . . . . . .  C ADDR   0000H   A   
+TF1. . . . . . . .  B ADDR   0088H.7 A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

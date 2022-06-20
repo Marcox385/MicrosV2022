@@ -1,0 +1,73 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/20/2022  10:59:40  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Interrupciones.obj TO .\Objects\Interrupciones PRINT (.\Listings\Interrupciones.m5
+>> 1) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Interrupciones.obj (INTERRUPCIONES)
+
+
+LINK MAP OF MODULE:  .\Objects\Interrupciones (INTERRUPCIONES)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     004FH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Interrupciones (INTERRUPCIONES)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        INTERRUPCIONES
+  D:00A8H         SYMBOL        IE
+  C:0030H         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  C:003FH         SYMBOL        T0ISR
+  C:0042H         SYMBOL        T1ISR
+  B:0088H.7       SYMBOL        TF1
+  D:008CH         SYMBOL        TH0
+  D:008DH         SYMBOL        TH1
+  D:008BH         SYMBOL        TL1
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  B:0088H.6       SYMBOL        TR1
+  C:0000H         LINE#         26
+  C:000BH         LINE#         28
+  C:001BH         LINE#         30
+  C:0030H         LINE#         33
+  C:0033H         LINE#         34
+  C:0036H         LINE#         35
+  C:0038H         LINE#         36
+  C:003AH         LINE#         37
+  C:003DH         LINE#         38
+  C:003FH         LINE#         40
+  C:0041H         LINE#         41
+  C:0042H         LINE#         43
+  C:0044H         LINE#         44
+  C:0047H         LINE#         45
+  C:004AH         LINE#         46
+  C:004CH         LINE#         47
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  06/20/2022  10:59:40  PAGE 2
+
+
+  C:004EH         LINE#         48
+  -------         ENDMOD        INTERRUPCIONES
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0028H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=79
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

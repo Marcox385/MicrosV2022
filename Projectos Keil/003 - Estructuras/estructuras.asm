@@ -9,9 +9,9 @@
 		DA2 	EQU 79H
 		RES		EQU	7AH
 		
-		ORG		0000H
+		ORG		0000H		; No se ejecuta al ser directiva del compilador, solo pone la siguiente línea en 0000H
 		SJMP	INICIO
-		ORG		0040H
+		ORG		0040H		; No se ejecuta al ser directiva de compilador, únicamente posiciona el resto del programa a partir de 40H
 
 INICIO:	MOV		DA1, #09H
 		MOV		DA2, #06H	; Carga los datos en memoria

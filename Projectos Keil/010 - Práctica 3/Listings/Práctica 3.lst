@@ -1,0 +1,113 @@
+A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/21/2022 12:24:19 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Práctica 3.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Práctica 3.asm SET(SMALL) DEBUG PRINT(.\Listings\Práctica 3.lst) OBJECT
+                      (.\Objects\Práctica 3.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+                       4     
+                       5     
+                       6     
+                       7     
+                       8     
+                       9     
+                      10     
+                      11     
+                      12     
+                      13     
+                      14     
+                      15     
+                      16     
+                      17     
+                      18     
+                      19     
+                      20     
+                      21     
+                      22     
+                      23     
+                      24     
+                      25     
+                      26     
+  1000                27                             INICIO_DIM EQU 1000H
+  2000                28                             INICIO_A   EQU 2000H
+  3000                29                             INICIO_B   EQU 3000H
+  5000                30                             INICIO_RES EQU 5000H
+                      31     
+0000                  32                             ORG 0000H
+0000 803E             33                             SJMP MAIN
+0040                  34                             ORG 0040H
+                      35     
+                      36     ; Almacenamiento: R2 = A_Row; R3 = A_Col; R4 = B_Row; R5 = B_Col
+0040 7802             37     MAIN:           MOV R0, #2H
+0042 75F004           38                             MOV B, #4H
+0045 901000           39                             MOV DPTR, #INICIO_DIM
+0048 E0               40     CICLO_RD:       MOVX A, @DPTR                   ; Ciclo de lectura de dimensiones
+0049 F6               41                             MOV @R0, A
+004A A3               42                             INC DPTR
+004B 08               43                             INC R0
+004C D5F0F9           44                             DJNZ B, CICLO_RD
+                      45                             
+004F 8000             46                             SJMP CMP_DIM
+                      47     
+                      48     
+0051 EB               49     CMP_DIM:        MOV A, R3                               ; Comprobación de dimensiones (A_Co
+                             l == B_Row)
+0052 9C               50                             SUBB A, R4                              ; Resta para comprobar igua
+                             ldad
+0053 700B             51                             JNZ FIN                                 ; Terminar programa en caso
+                              contrario
+0055 EA               52                             MOV A, R2                               ; Comprobación de orientaci
+                             ón (vertical | horizontal)
+                      53                                                                             ; con el fin de tra
+A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/21/2022 12:24:19 PAGE     2
+
+                             bajar siempre con A = vertical y B = horizontal | cuadradas
+0056 9C               54                             SUBB A, R4                              ; Resta para comprobar orie
+                             ntación
+0057 20D704           55                             JB 0D7H, CALCUL0                ; Continuar si las orientaciones so
+                             n correctas (AxB)
+005A 6002             56                             JZ CALCUL0                              ; Continuar si son cuadrada
+                             s (AxB)
+                      57                             
+005C 8001             58                             SJMP CALCUL1                    ; Ir a versión BxA
+                      59     
+                      60     
+005E 00               61     CALCUL0:        NOP
+                      62     
+005F 00               63     CALCUL1:        NOP
+                      64     
+0060 80FE             65     FIN:            SJMP $
+                      66     
+                      67                             END
+                                                     
+A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/21/2022 12:24:19 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+CALCUL0. . . . . .  C ADDR   005EH   A   
+CALCUL1. . . . . .  C ADDR   005FH   A   
+CICLO_RD . . . . .  C ADDR   0048H   A   
+CMP_DIM. . . . . .  C ADDR   0051H   A   
+FIN. . . . . . . .  C ADDR   0060H   A   
+INICIO_A . . . . .  N NUMB   2000H   A   
+INICIO_B . . . . .  N NUMB   3000H   A   
+INICIO_DIM . . . .  N NUMB   1000H   A   
+INICIO_RES . . . .  N NUMB   5000H   A   
+MAIN . . . . . . .  C ADDR   0040H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

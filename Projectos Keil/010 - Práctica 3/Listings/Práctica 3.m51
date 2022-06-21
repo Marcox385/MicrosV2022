@@ -1,0 +1,75 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/21/2022  12:24:19  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Práctica 3.obj TO .\Objects\Práctica 3 PRINT (.\Listings\Práctica 3.m51) RAMSIZE (
+>> 256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Práctica 3.obj (PR_CTICA_3)
+
+
+LINK MAP OF MODULE:  .\Objects\Práctica 3 (PR_CTICA_3)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0062H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Práctica 3 (PR_CTICA_3)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PR_CTICA_3
+  D:00F0H         SYMBOL        B
+  C:005EH         SYMBOL        CALCUL0
+  C:005FH         SYMBOL        CALCUL1
+  C:0048H         SYMBOL        CICLO_RD
+  C:0051H         SYMBOL        CMP_DIM
+  C:0060H         SYMBOL        FIN
+  N:2000H         SYMBOL        INICIO_A
+  N:3000H         SYMBOL        INICIO_B
+  N:1000H         SYMBOL        INICIO_DIM
+  N:5000H         SYMBOL        INICIO_RES
+  C:0040H         SYMBOL        MAIN
+  C:0000H         LINE#         33
+  C:0040H         LINE#         37
+  C:0042H         LINE#         38
+  C:0045H         LINE#         39
+  C:0048H         LINE#         40
+  C:0049H         LINE#         41
+  C:004AH         LINE#         42
+  C:004BH         LINE#         43
+  C:004CH         LINE#         44
+  C:004FH         LINE#         46
+  C:0051H         LINE#         49
+  C:0052H         LINE#         50
+  C:0053H         LINE#         51
+  C:0055H         LINE#         52
+  C:0056H         LINE#         54
+  C:0057H         LINE#         55
+  C:005AH         LINE#         56
+  C:005CH         LINE#         58
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  06/21/2022  12:24:19  PAGE 2
+
+
+  C:005EH         LINE#         61
+  C:005FH         LINE#         63
+  C:0060H         LINE#         65
+  -------         ENDMOD        PR_CTICA_3
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0024H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=98
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

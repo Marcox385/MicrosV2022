@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     1
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
                       54                     
                       55                     
                       56     ; 3)    Hacer un programa para que el acumulador pase de 0 a 10 de uno en uno y luego se re
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     2
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     2
 
                              pita el proceso.
                       57     
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
                      118     
                      119     
                      120     
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     3
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     3
 
                      121     
                      122     
@@ -201,7 +201,7 @@ LOC  OBJ            LINE     SOURCE
                      184     
                      185     
                      186     
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     4
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     4
 
                      187     
                      188     
@@ -269,7 +269,7 @@ LOC  OBJ            LINE     SOURCE
                      250     
                      251     
                      252     
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     5
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     5
 
                      253     
                      254     
@@ -337,7 +337,7 @@ LOC  OBJ            LINE     SOURCE
                      316     
                      317     
                      318     
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     6
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     6
 
                      319     
                      320     
@@ -352,48 +352,241 @@ LOC  OBJ            LINE     SOURCE
                      329     
                      330     
                      331     
-0000                 332             ORG 0000H
-0000 803E            333             SJMP MAIN
-0040                 334             ORG 0040H
+                     332     
+                     333     
+                     334     
                      335     
-0040 901900          336     MAIN:   MOV DPTR, #1900H
-0043 E0              337                     MOVX A, @DPTR
-0044 F8              338                     MOV R0, A                       ; Parte alta de apuntador
-0045 A3              339                     INC DPTR
-0046 E0              340                     MOVX A, @DPTR
-0047 F9              341                     MOV R1, A                       ; Parte baja de apuntador
-0048 A3              342                     INC DPTR
-0049 E0              343                     MOVX A, @DPTR           ; Longitud de lista
-004A FA              344                     MOV R2, A
-                     345                     
-004B 8883            346                     MOV DPH, R0
-004D 8982            347                     MOV DPL, R1
-                     348                     
-004F E0              349                     MOVX A, @DPTR           ; Almacena el primer dato en la lista
-                     350                     
-0050 8000            351                     SJMP SOLVE
+                     336     
+                     337     
+                     338     
+                     339     
+                     340     
+                     341     
+                     342     
+                     343     
+                     344     
+                     345     
+                     346     
+                     347     
+                     348     
+                     349     
+                     350     
+                     351     
                      352     
-0052 F5F0            353     SOLVE:  MOV B, A                        ; Almacena número anterior
-0054 C3              354                     CLR C
-0055 A3              355                     INC DPTR
-0056 E0              356                     MOVX A, @DPTR
-0057 95F0            357                     SUBB A, B
-0059 20D704          358                     JB 0D7H, REPLACE
-005C DAF4            359     CONTINUE: DJNZ R2, SOLVE
-005E 80FE            360                     SJMP $
+                     353     
+                     354     
+                     355     
+                     356     
+                     357     
+                     358     
+                     359     
+                     360     
                      361     
-0060 C082            362     REPLACE: PUSH DPL
-0062 C083            363                     PUSH DPH
-0064 E0              364                     MOVX A, @DPTR
-0065 901903          365                     MOV DPTR, #1903H
-0068 F0              366                     MOVX @DPTR, A
-0069 D083            367                     POP DPH
-006B D082            368                     POP DPL
-006D 80ED            369                     SJMP CONTINUE
+                     362     
+                     363     
+                     364     
+                     365     
+                     366     
+                     367     
+                     368     
+                     369     
                      370     
-                     371                     END
-                                             
-A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 12:41:51 PAGE     7
+                     371     
+                     372                     
+                     373                     
+                     374                     
+                     375     
+                     376     
+                     377     
+                     378     
+                     379     
+                     380     
+                     381     
+                     382     
+                     383     
+                     384     
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     7
+
+                     385     
+                     386     
+                     387     
+                     388     
+                     389     
+                     390     
+                     391     
+                     392     
+                     393     
+                     394     
+                     395     
+                     396     
+                     397     
+                     398     
+                     399     
+                     400     
+                     401     
+                     402     
+                     403     
+                     404     
+                     405     
+                     406     
+                     407     
+                     408     
+                     409     
+                     410     
+                     411     
+                     412     
+                     413     
+                     414     
+                     415     
+                     416     
+                     417     
+                     418     
+                     419     
+                     420     
+                     421     
+                     422     
+                     423     
+                     424     
+                     425     
+                     426     
+                     427     
+                     428     
+                     429     
+                     430     
+                     431     
+                     432     
+                     433     
+                     434     
+                     435     
+                     436     
+                     437     
+                     438     
+                     439     
+                     440                     
+                     441                     
+                     442                     
+                     443     
+                     444     
+                     445     
+                     446     
+                     447     
+                     448     
+                     449     
+                     450     
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     8
+
+                     451     
+                     452     
+                     453     
+                     454     
+                     455     
+                     456     
+                     457     
+                     458     
+                     459     
+                     460     
+                     461     
+                     462     
+                     463     
+                     464     
+                     465     
+                     466     
+                     467     
+                     468     
+                     469     
+                     470     
+                     471     
+                     472     
+                     473     
+                     474     
+                     475     
+                     476     
+                     477     
+                     478     
+                     479     
+                     480     
+                     481     
+                     482     
+                     483     
+                     484     
+                     485     
+                     486     
+                     487     
+                     488     
+                     489     
+                     490     
+                     491     
+                     492     
+                     493     
+                     494     
+                     495     
+                     496     
+                     497     
+                     498     
+                     499     
+                     500     
+                     501     
+                     502     
+                     503     
+                     504     
+                     505     
+                     506     
+                     507                     
+                     508                     
+                     509                     
+                     510     
+                     511     
+                     512     
+                     513     
+0000                 514             ORG 0000H
+0000 803E            515             JMP main
+0040                 516             ORG 0040H
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE     9
+
+                     517     
+0040 900500          518     main: MOV DPTR, #0500H
+0043 EC              519           MOV A, R4
+0044 75F002          520           MOV B, #02H
+0047 A4              521           MUL AB
+0048 FC              522           MOV R4, A
+0049 FD              523           MOV R5, A
+                     524               
+004A E0              525     suma: MOVX A, @DPTR
+004B A3              526           INC DPTR
+004C F5F0            527           MOV B, A
+004E E0              528           MOVX A, @DPTR
+004F 28              529           ADD A, R0
+0050 F8              530           MOV R0, A
+0051 E5F0            531           MOV A, B
+0053 39              532           ADDC A, R1
+0054 F9              533           MOV R1, A
+0055 DCF3            534           DJNZ R4, suma
+                     535     
+0057                 536     promedio:
+0057 E8              537           MOV A, R0
+0058 9D              538           SUBB A, R5
+0059 F8              539           MOV R0, A
+005A E9              540           MOV A, R1
+005B 9400            541           SUBB A, #00H
+005D F9              542           MOV R1, A
+005E 0C              543           INC R4
+005F B900F5          544           CJNE R1, #00H, promedio
+0062 E8              545           MOV A, R0
+0063 8D30            546           MOV 30H, R5
+0065 B53006          547           CJNE A, 30H, escr
+0068                 548     fin:
+0068 EC              549           MOV A, R4
+0069 FE              550           MOV R6, A
+006A E8              551           MOV A, R0
+006B FF              552           MOV R7, A
+006C 80FE            553           JMP $
+                     554     
+006E                 555     escr:
+006E 40F8            556           JC fin
+0070 80E5            557           JMP promedio
+                     558           
+                     559           END               
+A51 MACRO ASSEMBLER  CONTENEDOR                                                           06/20/2022 21:28:35 PAGE    10
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -402,12 +595,11 @@ SYMBOL TABLE LISTING
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
 B. . . . . . . . .  D ADDR   00F0H   A   
-CONTINUE . . . . .  C ADDR   005CH   A   
-DPH. . . . . . . .  D ADDR   0083H   A   
-DPL. . . . . . . .  D ADDR   0082H   A   
+ESCR . . . . . . .  C ADDR   006EH   A   
+FIN. . . . . . . .  C ADDR   0068H   A   
 MAIN . . . . . . .  C ADDR   0040H   A   
-REPLACE. . . . . .  C ADDR   0060H   A   
-SOLVE. . . . . . .  C ADDR   0052H   A   
+PROMEDIO . . . . .  C ADDR   0057H   A   
+SUMA . . . . . . .  C ADDR   004AH   A   
 
 
 REGISTER BANK(S) USED: 0 

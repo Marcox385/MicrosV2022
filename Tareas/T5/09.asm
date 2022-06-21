@@ -1,3 +1,5 @@
+; Cordero Hernández Marco Ricardo 727272
+; Guzmán Claustro Edgar 727576
 /* 9)   Hacer un programa para determinar la cantidad de ceros, de números positivos (aquellos cuyo bit más significativo es cero)
         y de números negativos (aquellos cuyo bit más significativo es uno) que hay en un bloque de memoria externa.
         La dirección inicial del bloque está en las localidades 1940H y 1941H, la longitud del bloque está en la localidad 1942H.
@@ -29,30 +31,30 @@ PASS1:	MOVX A, @DPTR
 PASS2:	MOVX A, @DPTR
 		ACALL CEROS				; Contar ceros
 		INC DPTR
-		DJNZ R2, CICLO			; Repetir hasta que no se hayan alcanzado la cantidad de 1942
+		DJNZ R2, CICLO			; Repetir hasta que no se haya alcanzado la cantidad de 1942
 		SJMP $
 
-NEGATIVO: PUSH DPL
+NEGATIVO: PUSH DPL				; Guardar dirección de apuntador				
 		PUSH DPH
-		MOV DPTR, #1943H
+		MOV DPTR, #1943H		; Mover a contador de negativos
 		MOVX A, @DPTR
 		INC A
 		MOVX @DPTR, A
-		POP DPH
+		POP DPH					; Recuperar dirección de apuntador
 		POP DPL
 		SJMP PASS1
 
-POSITIVO: PUSH DPL
+POSITIVO: PUSH DPL				; Guardar dirección de apuntador
 		PUSH DPH
-		MOV DPTR, #1945H
+		MOV DPTR, #1945H		; Mover a contador de positivos
 		MOVX A, @DPTR
 		INC A
 		MOVX @DPTR, A
-		POP DPH
+		POP DPH					; Recuperar dirección de apuntador
 		POP DPL
 		SJMP PASS2
 
-CEROS:	PUSH DPL
+CEROS:	PUSH DPL				; Guardar dirección de apuntador
 		PUSH DPH
 		MOVX A, @DPTR
 		MOV DPTR, #1944H
@@ -64,7 +66,7 @@ CC1:	MOV R4, A				; Caso contrario, aumentar cantidad de ceros
 		MOV A, R4
 CC2:	RR A					; Rotación a la derecha
 		DJNZ R3, CC0			; Repetir ocho veces
-		POP DPH
+		POP DPH					; Recuperar dirección de apuntador
 		POP DPL
 		RET
 

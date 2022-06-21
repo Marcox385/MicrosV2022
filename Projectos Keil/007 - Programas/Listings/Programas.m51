@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/20/2022  12:41:51  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/20/2022  21:28:35  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -20,7 +20,7 @@ LINK MAP OF MODULE:  .\Objects\Programas (CONTENEDOR)
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
-            CODE    0000H     006FH     ABSOLUTE     
+            CODE    0000H     0072H     ABSOLUTE     
 
 
 
@@ -31,50 +31,54 @@ SYMBOL TABLE OF MODULE:  .\Objects\Programas (CONTENEDOR)
 
   -------         MODULE        CONTENEDOR
   D:00F0H         SYMBOL        B
-  C:005CH         SYMBOL        CONTINUE
-  D:0083H         SYMBOL        DPH
-  D:0082H         SYMBOL        DPL
+  C:006EH         SYMBOL        ESCR
+  C:0068H         SYMBOL        FIN
   C:0040H         SYMBOL        MAIN
-  C:0060H         SYMBOL        REPLACE
-  C:0052H         SYMBOL        SOLVE
-  C:0000H         LINE#         333
-  C:0040H         LINE#         336
-  C:0043H         LINE#         337
-  C:0044H         LINE#         338
-  C:0045H         LINE#         339
-  C:0046H         LINE#         340
-  C:0047H         LINE#         341
-  C:0048H         LINE#         342
-  C:0049H         LINE#         343
-  C:004AH         LINE#         344
-  C:004BH         LINE#         346
-  C:004DH         LINE#         347
-  C:004FH         LINE#         349
-  C:0050H         LINE#         351
-  C:0052H         LINE#         353
-  C:0054H         LINE#         354
-  C:0055H         LINE#         355
-  C:0056H         LINE#         356
-  C:0057H         LINE#         357
-  C:0059H         LINE#         358
-  C:005CH         LINE#         359
-  C:005EH         LINE#         360
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  06/20/2022  12:41:51  PAGE 2
+  C:0057H         SYMBOL        PROMEDIO
+  C:004AH         SYMBOL        SUMA
+  C:0000H         LINE#         515
+  C:0040H         LINE#         518
+  C:0043H         LINE#         519
+  C:0044H         LINE#         520
+  C:0047H         LINE#         521
+  C:0048H         LINE#         522
+  C:0049H         LINE#         523
+  C:004AH         LINE#         525
+  C:004BH         LINE#         526
+  C:004CH         LINE#         527
+  C:004EH         LINE#         528
+  C:004FH         LINE#         529
+  C:0050H         LINE#         530
+  C:0051H         LINE#         531
+  C:0053H         LINE#         532
+  C:0054H         LINE#         533
+  C:0055H         LINE#         534
+  C:0057H         LINE#         537
+  C:0058H         LINE#         538
+  C:0059H         LINE#         539
+  C:005AH         LINE#         540
+  C:005BH         LINE#         541
+  C:005DH         LINE#         542
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  06/20/2022  21:28:35  PAGE 2
 
 
-  C:0060H         LINE#         362
-  C:0062H         LINE#         363
-  C:0064H         LINE#         364
-  C:0065H         LINE#         365
-  C:0068H         LINE#         366
-  C:0069H         LINE#         367
-  C:006BH         LINE#         368
-  C:006DH         LINE#         369
+  C:005EH         LINE#         543
+  C:005FH         LINE#         544
+  C:0062H         LINE#         545
+  C:0063H         LINE#         546
+  C:0065H         LINE#         547
+  C:0068H         LINE#         549
+  C:0069H         LINE#         550
+  C:006AH         LINE#         551
+  C:006BH         LINE#         552
+  C:006CH         LINE#         553
+  C:006EH         LINE#         556
+  C:0070H         LINE#         557
   -------         ENDMOD        CONTENEDOR
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0031H BYTE ( 2%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0034H BYTE ( 2%) *
 ******************************************************************************
 
-Program Size: data=8.0 xdata=0 code=111
+Program Size: data=8.0 xdata=0 code=114
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

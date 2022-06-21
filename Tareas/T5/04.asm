@@ -1,3 +1,5 @@
+; Cordero Hernández Marco Ricardo 727272
+; Guzmán Claustro Edgar 727576
 ; 4)	Hacer un programa para sumar el contenido de R4 con el contenido de R6 y colocar el resultado en R2.
 
         ORG 0000H

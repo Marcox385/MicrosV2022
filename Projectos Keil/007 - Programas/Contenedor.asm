@@ -327,7 +327,7 @@ CICLO:	ADD A, B
 /* 13)	Hacer un programa para que encuentre el elemento más pequeño de una lista de números de 16 bits sin signo
         que están en localidades consecutivas de memoria. La dirección del primer elemento de la lista se encuentra
         en las localidades 1900H y 1901H, el número de elementos del arreglo está en la localidad 1902H. El elemento
-        más pequeño encontrado debe guardarse en la localidad 1903H. */
+        más pequeño encontrado debe guardarse en la localidad 1903H. 
 
         ORG 0000H
         SJMP MAIN
@@ -363,10 +363,197 @@ REPLACE: PUSH DPL
 		PUSH DPH
 		MOVX A, @DPTR
 		MOV DPTR, #1903H
-		MOVX @DPTR, A
+		MOVX @DPTR, A		; Sustituir valor almacenado
 		POP DPH
 		POP DPL
 		SJMP CONTINUE
 
-		END
+		END */
 		
+		
+		
+/* 14)	Hacer un programa para que ordene una lista de números binarios de 8 bits con signo en orden ascendente (menor a mayor).
+        La longitud de la lista está en la localidad de memoria 1B00H y la lista misma comienza en la localidad de memoria 1B01H.
+        Los números están en complemento a dos. 
+
+		NUM EQU 20H
+		STOPH EQU 21H
+		STOPL EQU 22H
+			
+		ORG 0000H
+		SJMP INICIO
+		ORG 0040H
+
+INICIO:	MOV DPTR, #1B00H
+        MOVX A, @DPTR
+        MOV NUM, A ;R0 tiene la longitud de la lista
+        MOV STOPH, #1BH
+        MOV STOPL, #01H
+        MOV A, NUM
+        ADDC A, STOPL
+        MOV STOPL, A
+        DEC STOPL
+        MOV A, #00H
+        ADDC A, STOPH
+        MOV STOPH, A
+        INC DPTR ;DPTR = 1B01H
+
+CICLO:	MOVX A, @DPTR 
+        MOV R1, A ;R1 = Primer elemento de la lista
+        MOV R3, DPH
+        MOV R4, DPL
+        INC DPTR
+        MOVX A, @DPTR 
+        MOV R5, DPH
+        MOV R6, DPL
+        MOV R2, A ;R2 =Contiene el segundo numero 
+        MOV A, R1
+        SUBB A, R2
+        JC OTRA
+        MOV A, R1
+        MOV DPH, R5
+        MOV DPL, R6
+        MOVX @DPTR, A
+        MOV DPH, R3
+        MOV DPL, R4
+        MOV A, R2
+        MOVX @DPTR, A
+        ;XCH A, R2
+        ;MOV R1, A
+
+MAYOR:	INC DPTR
+        MOV A, DPH
+        CJNE A, STOPH, CICLO
+        MOV A, DPL
+        CJNE A, STOPL, CICLO
+        SJMP $
+
+OTRA: 	MOV A, R2
+        MOV R1, A
+        MOV A, R5
+        MOV R3, A
+        MOV A, R6
+        MOV R4, A
+        SJMP CICLO
+        
+        END */
+		
+		
+		
+/* 15)	Hacer un programa para contar el número de bits con valor 1 que hay en un bloque de memoria cuya dirección inicial
+        se encuentra almacenada en las localidades 1A00H y 1A01H y cuya dirección final está almacenada en las localidades
+        1A02H y 1A03H. El número total de unos debe guardarse en las localidades 1A04H y la 1A05H. Se sugiere utilizar un
+        lazo para contar los unos dentro de cada localidad del bloque, anidado en otro lazo que se encargue de acumular los
+        unos resultantes de todas las localidades. 
+
+        ORG 0000H
+        SJMP MAIN
+        ORG 0040H
+
+MAIN:   MOV DPTR, #1A00H
+		MOV B, #4H
+		MOV R0, #1H
+READ:	MOVX A, @DPTR		; Ciclo de lectura de datos (1A00-1A05)
+		MOV @R0, A
+		INC DPTR
+		INC R0
+		DJNZ B, READ
+				
+		MOV DPH, R1
+		MOV A, R2
+		DEC A
+		XCH A, R2
+		MOV DPL, R2
+		
+		SJMP CICLO1
+		
+		
+CICLO1:	INC DPTR
+		MOVX A, @DPTR
+		MOV B, #8D
+		
+CICLO2: JB ACC.0, AUMENTAR
+INCL2:	RR A
+		DJNZ B, CICLO2
+		
+		MOV A, R3			; Checar DPH final
+		CJNE A, DPH, CICLO1
+		MOV A, R4			; Checar DPL final
+		CJNE A, DPL, CICLO1
+		SJMP $
+
+
+AUMENTAR: PUSH DPL
+		PUSH DPH
+		PUSH 0E0H
+		MOV DPTR, #1A05H
+		MOVX A, @DPTR
+		INC A
+		JB 0D2H, AUMENTARH
+		MOVX @DPTR, A
+PISICHILLI:	POP 0E0H
+		POP DPH
+		POP DPL
+		SJMP INCL2
+
+AUMENTARH:	MOV DPTR, #1A04H
+		MOVX A, @DPTR
+		INC A
+		CLR 02DH
+		MOVX @DPTR, A
+		SJMP PISICHILLI
+
+		END */
+		
+		
+		
+/* 17)	A partir de la localidad 500H de RAM se encuentra una lista de palabras de 16 bits.
+        En el registro R4 se encuentra el número de elementos de la lista. Se requiere implementar
+        un programa que genere el promedio de los elementos de la lista y que guarde dicho promedio en los registro R6 y R7. */
+
+        ORG 0000H
+        JMP main
+        ORG 0040H
+
+main: MOV DPTR, #0500H
+      MOV A, R4
+      MOV B, #02H
+      MUL AB
+      MOV R4, A
+      MOV R5, A
+	  
+suma: MOVX A, @DPTR
+      INC DPTR
+      MOV B, A
+      MOVX A, @DPTR
+      ADD A, R0
+      MOV R0, A
+      MOV A, B
+      ADDC A, R1
+      MOV R1, A
+      DJNZ R4, suma
+
+promedio:
+      MOV A, R0
+      SUBB A, R5
+      MOV R0, A
+      MOV A, R1
+      SUBB A, #00H
+      MOV R1, A
+      INC R4
+      CJNE R1, #00H, promedio
+      MOV A, R0
+      MOV 30H, R5
+      CJNE A, 30H, escr
+fin:
+      MOV A, R4
+      MOV R6, A
+      MOV A, R0
+      MOV R7, A
+      JMP $
+
+escr:
+      JC fin
+      JMP promedio
+      
+      END		

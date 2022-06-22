@@ -1,0 +1,61 @@
+A51 MACRO ASSEMBLER  INTERRUPCIONES_2                                                     06/21/2022 23:00:38 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Interrupciones 2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Interrupciones 2.asm SET(SMALL) DEBUG PRINT(.\Listings\Interrupciones 2
+                      .lst) OBJECT(.\Objects\Interrupciones 2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+0000                   4                     ORG 000H
+0000 803E              5                     SJMP MAIN
+000B                   6                     ORG 000BH
+                       7     
+000B B2B5              8     ONSET:  CPL P3.5                ; Flanco de subida/bajada
+                       9                     ;CLR TR0                        ; 
+000D 32               10                     RETI
+                      11                     
+0040                  12                     ORG 0040H
+                      13     
+                      14     ; GATE T1 = 0, C/T T1 = Contador, Modo T1 = 13 bits
+                      15     ; GATE T0 = 0, C/T = Temporizador, Modo T0 = 16 bits
+0040 758941           16     MAIN:   MOV TMOD, #41H
+0043 758CCA           17                     MOV TH0, #-54
+0046 758A00           18                     MOV TL0, #0             ; T0 = -5400
+0049 D28C             19                     SETB TR0                ; Encender T0
+004B D28E             20                     SETB TR1                ; Encender T1
+004D C28D             21                     CLR TF0                 ; Limpiar bandera de desbordamiento
+004F 8000             22                     SJMP WATCH
+                      23             
+0051 208DB7           24     WATCH:  JB TF0, ONSET   ; Contar si se desbordó T0
+0054 80FB             25                     SJMP WATCH
+                      26                             
+                      27                     END
+A51 MACRO ASSEMBLER  INTERRUPCIONES_2                                                     06/21/2022 23:00:38 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+MAIN . . . . . . .  C ADDR   0040H   A   
+ONSET. . . . . . .  C ADDR   000BH   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+WATCH. . . . . . .  C ADDR   0051H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,4 @@
+1.- Solucionar un problema real.
+2.- Debe emplear la mayoría de recursos del microcontrolador en forma no trivial.
+	 (Puertos E/S, serial, LCD, uso teclado, sensores, timers, counters, interrupciones)
+3.- Debe emplear al menos una interrupción distinta a RST de forma no trivial.

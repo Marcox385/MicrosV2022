@@ -33,37 +33,95 @@
 			SJMP MAIN
 			ORG 0040H
 
+FIN:		SJMP $
+
 ; Almacenamiento: R2 = A_Row; R3 = A_Col; R4 = B_Row; R5 = B_Col
-MAIN:		MOV R0, #2H
-			MOV B, #4H
+MAIN:		MOV R0, #2H				; Apuntador a registros
+			MOV B, #4H				; Cantidad de variables
 			MOV DPTR, #INICIO_DIM
 CICLO_RD:	MOVX A, @DPTR			; Ciclo de lectura de dimensiones
+			JZ FIN					; Terminar programa si algún dato == 0
 			MOV @R0, A
 			INC DPTR
 			INC R0
 			DJNZ B, CICLO_RD
-			
-			SJMP CMP_DIM
 
-
-CMP_DIM:	MOV A, R3 				; Comprobación de dimensiones (A_Col == B_Row)
+			MOV A, R3 				; Comprobación de dimensiones (A_Col == B_Row)
 			SUBB A, R4				; Resta para comprobar igualdad
 			JNZ FIN					; Terminar programa en caso contrario
-			MOV A, R2				; Comprobación de orientación (vertical | horizontal)
-									; con el fin de trabajar siempre con A = vertical y B = horizontal | cuadradas
-			SUBB A, R4				; Resta para comprobar orientación
-			JB 0D7H, CALCUL0		; Continuar si las orientaciones son correctas (AxB)
-			JZ CALCUL0				; Continuar si son cuadradas (AxB)
+
+CALCUL0:	MOV A, R2
+			MOV B, R5
+			MUL AB
+			MOV R6, A				; Longitud de matriz resultante (A_Row x B_Col) == Cantidad de ciclo externo
+		
+			MOV 20H, #0				; Variable para iteraciones de matriz A (selección de filas)
+			MOV 22H, #0				; Variable para iteraciones de matriz de resultado			
+			MOV 23H, #0
+		
+			MOV DPTR, #INICIO_A
+L1:			ACALL DESP_A_R			; Ajuste de filas para A
+			ACALL DESP_A_C			; Ajuste de columnas para A
+			MOVX A, @DPTR
+			PUSH 0E0H
+			MOV 21H, #0				; Variable para iteraciones de matriz B (selección de filas)	
+			ACALL DESP_B_C			; Ajuste columnas para B
+			MOVX A, @DPTR
+			MOV B, A
+			POP 0E0H
+			MUL AB
+			ACALL DESP_RES			; Almacenar resultado en matriz resultante
 			
-			SJMP CALCUL1			; Ir a versión BxA
+			INC 23H
+			INC 22H
+			INC 20H
+			DJNZ R6, L1
 
-
-CALCUL0:	MOV DPTR, #INICIO_A
-			PUSH 
-
-CALCUL1:	NOP
-
-FIN:		SJMP $
+; ---------------------------------------------------------------------------------------
+DESP_A_R:	PUSH 0E0H
+			PUSH 0F0H
+			MOV A, 20H
+			MOV B, R3
+			MUL AB
+			JZ DAR_RET
+DAR_LI:		INC DPTR
+			DJNZ 0E0H, DAR_LI
+DAR_RET:	POP 0F0H
+			POP 0E0H
+			RET			
+; ---------------------------------------------------------------------------------------
+DESP_A_C:	PUSH 0E0H
+			MOV A, 23H
+			JZ DAC_RET
+DAC_LI:		INC DPTR
+			DJNZ 0E0H, DAC_LI
+DAC_RET:	POP 0E0H
+			RET					
+; ---------------------------------------------------------------------------------------			
+DESP_B_C: 	MOV DPTR, #INICIO_B	
+			PUSH 0E0H
+			MOV A, 21H
+			JZ DBC_RET
+DBC_LI:		INC DPTR
+			DJNZ 0E0H, DBC_LI
+DBC_RET:	POP 0E0H
+			RET
+; ---------------------------------------------------------------------------------------
+DESP_RES:	MOV DPTR, #INICIO_RES
+			PUSH 0F0H
+			PUSH 0E0H
+			MOV A, 22H
+			JZ DESP_RET
+DESP_LI:	INC DPTR
+			DJNZ 0E0H, DESP_LI
+DESP_RET:	MOVX A, @DPTR
+			MOV B, A
+			POP 0E0H
+			ADD A, B
+			MOVX @DPTR, A
+			POP 0F0H
+			RET
+; ---------------------------------------------------------------------------------------
 
 			END
 			

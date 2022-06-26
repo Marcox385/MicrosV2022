@@ -3,24 +3,26 @@
 
 		ORG 000H
 		SJMP MAIN
+		
 		ORG 000BH
-
-ONSET:	CPL P3.5		; Flanco de subida/bajada
+T0ISR:	MOV A, TL1
+		MOV P1, A
+		MOV TL1, #0
+		MOV TH0, #HIGH(-50000)
+		MOV TL0, #LOW(-50000)
+		SETB TF0
 		RETI
 		
 		ORG 0040H
-
-; GATE T1 = 0, C/T T1 = Contador, Modo T1 = 13 bits
-; GATE T0 = 0, C/T = Temporizador, Modo T0 = 16 bits
-MAIN:	MOV TMOD, #41H
-		MOV TH0, #-54
-		MOV TL0, #0		; T0 = -5400
-		SETB TR0		; Encender T0
-		SETB TR1		; Encender T1
-		CLR TF0			; Limpiar bandera de desbordamiento
-		SJMP WATCH
+MAIN:	MOV TMOD, #51H
+		; GATE T1 = 0, C/T T1 = Contador, Modo T1 = 16 bits
+		; GATE T0 = 0, C/T = Temporizador, Modo T0 = 16 bits
+		
+		SETB TR0				; Encender T0
+		SETB TR1				; Encender T1
+		MOV IE, #82H			; EA, T0
+		SETB TF0				; Interrupción de T0
+LOOP:	JNB TF0, LOOP			; Pooling
+		SJMP $
 	
-WATCH:	JB TF0, ONSET	; Contar si se desbordó T0
-		SJMP WATCH
-			
 		END

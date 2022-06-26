@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  INTERRUPCIONES_2                                                     06/21/2022 23:00:38 PAGE     1
+A51 MACRO ASSEMBLER  INTERRUPCIONES_2                                                     06/22/2022 11:18:36 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -13,29 +13,30 @@ LOC  OBJ            LINE     SOURCE
                        3     
 0000                   4                     ORG 000H
 0000 803E              5                     SJMP MAIN
-000B                   6                     ORG 000BH
-                       7     
-000B B2B5              8     ONSET:  CPL P3.5                ; Flanco de subida/bajada
-                       9                     ;CLR TR0                        ; 
-000D 32               10                     RETI
-                      11                     
-0040                  12                     ORG 0040H
-                      13     
-                      14     ; GATE T1 = 0, C/T T1 = Contador, Modo T1 = 13 bits
-                      15     ; GATE T0 = 0, C/T = Temporizador, Modo T0 = 16 bits
-0040 758941           16     MAIN:   MOV TMOD, #41H
-0043 758CCA           17                     MOV TH0, #-54
-0046 758A00           18                     MOV TL0, #0             ; T0 = -5400
-0049 D28C             19                     SETB TR0                ; Encender T0
-004B D28E             20                     SETB TR1                ; Encender T1
-004D C28D             21                     CLR TF0                 ; Limpiar bandera de desbordamiento
-004F 8000             22                     SJMP WATCH
-                      23             
-0051 208DB7           24     WATCH:  JB TF0, ONSET   ; Contar si se desbordó T0
-0054 80FB             25                     SJMP WATCH
-                      26                             
-                      27                     END
-A51 MACRO ASSEMBLER  INTERRUPCIONES_2                                                     06/21/2022 23:00:38 PAGE     2
+                       6                     
+000B                   7                     ORG 000BH
+000B E58B              8     T0ISR:  MOV A, TL1
+000D F590              9                     MOV P1, A
+000F 758B00           10                     MOV TL1, #0
+0012 758C3C           11                     MOV TH0, #HIGH(-50000)
+0015 758AB0           12                     MOV TL0, #LOW(-50000)
+0018 D28D             13                     SETB TF0
+001A 32               14                     RETI
+                      15                     
+0040                  16                     ORG 0040H
+0040 758951           17     MAIN:   MOV TMOD, #51H
+                      18                     ; GATE T1 = 0, C/T T1 = Contador, Modo T1 = 16 bits
+                      19                     ; GATE T0 = 0, C/T = Temporizador, Modo T0 = 16 bits
+                      20                     
+0043 D28C             21                     SETB TR0                                ; Encender T0
+0045 D28E             22                     SETB TR1                                ; Encender T1
+0047 75A882           23                     MOV IE, #82H                    ; EA, T0
+004A D28D             24                     SETB TF0                                ; Interrupción de T0
+004C 308DFD           25     LOOP:   JNB TF0, LOOP                   ; Pooling
+004F 80FE             26                     SJMP $
+                      27             
+                      28                     END
+A51 MACRO ASSEMBLER  INTERRUPCIONES_2                                                     06/22/2022 11:18:36 PAGE     2
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -43,16 +44,18 @@ SYMBOL TABLE LISTING
 
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
+IE . . . . . . . .  D ADDR   00A8H   A   
+LOOP . . . . . . .  C ADDR   004CH   A   
 MAIN . . . . . . .  C ADDR   0040H   A   
-ONSET. . . . . . .  C ADDR   000BH   A   
-P3 . . . . . . . .  D ADDR   00B0H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+T0ISR. . . . . . .  C ADDR   000BH   A   
 TF0. . . . . . . .  B ADDR   0088H.5 A   
 TH0. . . . . . . .  D ADDR   008CH   A   
 TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
 TMOD . . . . . . .  D ADDR   0089H   A   
 TR0. . . . . . . .  B ADDR   0088H.4 A   
 TR1. . . . . . . .  B ADDR   0088H.6 A   
-WATCH. . . . . . .  C ADDR   0051H   A   
 
 
 REGISTER BANK(S) USED: 0 

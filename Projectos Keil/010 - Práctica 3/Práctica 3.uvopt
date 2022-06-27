@@ -155,7 +155,7 @@
       <MemoryWindow3>
         <Mm>
           <WinNumber>3</WinNumber>
-          <SubType>0</SubType>
+          <SubType>259</SubType>
           <ItemText>x:0x3000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
@@ -163,7 +163,7 @@
       <MemoryWindow4>
         <Mm>
           <WinNumber>4</WinNumber>
-          <SubType>0</SubType>
+          <SubType>259</SubType>
           <ItemText>x:0x5000</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>

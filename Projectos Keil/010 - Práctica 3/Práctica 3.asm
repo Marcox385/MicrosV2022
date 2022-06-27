@@ -56,29 +56,46 @@ CALCUL0:	MOV A, R2
 			MOV R6, A				; Longitud de matriz resultante (A_Row x B_Col) == Cantidad de ciclo externo
 		
 			MOV 20H, #0				; Variable para iteraciones de matriz A (selección de filas)
+			MOV 21H, #0				; Variable para iteraciones de matriz B (selección de filas)
 			MOV 22H, #0				; Variable para iteraciones de matriz de resultado			
-			MOV 23H, #0
+			MOV 23H, #0				; Variable para iteraciones de matriz A (selección de columnas)
+			MOV 24H, #0				; Variable para iteraciones de matriz B (selección de columnas)
 		
-			MOV DPTR, #INICIO_A
 L1:			ACALL DESP_A_R			; Ajuste de filas para A
+L2:			MOV 24H, #0
+L3:			MOV 23H, #0
+L4:			ACALL DESP_A_R
 			ACALL DESP_A_C			; Ajuste de columnas para A
 			MOVX A, @DPTR
-			PUSH 0E0H
-			MOV 21H, #0				; Variable para iteraciones de matriz B (selección de filas)	
+			PUSH 0E0H	
 			ACALL DESP_B_C			; Ajuste columnas para B
+			ACALL DESP_B_R			; Ajuste filas para B
 			MOVX A, @DPTR
 			MOV B, A
 			POP 0E0H
 			MUL AB
 			ACALL DESP_RES			; Almacenar resultado en matriz resultante
 			
+			INC 21H
 			INC 23H
+			MOV A, R3
+			CJNE A, 23H, L4
+			MOV 21H, #0
+			
 			INC 22H
+			INC 24H
+			MOV A, R5
+			CJNE A, 24H, L3
+			
 			INC 20H
-			DJNZ R6, L1
+			MOV A, R2
+			CJNE A, 20H, L2
+			
+			SJMP FIN
 
 ; ---------------------------------------------------------------------------------------
-DESP_A_R:	PUSH 0E0H
+DESP_A_R:	MOV DPTR, #INICIO_A
+			PUSH 0E0H
 			PUSH 0F0H
 			MOV A, 20H
 			MOV B, R3
@@ -100,11 +117,23 @@ DAC_RET:	POP 0E0H
 ; ---------------------------------------------------------------------------------------			
 DESP_B_C: 	MOV DPTR, #INICIO_B	
 			PUSH 0E0H
-			MOV A, 21H
+			MOV A, 24H
 			JZ DBC_RET
 DBC_LI:		INC DPTR
 			DJNZ 0E0H, DBC_LI
 DBC_RET:	POP 0E0H
+			RET
+; ---------------------------------------------------------------------------------------
+DESP_B_R: 	PUSH 0E0H
+			PUSH 0F0H
+			MOV A, 21H
+			JZ DBR_RET
+DBR_LI1:	MOV B, R5
+DBR_LI2:	INC DPTR
+			DJNZ 0F0H, DBR_LI2
+			DJNZ 0E0H, DBR_LI1
+DBR_RET:	POP 0F0H
+			POP 0E0H
 			RET
 ; ---------------------------------------------------------------------------------------
 DESP_RES:	MOV DPTR, #INICIO_RES

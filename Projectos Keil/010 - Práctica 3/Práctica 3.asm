@@ -21,19 +21,26 @@
 	Los datos son de 4 bits con signo.
 	----------------------------------------------------------------
 	
-	Mínimo a entregar: capacidad de 6x6 para dimensiones de matrices
+	Nota: se ha asegurado el funcionamiento con matrices de hsata 6x6
 */
 
 			INICIO_DIM EQU 1000H
 			INICIO_A   EQU 2000H
 			INICIO_B   EQU 3000H
 			INICIO_RES EQU 5000H
+				
+			A_ROW	   EQU 20H
+			A_COL	   EQU 21H
+			B_ROW	   EQU 22H
+			B_COL	   EQU 23H
+			RES_POS    EQU 24H
+				
+			A_DIR	   EQU 0E0H
+			B_DIR	   EQU 0F0H
 
 			ORG 0000H
 			SJMP MAIN
 			ORG 0040H
-
-FIN:		SJMP $
 
 ; Almacenamiento: R2 = A_Row; R3 = A_Col; R4 = B_Row; R5 = B_Col
 MAIN:		MOV R0, #2H				; Apuntador a registros
@@ -50,105 +57,97 @@ CICLO_RD:	MOVX A, @DPTR			; Ciclo de lectura de dimensiones
 			SUBB A, R4				; Resta para comprobar igualdad
 			JNZ FIN					; Terminar programa en caso contrario
 
-CALCUL0:	MOV A, R2
-			MOV B, R5
-			MUL AB
-			MOV R6, A				; Longitud de matriz resultante (A_Row x B_Col) == Cantidad de ciclo externo
-		
-			MOV 20H, #0				; Variable para iteraciones de matriz A (selección de filas)
-			MOV 21H, #0				; Variable para iteraciones de matriz B (selección de filas)
-			MOV 22H, #0				; Variable para iteraciones de matriz de resultado			
-			MOV 23H, #0				; Variable para iteraciones de matriz A (selección de columnas)
-			MOV 24H, #0				; Variable para iteraciones de matriz B (selección de columnas)
-		
-L1:			ACALL DESP_A_R			; Ajuste de filas para A
-L2:			MOV 24H, #0
-L3:			MOV 23H, #0
-L4:			ACALL DESP_A_R
-			ACALL DESP_A_C			; Ajuste de columnas para A
-			MOVX A, @DPTR
-			PUSH 0E0H	
-			ACALL DESP_B_C			; Ajuste columnas para B
-			ACALL DESP_B_R			; Ajuste filas para B
-			MOVX A, @DPTR
-			MOV B, A
-			POP 0E0H
-			MUL AB
-			ACALL DESP_RES			; Almacenar resultado en matriz resultante
-			
-			INC 21H
-			INC 23H
-			MOV A, R3
-			CJNE A, 23H, L4
-			MOV 21H, #0
-			
-			INC 22H
-			INC 24H
-			MOV A, R5
-			CJNE A, 24H, L3
-			
-			INC 20H
-			MOV A, R2
-			CJNE A, 20H, L2
-			
-			SJMP FIN
+CALCUL0:	MOV A_ROW, #0
+			MOV A_COL, #0
+			MOV B_ROW, #0
+			MOV B_COL, #0
+			MOV RES_POS, #0
 
-; ---------------------------------------------------------------------------------------
+L1:			MOV B_COL, #0			; Resetear columnas de B
+L2:			MOV A_COL, #0			; Resetear columnas de A
+L3:			ACALL DESP_A_R			; Desplazamiento de filas para A
+			ACALL DESP_A_C			; Desplazamiento de columnas para A
+			MOVX A, @DPTR
+			PUSH A_DIR				; Guardar A[A_ROW][A_COL]
+			
+			ACALL DESP_B_C			; Desplazamiento de columnas para B
+			ACALL DESP_B_R			; Desplazamiento de filas para B
+			MOVX A, @DPTR
+			MOV B, A				; Guardar B[B_ROW][B_COL]
+			POP A_DIR
+			MUL AB
+			
+			ACALL DESP_RES			; Almacenar resultado en matriz resultante (Valor anterior + nuevo valor calculado)
+			
+			INC A_COL				; A[A_ROW][A_COL + 1]
+			INC B_ROW				; B[B_ROW + 1][B_COL]
+			MOV A, R3
+			CJNE A, A_COL, L3		; Verificar si no se ha llegado al fin de columnas actuales de A para fila correspondiente
+			MOV B_ROW, #0			; Resetear a B[0][0]
+			
+			INC RES_POS				; Pasar a siguiente posición en matriz resultante
+			INC B_COL				; B[B_ROW][B_COL + 1]
+			MOV A, R5
+			CJNE A, B_COL, L2		; Verificar si no se ha llegado al fin de columnas totales de B
+			
+			INC A_ROW				; A[A_ROW + 1][A_COL]
+			MOV A, R2
+			CJNE A, A_ROW, L1		; Verificar si no se ha llegado al fin de filas totales de A
+			
+FIN:		SJMP $
+	
+	
+; ---------------------------- DESPLAZAMIENTO PARA FILAS DE A ----------------------------
+
 DESP_A_R:	MOV DPTR, #INICIO_A
-			PUSH 0E0H
-			PUSH 0F0H
-			MOV A, 20H
+			MOV A, A_ROW
 			MOV B, R3
 			MUL AB
 			JZ DAR_RET
-DAR_LI:		INC DPTR
-			DJNZ 0E0H, DAR_LI
-DAR_RET:	POP 0F0H
-			POP 0E0H
-			RET			
-; ---------------------------------------------------------------------------------------
-DESP_A_C:	PUSH 0E0H
-			MOV A, 23H
+DAR_LI:		INC DPTR				; Incrementar hasta encontrar fila actual de A
+			DJNZ A_DIR, DAR_LI
+DAR_RET:	RET			
+
+; --------------------------- DESPLAZAMIENTO PARA COLUMNAS DE A ---------------------------
+
+DESP_A_C:	MOV A, A_COL
 			JZ DAC_RET
-DAC_LI:		INC DPTR
-			DJNZ 0E0H, DAC_LI
-DAC_RET:	POP 0E0H
-			RET					
-; ---------------------------------------------------------------------------------------			
-DESP_B_C: 	MOV DPTR, #INICIO_B	
-			PUSH 0E0H
-			MOV A, 24H
-			JZ DBC_RET
-DBC_LI:		INC DPTR
-			DJNZ 0E0H, DBC_LI
-DBC_RET:	POP 0E0H
-			RET
-; ---------------------------------------------------------------------------------------
-DESP_B_R: 	PUSH 0E0H
-			PUSH 0F0H
-			MOV A, 21H
+DAC_LI:		INC DPTR				; Incrementar hasta encontrar columna actual de A
+			DJNZ A_DIR, DAC_LI
+DAC_RET:	RET
+
+; ---------------------------- DESPLAZAMIENTO PARA FILAS DE B ----------------------------
+
+DESP_B_R: 	MOV A, B_ROW
 			JZ DBR_RET
 DBR_LI1:	MOV B, R5
-DBR_LI2:	INC DPTR
-			DJNZ 0F0H, DBR_LI2
-			DJNZ 0E0H, DBR_LI1
-DBR_RET:	POP 0F0H
-			POP 0E0H
-			RET
-; ---------------------------------------------------------------------------------------
+DBR_LI2:	INC DPTR				; Incrementar hasta encontrar fila actual de B
+			DJNZ B_DIR, DBR_LI2
+			DJNZ A_DIR, DBR_LI1
+DBR_RET:	RET
+
+; --------------------------- DESPLAZAMIENTO PARA COLUMNAS DE B ---------------------------
+
+DESP_B_C: 	MOV DPTR, #INICIO_B	
+			MOV A, B_COL
+			JZ DBC_RET
+DBC_LI:		INC DPTR				; Incrementar hasta encontrar columna actual de B
+			DJNZ A_DIR, DBC_LI
+DBC_RET:	RET
+
+; -------------------------- ANEXO DE SUMA EN MATRIZ RESULTANTE --------------------------
+
 DESP_RES:	MOV DPTR, #INICIO_RES
-			PUSH 0F0H
-			PUSH 0E0H
-			MOV A, 22H
+			PUSH A_DIR				; Guardar multiplicación
+			MOV A, RES_POS
 			JZ DESP_RET
-DESP_LI:	INC DPTR
-			DJNZ 0E0H, DESP_LI
+DESP_LI:	INC DPTR				; Incrementar hasta encontrar posición actual de resultante
+			DJNZ A_DIR, DESP_LI
 DESP_RET:	MOVX A, @DPTR
-			MOV B, A
-			POP 0E0H
-			ADD A, B
+			MOV B, A				; Guardar valor actual en resultante
+			POP A_DIR
+			ADD A, B				; Multiplicación + valor actual
 			MOVX @DPTR, A
-			POP 0F0H
 			RET
 ; ---------------------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/26/2022 21:25:14 PAGE     1
+A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/27/2022 19:52:25 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -38,149 +38,152 @@ LOC  OBJ            LINE     SOURCE
   2000                28                             INICIO_A   EQU 2000H
   3000                29                             INICIO_B   EQU 3000H
   5000                30                             INICIO_RES EQU 5000H
-                      31     
-0000                  32                             ORG 0000H
-0000 8040             33                             SJMP MAIN
-0040                  34                             ORG 0040H
-                      35     
-0040 80FE             36     FIN:            SJMP $
-                      37     
-                      38     ; Almacenamiento: R2 = A_Row; R3 = A_Col; R4 = B_Row; R5 = B_Col
-0042 7802             39     MAIN:           MOV R0, #2H                             ; Apuntador a registros
-0044 75F004           40                             MOV B, #4H                              ; Cantidad de variables
-0047 901000           41                             MOV DPTR, #INICIO_DIM
-004A E0               42     CICLO_RD:       MOVX A, @DPTR                   ; Ciclo de lectura de dimensiones
-004B 60F3             43                             JZ FIN                                  ; Terminar programa si algú
+                      31                                     
+  0020                32                             A_ROW      EQU 20H
+  0021                33                             A_COL      EQU 21H
+  0022                34                             B_ROW      EQU 22H
+  0023                35                             B_COL      EQU 23H
+  0024                36                             RES_POS    EQU 24H
+                      37                                     
+  00E0                38                             A_DIR      EQU 0E0H
+  00F0                39                             B_DIR      EQU 0F0H
+                      40     
+0000                  41                             ORG 0000H
+0000 803E             42                             SJMP MAIN
+0040                  43                             ORG 0040H
+                      44     
+                      45     ; Almacenamiento: R2 = A_Row; R3 = A_Col; R4 = B_Row; R5 = B_Col
+0040 7802             46     MAIN:           MOV R0, #2H                             ; Apuntador a registros
+0042 75F004           47                             MOV B, #4H                              ; Cantidad de variables
+0045 901000           48                             MOV DPTR, #INICIO_DIM
+0048 E0               49     CICLO_RD:       MOVX A, @DPTR                   ; Ciclo de lectura de dimensiones
+0049 604B             50                             JZ FIN                                  ; Terminar programa si algú
                              n dato == 0
-004D F6               44                             MOV @R0, A
-004E A3               45                             INC DPTR
-004F 08               46                             INC R0
-0050 D5F0F7           47                             DJNZ B, CICLO_RD
-                      48     
-0053 EB               49                             MOV A, R3                               ; Comprobación de dimension
+004B F6               51                             MOV @R0, A
+004C A3               52                             INC DPTR
+004D 08               53                             INC R0
+004E D5F0F7           54                             DJNZ B, CICLO_RD
+                      55     
+0051 EB               56                             MOV A, R3                               ; Comprobación de dimension
+A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/27/2022 19:52:25 PAGE     2
+
                              es (A_Col == B_Row)
-0054 9C               50                             SUBB A, R4                              ; Resta para comprobar igua
+0052 9C               57                             SUBB A, R4                              ; Resta para comprobar igua
                              ldad
-0055 70E9             51                             JNZ FIN                                 ; Terminar programa en caso
+0053 7041             58                             JNZ FIN                                 ; Terminar programa en caso
                               contrario
-                      52     
-0057 EA               53     CALCUL0:        MOV A, R2
-A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/26/2022 21:25:14 PAGE     2
+                      59     
+0055 752000           60     CALCUL0:        MOV A_ROW, #0
+0058 752100           61                             MOV A_COL, #0
+005B 752200           62                             MOV B_ROW, #0
+005E 752300           63                             MOV B_COL, #0
+0061 752400           64                             MOV RES_POS, #0
+                      65     
+0064 752300           66     L1:                     MOV B_COL, #0                   ; Resetear columnas de B
+0067 752100           67     L2:                     MOV A_COL, #0                   ; Resetear columnas de A
+006A 1198             68     L3:                     ACALL DESP_A_R                  ; Desplazamiento de filas para A
+006C 11A7             69                             ACALL DESP_A_C                  ; Desplazamiento de columnas para A
+006E E0               70                             MOVX A, @DPTR
+006F C0E0             71                             PUSH A_DIR                              ; Guardar A[A_ROW][A_COL]
+                      72                             
+0071 11BE             73                             ACALL DESP_B_C                  ; Desplazamiento de columnas para B
+0073 11B0             74                             ACALL DESP_B_R                  ; Desplazamiento de filas para B
+0075 E0               75                             MOVX A, @DPTR
+0076 F5F0             76                             MOV B, A                                ; Guardar B[B_ROW][B_COL]
+0078 D0E0             77                             POP A_DIR
+007A A4               78                             MUL AB
+                      79                             
+007B 11CA             80                             ACALL DESP_RES                  ; Almacenar resultado en matriz res
+                             ultante (Valor anterior + nuevo valor calculado)
+                      81                             
+007D 0521             82                             INC A_COL                               ; A[A_ROW][A_COL + 1]
+007F 0522             83                             INC B_ROW                               ; B[B_ROW + 1][B_COL]
+0081 EB               84                             MOV A, R3
+0082 B521E5           85                             CJNE A, A_COL, L3               ; Verificar si no se ha llegado al 
+                             fin de columnas actuales de A para fila correspondiente
+0085 752200           86                             MOV B_ROW, #0                   ; Resetear a B[0][0]
+                      87                             
+0088 0524             88                             INC RES_POS                             ; Pasar a siguiente posició
+                             n en matriz resultante
+008A 0523             89                             INC B_COL                               ; B[B_ROW][B_COL + 1]
+008C ED               90                             MOV A, R5
+008D B523D7           91                             CJNE A, B_COL, L2               ; Verificar si no se ha llegado al 
+                             fin de columnas totales de B
+                      92                             
+0090 0520             93                             INC A_ROW                               ; A[A_ROW + 1][A_COL]
+0092 EA               94                             MOV A, R2
+0093 B520CE           95                             CJNE A, A_ROW, L1               ; Verificar si no se ha llegado al 
+                             fin de filas totales de A
+                      96                             
+0096 80FE             97     FIN:            SJMP $
+                      98             
+                      99             
+                     100     ; ---------------------------- DESPLAZAMIENTO PARA FILAS DE A ----------------------------
+                     101     
+0098 902000          102     DESP_A_R:       MOV DPTR, #INICIO_A
+009B E520            103                             MOV A, A_ROW
+009D 8BF0            104                             MOV B, R3
+009F A4              105                             MUL AB
+00A0 6004            106                             JZ DAR_RET
+00A2 A3              107     DAR_LI:         INC DPTR                                ; Incrementar hasta encontrar fila 
+                             actual de A
+00A3 D5E0FC          108                             DJNZ A_DIR, DAR_LI
+00A6 22              109     DAR_RET:        RET                     
+                     110     
+                     111     ; --------------------------- DESPLAZAMIENTO PARA COLUMNAS DE A ---------------------------
+                     112     
+00A7 E521            113     DESP_A_C:       MOV A, A_COL
+A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/27/2022 19:52:25 PAGE     3
 
-0058 8DF0             54                             MOV B, R5
-005A A4               55                             MUL AB
-005B FE               56                             MOV R6, A                               ; Longitud de matriz result
-                             ante (A_Row x B_Col) == Cantidad de ciclo externo
-                      57                     
-005C 752000           58                             MOV 20H, #0                             ; Variable para iteraciones
-                              de matriz A (selección de filas)
-005F 752100           59                             MOV 21H, #0                             ; Variable para iteraciones
-                              de matriz B (selección de filas)
-0062 752200           60                             MOV 22H, #0                             ; Variable para iteraciones
-                              de matriz de resultado                      
-0065 752300           61                             MOV 23H, #0                             ; Variable para iteraciones
-                              de matriz A (selección de columnas)
-0068 752400           62                             MOV 24H, #0                             ; Variable para iteraciones
-                              de matriz B (selección de columnas)
-                      63                     
-006B 11A1             64     L1:                     ACALL DESP_A_R                  ; Ajuste de filas para A
-006D 752400           65     L2:                     MOV 24H, #0
-0070 752300           66     L3:                     MOV 23H, #0
-0073 11A1             67     L4:                     ACALL DESP_A_R
-0075 11B8             68                             ACALL DESP_A_C                  ; Ajuste de columnas para A
-0077 E0               69                             MOVX A, @DPTR
-0078 C0E0             70                             PUSH 0E0H       
-007A 11C5             71                             ACALL DESP_B_C                  ; Ajuste columnas para B
-007C 11D5             72                             ACALL DESP_B_R                  ; Ajuste filas para B
-007E E0               73                             MOVX A, @DPTR
-007F F5F0             74                             MOV B, A
-0081 D0E0             75                             POP 0E0H
-0083 A4               76                             MUL AB
-0084 11EB             77                             ACALL DESP_RES                  ; Almacenar resultado en matriz res
-                             ultante
-                      78                             
-0086 0521             79                             INC 21H
-0088 0523             80                             INC 23H
-008A EB               81                             MOV A, R3
-008B B523E5           82                             CJNE A, 23H, L4
-008E 752100           83                             MOV 21H, #0
-                      84                             
-0091 0522             85                             INC 22H
-0093 0524             86                             INC 24H
-0095 ED               87                             MOV A, R5
-0096 B524D7           88                             CJNE A, 24H, L3
-                      89                             
-0099 0520             90                             INC 20H
-009B EA               91                             MOV A, R2
-009C B520CE           92                             CJNE A, 20H, L2
-                      93                             
-009F 809F             94                             SJMP FIN
-                      95     
-                      96     ; ---------------------------------------------------------------------------------------
-00A1 902000           97     DESP_A_R:       MOV DPTR, #INICIO_A
-00A4 C0E0             98                             PUSH 0E0H
-00A6 C0F0             99                             PUSH 0F0H
-00A8 E520            100                             MOV A, 20H
-00AA 8BF0            101                             MOV B, R3
-00AC A4              102                             MUL AB
-00AD 6004            103                             JZ DAR_RET
-00AF A3              104     DAR_LI:         INC DPTR
-00B0 D5E0FC          105                             DJNZ 0E0H, DAR_LI
-00B3 D0F0            106     DAR_RET:        POP 0F0H
-00B5 D0E0            107                             POP 0E0H
-00B7 22              108                             RET                     
-                     109     ; ---------------------------------------------------------------------------------------
-00B8 C0E0            110     DESP_A_C:       PUSH 0E0H
-00BA E523            111                             MOV A, 23H
-00BC 6004            112                             JZ DAC_RET
-A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/26/2022 21:25:14 PAGE     3
-
-00BE A3              113     DAC_LI:         INC DPTR
-00BF D5E0FC          114                             DJNZ 0E0H, DAC_LI
-00C2 D0E0            115     DAC_RET:        POP 0E0H
-00C4 22              116                             RET                                     
-                     117     ; ---------------------------------------------------------------------------------------  
-                                                  
-00C5 903000          118     DESP_B_C:       MOV DPTR, #INICIO_B     
-00C8 C0E0            119                             PUSH 0E0H
-00CA E524            120                             MOV A, 24H
-00CC 6004            121                             JZ DBC_RET
-00CE A3              122     DBC_LI:         INC DPTR
-00CF D5E0FC          123                             DJNZ 0E0H, DBC_LI
-00D2 D0E0            124     DBC_RET:        POP 0E0H
-00D4 22              125                             RET
-                     126     ; ---------------------------------------------------------------------------------------
-00D5 C0E0            127     DESP_B_R:       PUSH 0E0H
-00D7 C0F0            128                             PUSH 0F0H
-00D9 E521            129                             MOV A, 21H
-00DB 6009            130                             JZ DBR_RET
-00DD 8DF0            131     DBR_LI1:        MOV B, R5
-00DF A3              132     DBR_LI2:        INC DPTR
-00E0 D5F0FC          133                             DJNZ 0F0H, DBR_LI2
-00E3 D5E0F7          134                             DJNZ 0E0H, DBR_LI1
-00E6 D0F0            135     DBR_RET:        POP 0F0H
-00E8 D0E0            136                             POP 0E0H
-00EA 22              137                             RET
-                     138     ; ---------------------------------------------------------------------------------------
-00EB 905000          139     DESP_RES:       MOV DPTR, #INICIO_RES
-00EE C0F0            140                             PUSH 0F0H
-00F0 C0E0            141                             PUSH 0E0H
-00F2 E522            142                             MOV A, 22H
-00F4 6004            143                             JZ DESP_RET
-00F6 A3              144     DESP_LI:        INC DPTR
-00F7 D5E0FC          145                             DJNZ 0E0H, DESP_LI
-00FA E0              146     DESP_RET:       MOVX A, @DPTR
-00FB F5F0            147                             MOV B, A
-00FD D0E0            148                             POP 0E0H
-00FF 25F0            149                             ADD A, B
-0101 F0              150                             MOVX @DPTR, A
-0102 D0F0            151                             POP 0F0H
-0104 22              152                             RET
-                     153     ; ---------------------------------------------------------------------------------------
-                     154     
-                     155                             END
+00A9 6004            114                             JZ DAC_RET
+00AB A3              115     DAC_LI:         INC DPTR                                ; Incrementar hasta encontrar colum
+                             na actual de A
+00AC D5E0FC          116                             DJNZ A_DIR, DAC_LI
+00AF 22              117     DAC_RET:        RET
+                     118     
+                     119     ; ---------------------------- DESPLAZAMIENTO PARA FILAS DE B ----------------------------
+                     120     
+00B0 E522            121     DESP_B_R:       MOV A, B_ROW
+00B2 6009            122                             JZ DBR_RET
+00B4 8DF0            123     DBR_LI1:        MOV B, R5
+00B6 A3              124     DBR_LI2:        INC DPTR                                ; Incrementar hasta encontrar fila 
+                             actual de B
+00B7 D5F0FC          125                             DJNZ B_DIR, DBR_LI2
+00BA D5E0F7          126                             DJNZ A_DIR, DBR_LI1
+00BD 22              127     DBR_RET:        RET
+                     128     
+                     129     ; --------------------------- DESPLAZAMIENTO PARA COLUMNAS DE B ---------------------------
+                     130     
+00BE 903000          131     DESP_B_C:       MOV DPTR, #INICIO_B     
+00C1 E523            132                             MOV A, B_COL
+00C3 6004            133                             JZ DBC_RET
+00C5 A3              134     DBC_LI:         INC DPTR                                ; Incrementar hasta encontrar colum
+                             na actual de B
+00C6 D5E0FC          135                             DJNZ A_DIR, DBC_LI
+00C9 22              136     DBC_RET:        RET
+                     137     
+                     138     ; -------------------------- ANEXO DE SUMA EN MATRIZ RESULTANTE --------------------------
+                     139     
+00CA 905000          140     DESP_RES:       MOV DPTR, #INICIO_RES
+00CD C0E0            141                             PUSH A_DIR                              ; Guardar multiplicación
+00CF E524            142                             MOV A, RES_POS
+00D1 6004            143                             JZ DESP_RET
+00D3 A3              144     DESP_LI:        INC DPTR                                ; Incrementar hasta encontrar posic
+                             ión actual de resultante
+00D4 D5E0FC          145                             DJNZ A_DIR, DESP_LI
+00D7 E0              146     DESP_RET:       MOVX A, @DPTR
+00D8 F5F0            147                             MOV B, A                                ; Guardar valor actual en r
+                             esultante
+00DA D0E0            148                             POP A_DIR
+00DC 25F0            149                             ADD A, B                                ; Multiplicación + valor ac
+                             tual
+00DE F0              150                             MOVX @DPTR, A
+00DF 22              151                             RET
+                     152     ; ---------------------------------------------------------------------------------------
+                     153     
+                     154                             END
                                                      
-A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/26/2022 21:25:14 PAGE     4
+A51 MACRO ASSEMBLER  PR_CTICA_3                                                           06/27/2022 19:52:25 PAGE     4
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -188,35 +191,41 @@ SYMBOL TABLE LISTING
 
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
+A_COL. . . . . . .  N NUMB   0021H   A   
+A_DIR. . . . . . .  N NUMB   00E0H   A   
+A_ROW. . . . . . .  N NUMB   0020H   A   
 B. . . . . . . . .  D ADDR   00F0H   A   
-CALCUL0. . . . . .  C ADDR   0057H   A   
-CICLO_RD . . . . .  C ADDR   004AH   A   
-DAC_LI . . . . . .  C ADDR   00BEH   A   
-DAC_RET. . . . . .  C ADDR   00C2H   A   
-DAR_LI . . . . . .  C ADDR   00AFH   A   
-DAR_RET. . . . . .  C ADDR   00B3H   A   
-DBC_LI . . . . . .  C ADDR   00CEH   A   
-DBC_RET. . . . . .  C ADDR   00D2H   A   
-DBR_LI1. . . . . .  C ADDR   00DDH   A   
-DBR_LI2. . . . . .  C ADDR   00DFH   A   
-DBR_RET. . . . . .  C ADDR   00E6H   A   
-DESP_A_C . . . . .  C ADDR   00B8H   A   
-DESP_A_R . . . . .  C ADDR   00A1H   A   
-DESP_B_C . . . . .  C ADDR   00C5H   A   
-DESP_B_R . . . . .  C ADDR   00D5H   A   
-DESP_LI. . . . . .  C ADDR   00F6H   A   
-DESP_RES . . . . .  C ADDR   00EBH   A   
-DESP_RET . . . . .  C ADDR   00FAH   A   
-FIN. . . . . . . .  C ADDR   0040H   A   
+B_COL. . . . . . .  N NUMB   0023H   A   
+B_DIR. . . . . . .  N NUMB   00F0H   A   
+B_ROW. . . . . . .  N NUMB   0022H   A   
+CALCUL0. . . . . .  C ADDR   0055H   A   
+CICLO_RD . . . . .  C ADDR   0048H   A   
+DAC_LI . . . . . .  C ADDR   00ABH   A   
+DAC_RET. . . . . .  C ADDR   00AFH   A   
+DAR_LI . . . . . .  C ADDR   00A2H   A   
+DAR_RET. . . . . .  C ADDR   00A6H   A   
+DBC_LI . . . . . .  C ADDR   00C5H   A   
+DBC_RET. . . . . .  C ADDR   00C9H   A   
+DBR_LI1. . . . . .  C ADDR   00B4H   A   
+DBR_LI2. . . . . .  C ADDR   00B6H   A   
+DBR_RET. . . . . .  C ADDR   00BDH   A   
+DESP_A_C . . . . .  C ADDR   00A7H   A   
+DESP_A_R . . . . .  C ADDR   0098H   A   
+DESP_B_C . . . . .  C ADDR   00BEH   A   
+DESP_B_R . . . . .  C ADDR   00B0H   A   
+DESP_LI. . . . . .  C ADDR   00D3H   A   
+DESP_RES . . . . .  C ADDR   00CAH   A   
+DESP_RET . . . . .  C ADDR   00D7H   A   
+FIN. . . . . . . .  C ADDR   0096H   A   
 INICIO_A . . . . .  N NUMB   2000H   A   
 INICIO_B . . . . .  N NUMB   3000H   A   
 INICIO_DIM . . . .  N NUMB   1000H   A   
 INICIO_RES . . . .  N NUMB   5000H   A   
-L1 . . . . . . . .  C ADDR   006BH   A   
-L2 . . . . . . . .  C ADDR   006DH   A   
-L3 . . . . . . . .  C ADDR   0070H   A   
-L4 . . . . . . . .  C ADDR   0073H   A   
-MAIN . . . . . . .  C ADDR   0042H   A   
+L1 . . . . . . . .  C ADDR   0064H   A   
+L2 . . . . . . . .  C ADDR   0067H   A   
+L3 . . . . . . . .  C ADDR   006AH   A   
+MAIN . . . . . . .  C ADDR   0040H   A   
+RES_POS. . . . . .  N NUMB   0024H   A   
 
 
 REGISTER BANK(S) USED: 0 

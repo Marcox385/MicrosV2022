@@ -1,0 +1,464 @@
+A51 MACRO ASSEMBLER  P_REPE                                                               06/28/2022 13:07:52 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\P_REPE.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE P_REPE.asm SET(SMALL) DEBUG PRINT(.\Listings\P_REPE.lst) OBJECT(.\Objec
+                      ts\P_REPE.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1             
+                       2     
+  0050                 3             SECONDS_UNITS EQU 50H  
+  0051                 4             SECONDS_DEC EQU 51H  
+  0052                 5             MINUTES_UNITS EQU 52H  
+  0053                 6             MINUTES_DEC EQU 53H  
+  0054                 7             HOURS_UNITS EQU 54H  
+  0055                 8             HOURS_DEC EQU 55H  
+                       9                     
+                      10             
+  0060                11             SECONDS_ALARM_UNITS EQU 60H  
+  0061                12             SECONDS_ALARM_DEC EQU 61H  
+  0062                13             MINUTES_ALARM_UNITS EQU 62H  
+  0063                14             MINUTES_ALARM_DEC EQU 63H  
+  0064                15             HOURS_ALARM_UNITS EQU 64H  
+  0065                16             HOURS_ALARM_DEC EQU 65H  
+                      17             
+                      18     
+                      19             
+0000                  20             ORG 0000H
+0000 803E             21             JMP START  
+                      22     
+                      23             
+                      24     
+000B                  25             ORG 000BH  
+000B 01A6             26             JMP COUNT_SEC
+                      27     
+001B                  28             ORG 001BH  
+001B 216E             29             JMP MULTIPLEX
+                      30     
+                      31             
+0040                  32             ORG 0040H
+0040                  33     START:
+0040 900400           34             MOV DPTR, #0400H 
+0043 75A0FF           35             MOV P2, #0FFH  
+0046 75A88A           36             MOV IE, #10001010B 
+0049 7814             37             MOV R0, #014H 
+                      38             
+                      39             
+                      40             
+004B 755000           41             MOV SECONDS_UNITS, #00D
+004E 755100           42             MOV SECONDS_DEC, #00D
+0051 755200           43             MOV MINUTES_UNITS, #00D
+0054 755300           44             MOV MINUTES_DEC, #00D
+0057 755402           45             MOV HOURS_UNITS, #02D
+005A 755501           46             MOV HOURS_DEC, #01D
+                      47             
+                      48             
+                      49             
+005D 756000           50             MOV SECONDS_ALARM_UNITS, #00D  
+0060 756100           51             MOV SECONDS_ALARM_DEC, #00D  
+0063 756200           52             MOV MINUTES_ALARM_UNITS, #00D
+0066 756300           53             MOV MINUTES_ALARM_DEC, #00D
+0069 756400           54             MOV HOURS_ALARM_UNITS, #00D
+006C 756500           55             MOV HOURS_ALARM_DEC, #00D
+                      56             
+                      57             
+A51 MACRO ASSEMBLER  P_REPE                                                               06/28/2022 13:07:52 PAGE     2
+
+                      58             
+006F 758911           59             MOV TMOD, #11H  
+                      60             
+0072 758C3C           61             MOV TH0, #03CH  
+0075 758AB0           62             MOV TL0, #0B0H
+0078 758DFC           63             MOV TH1, #0FCH  
+007B 758B18           64             MOV TL1, #018H
+007E D28C             65             SETB TR0  
+0080 D28E             66             SETB TR1
+                      67             
+                      68             
+0082 7E06             69             MOV R6, #06H  
+0084 7F06             70             MOV R7, #06H  
+                      71             
+                      72             
+0086 D2B2             73             SETB P3.2  
+0088 D2B3             74             SETB P3.3  
+                      75             
+                      76             
+008A                  77     MAIN:
+                      78     
+008A                  79     CHECK_ALARM:
+                      80             
+008A E552             81             MOV A, MINUTES_UNITS
+008C B56213           82             CJNE A, MINUTES_ALARM_UNITS, SHUT_DOWN 
+008F E553             83             MOV A, MINUTES_DEC
+0091 B5630E           84             CJNE A, MINUTES_ALARM_DEC, SHUT_DOWN 
+0094 E554             85             MOV A, HOURS_UNITS
+0096 B56409           86             CJNE A, HOURS_ALARM_UNITS, SHUT_DOWN 
+0099 E555             87             MOV A, HOURS_DEC
+009B B56504           88             CJNE A, HOURS_ALARM_DEC, SHUT_DOWN 
+                      89             
+009E C280             90             CLR P0.0 
+00A0 8002             91             JMP AGAIN  
+                      92     
+00A2 D280             93     SHUT_DOWN:SETB P0.0 
+                      94     
+00A4                  95     AGAIN:
+00A4 80E4             96             JMP MAIN  
+                      97     
+00A6                  98     COUNT_SEC:
+                      99             
+                     100             
+00A6 C28C            101             CLR TR0
+00A8 758C3C          102             MOV TH0, #03CH  
+00AB 758AB0          103             MOV TL0, #0B0H
+00AE D28C            104             SETB TR0
+00B0 D804            105             DJNZ R0, INTER_T0  
+00B2 8037            106             SJMP INC_SEC  
+                     107     
+00B4 7814            108     FIN_SEG:MOV R0, #14H  
+                     109     
+00B6 32              110     INTER_T0:RETI  
+                     111             
+                     112             
+                     113     
+                     114     
+                     115     
+                     116             
+00B7                 117     SUM_MIN_ALARM:
+00B7 0562            118             INC MINUTES_ALARM_UNITS  
+00B9 E562            119             MOV A,MINUTES_ALARM_UNITS  
+00BB B40A36          120             CJNE A, #10D, CONT_INTER  
+00BE 756200          121             MOV MINUTES_ALARM_UNITS, #00D  
+00C1 0563            122             INC MINUTES_ALARM_DEC  
+00C3 E563            123             MOV A,MINUTES_ALARM_DEC
+A51 MACRO ASSEMBLER  P_REPE                                                               06/28/2022 13:07:52 PAGE     3
+
+00C5 B4062C          124             CJNE A, #06D, CONT_INTER
+00C8 756300          125             MOV MINUTES_ALARM_DEC, #00D
+00CB 0564            126             INC HOURS_ALARM_UNITS  
+00CD E564            127             MOV A,HOURS_ALARM_UNITS
+00CF B4040D          128             CJNE A, #04D, CHECK_HOUR3  
+00D2 E565            129             MOV A,HOURS_ALARM_DEC  
+00D4 B40208          130             CJNE A,#02D, CHECK_HOUR3
+00D7 756400          131             MOV HOURS_ALARM_UNITS, #00D
+00DA 756500          132             MOV HOURS_ALARM_DEC, #00D  
+00DD 8015            133             JMP CONT_INTER 
+                     134     
+00DF                 135     CHECK_HOUR3:
+00DF E564            136             MOV A,HOURS_ALARM_UNITS
+00E1 B40A10          137             CJNE A, #10D,CONT_INTER  
+00E4 756400          138             MOV HOURS_ALARM_UNITS, #00D  
+00E7 0565            139             INC HOURS_ALARM_DEC
+00E9 8009            140             JMP CONT_INTER  
+                     141             
+                     142     
+00EB                 143     INC_SEC:
+                     144             
+00EB 20B206          145             JB P3.2, CONT_INTER 
+00EE 30B349          146             JNB P3.3,SUM_MIN 
+00F1 20B3C3          147             JB P3.3, SUM_MIN_ALARM 
+                     148     
+00F4                 149     CONT_INTER:
+                     150             
+00F4 0550            151             INC SECONDS_UNITS  
+00F6 E550            152             MOV A, SECONDS_UNITS
+00F8 B40AB9          153             CJNE A, #10D, FIN_SEG 
+00FB 755000          154             MOV SECONDS_UNITS, #00D
+                     155             
+00FE 0551            156             INC SECONDS_DEC
+0100 E551            157             MOV A,SECONDS_DEC
+0102 B406AF          158             CJNE A, #06D, FIN_SEG
+0105 755100          159             MOV SECONDS_DEC, #00D
+0108 0552            160             INC MINUTES_UNITS
+010A E552            161             MOV A,MINUTES_UNITS
+010C B40AA5          162             CJNE A, #10D, FIN_SEG
+010F 755200          163             MOV MINUTES_UNITS, #00D
+0112 0553            164             INC MINUTES_DEC
+0114 E553            165             MOV A,MINUTES_DEC
+0116 B4069B          166             CJNE A, #06D, FIN_SEG
+0119 755300          167             MOV MINUTES_DEC, #00D
+011C 0554            168             INC HOURS_UNITS
+011E E554            169             MOV A,HOURS_UNITS
+0120 B4040B          170             CJNE A, #04D, CHECK_HOUR
+0123 E555            171             MOV A,HOURS_DEC
+0125 B40206          172             CJNE A,#02D, CHECK_HOUR
+0128 755400          173             MOV HOURS_UNITS, #00D
+012B 755500          174             MOV HOURS_DEC, #00D
+                     175     
+012E                 176     CHECK_HOUR:
+012E E554            177             MOV A,HOURS_UNITS
+0130 B40A81          178             CJNE A, #10D,FIN_SEG
+0133 755400          179             MOV HOURS_UNITS, #00D
+0136 0555            180             INC HOURS_DEC
+0138 01B4            181             JMP FIN_SEG
+                     182             
+                     183     
+013A                 184     SUM_MIN:
+013A 0552            185             INC MINUTES_UNITS
+013C E552            186             MOV A,MINUTES_UNITS
+013E B40AB3          187             CJNE A, #10D, CONT_INTER
+0141 755200          188             MOV MINUTES_UNITS, #00D
+0144 0553            189             INC MINUTES_DEC
+A51 MACRO ASSEMBLER  P_REPE                                                               06/28/2022 13:07:52 PAGE     4
+
+0146 E553            190             MOV A,MINUTES_DEC
+0148 B406A9          191             CJNE A, #06D, CONT_INTER
+014B 755300          192             MOV MINUTES_DEC, #00D
+014E 0554            193             INC HOURS_UNITS
+0150 E554            194             MOV A,HOURS_UNITS
+0152 B4040D          195             CJNE A, #04D, CHECK_HOUR2
+0155 E555            196             MOV A,HOURS_DEC
+0157 B40208          197             CJNE A,#02D, CHECK_HOUR2
+015A 755400          198             MOV HOURS_UNITS, #00D
+015D 756500          199             MOV HOURS_ALARM_DEC, #00D
+0160 8092            200             SJMP CONT_INTER
+                     201     
+0162                 202     CHECK_HOUR2:
+0162 E554            203             MOV A,HOURS_UNITS
+0164 B40A8D          204             CJNE A, #10D,CONT_INTER
+0167 755400          205             MOV HOURS_UNITS, #00D
+016A 0555            206             INC HOURS_DEC
+016C 8086            207             SJMP CONT_INTER
+                     208             
+                     209     
+016E                 210     MULTIPLEX:
+                     211             
+016E C28E            212             CLR TR1
+0170 758DFC          213             MOV TH1, #0FCH
+0173 758B18          214             MOV TL1, #018H
+0176 D28E            215             SETB TR1 
+                     216             
+0178 30B312          217             JNB P3.3,DIGIT1  
+                     218             
+                     219             
+                     220             
+                     221     
+017B                 222     DIGIT1_2:
+017B C281            223             CLR P0.1  
+017D BF0622          224             CJNE R7, #06H,DIGIT2_2  
+0180 75A000          225             MOV P2, #00H  
+0183 E560            226             MOV A, SECONDS_ALARM_UNITS   
+0185 93              227             MOVC A, @A+DPTR  
+0186 F590            228             MOV P1, A  
+0188 75A001          229             MOV P2, #01H  
+018B 4167            230             JMP UPDATE2  
+                     231             
+                     232     
+018D D281            233     DIGIT1: SETB P0.1  
+018F BE0622          234             CJNE R6, #06H, DIGIT2  
+0192 75A000          235             MOV P2, #00H
+0195 E550            236             MOV A, SECONDS_UNITS
+0197 93              237             MOVC A, @A+DPTR
+0198 F590            238             MOV P1, A
+019A 75A001          239             MOV P2, #01H
+019D 4164            240             JMP UPDATE  
+                     241             
+                     242             
+                     243             
+019F 30B312          244             JNB P3.3,DIGIT2
+                     245             
+01A2                 246     DIGIT2_2:
+01A2 C281            247             CLR P0.1 
+01A4 BF0522          248             CJNE R7, #05H,DIGIT3_2 
+01A7 75A000          249             MOV P2, #00H 
+01AA E561            250             MOV A, SECONDS_ALARM_DEC 
+01AC 93              251             MOVC A, @A+DPTR 
+01AD F590            252             MOV P1, A 
+01AF 75A002          253             MOV P2, #02H 
+01B2 4167            254             JMP UPDATE2 
+                     255     
+A51 MACRO ASSEMBLER  P_REPE                                                               06/28/2022 13:07:52 PAGE     5
+
+                     256     
+01B4 D281            257     DIGIT2: SETB P0.1
+01B6 BE0522          258             CJNE R6, #05H, DIGIT3 
+01B9 75A000          259             MOV P2, #00H
+01BC E551            260             MOV A, SECONDS_DEC
+01BE 93              261             MOVC A, @A+DPTR
+01BF F590            262             MOV P1, A
+01C1 75A002          263             MOV P2, #02H
+01C4 4164            264             JMP UPDATE
+01C6 30B312          265             JNB P3.3,DIGIT3
+                     266     
+01C9                 267     DIGIT3_2:
+01C9 C281            268             CLR P0.1
+01CB BF0422          269             CJNE R7, #04H,DIGIT4_2 
+01CE 75A000          270             MOV P2, #00H 
+01D1 E562            271             MOV A, MINUTES_ALARM_UNITS 
+01D3 93              272             MOVC A, @A+DPTR 
+01D4 F590            273             MOV P1, A 
+01D6 75A004          274             MOV P2, #04H 
+01D9 4167            275             JMP UPDATE2
+                     276             
+                     277     
+01DB D281            278     DIGIT3: SETB P0.1
+01DD BE0422          279             CJNE R6, #04H, DIGIT4 
+01E0 75A000          280             MOV P2, #00H
+01E3 E552            281             MOV A, MINUTES_UNITS
+01E5 93              282             MOVC A, @A+DPTR
+01E6 F590            283             MOV P1, A
+01E8 75A004          284             MOV P2, #04H
+01EB 8077            285             SJMP UPDATE 
+01ED 30B312          286             JNB P3.3,DIGIT4
+                     287     
+01F0                 288     DIGIT4_2:
+01F0 C281            289             CLR P0.1
+01F2 BF0322          290             CJNE R7, #03H,DIGIT5_2
+01F5 75A000          291             MOV P2, #00H
+01F8 E563            292             MOV A, MINUTES_ALARM_DEC
+01FA 93              293             MOVC A, @A+DPTR
+01FB F590            294             MOV P1, A
+01FD 75A008          295             MOV P2, #08H
+0200 8065            296             SJMP UPDATE2
+                     297     
+0202 D281            298     DIGIT4: SETB P0.1
+0204 BE0322          299             CJNE R6, #03H, DIGIT5
+0207 75A000          300             MOV P2, #00H
+020A E553            301             MOV A, MINUTES_DEC
+020C 93              302             MOVC A, @A+DPTR
+020D F590            303             MOV P1, A
+020F 75A008          304             MOV P2, #08H
+0212 8050            305             SJMP UPDATE
+                     306             
+0214 30B312          307             JNB P3.3,DIGIT5
+                     308     
+0217                 309     DIGIT5_2:
+0217 C281            310             CLR P0.1
+0219 BF0222          311             CJNE R7, #02H,DIGIT6_2
+021C 75A000          312             MOV P2, #00H
+021F E564            313             MOV A, HOURS_ALARM_UNITS
+0221 93              314             MOVC A, @A+DPTR
+0222 F590            315             MOV P1, A
+0224 75A010          316             MOV P2, #10H
+0227 803E            317             SJMP UPDATE2
+                     318     
+0229                 319     DIGIT5:
+0229 D281            320             SETB P0.1
+022B BE0224          321             CJNE R6, #02H, DIGIT6
+A51 MACRO ASSEMBLER  P_REPE                                                               06/28/2022 13:07:52 PAGE     6
+
+022E 75A000          322             MOV P2, #00H
+0231 E554            323             MOV A, HOURS_UNITS
+0233 93              324             MOVC A, @A+DPTR
+0234 F590            325             MOV P1, A
+0236 75A010          326             MOV P2, #10H
+0239 8029            327             SJMP UPDATE
+                     328             
+023B 30B314          329             JNB P3.3,DIGIT6
+                     330     
+023E                 331     DIGIT6_2:
+023E C281            332             CLR P0.1
+0240 BF0124          333             CJNE R7, #01H,UPDATE2
+0243 75A000          334             MOV P2, #00H
+0246 E565            335             MOV A, HOURS_ALARM_DEC
+0248 93              336             MOVC A, @A+DPTR
+0249 F590            337             MOV P1, A
+024B 75A020          338             MOV P2, #20H
+024E 7F07            339             MOV R7, #07H  
+0250 8015            340             SJMP UPDATE2  
+                     341     
+0252                 342     DIGIT6:
+0252 D281            343             SETB P0.1
+0254 BE010D          344             CJNE R6, #01H, UPDATE
+0257 75A000          345             MOV P2, #00H
+025A E555            346             MOV A, HOURS_DEC
+025C 93              347             MOVC A, @A+DPTR
+025D F590            348             MOV P1, A 
+025F 75A020          349             MOV P2, #20H
+0262 7E07            350             MOV R6, #07H
+                     351             
+                     352     
+                     353             
+                     354     
+0264 1E              355     UPDATE: DEC R6  
+0265 8001            356             SJMP INT_MUL  
+                     357             
+                     358     
+0267 1F              359     UPDATE2: DEC R7  
+                     360     
+0268 32              361     INT_MUL: RETI  
+0400                 362             ORG 0400H  
+0400 81              363             DB 081H ; 0
+0401 F3              364             DB 0F3H ; 1
+0402 49              365             DB 049H ; 2
+0403 61              366             DB 061H ; 3
+0404 33              367             DB 033H ; 4
+0405 25              368             DB 025H ; 5
+0406 05              369             DB 005H ; 6
+0407 71              370             DB 071H ; 7
+0408 01              371             DB 001H ; 8
+0409 21              372             DB 021H ; 9
+                     373     END
+A51 MACRO ASSEMBLER  P_REPE                                                               06/28/2022 13:07:52 PAGE     7
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E              T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN . . . . . . .  C ADDR   00A4H   A   
+CHECK_ALARM . . . .  C ADDR   008AH   A   
+CHECK_HOUR. . . . .  C ADDR   012EH   A   
+CHECK_HOUR2 . . . .  C ADDR   0162H   A   
+CHECK_HOUR3 . . . .  C ADDR   00DFH   A   
+CONT_INTER. . . . .  C ADDR   00F4H   A   
+COUNT_SEC . . . . .  C ADDR   00A6H   A   
+DIGIT1. . . . . . .  C ADDR   018DH   A   
+DIGIT1_2. . . . . .  C ADDR   017BH   A   
+DIGIT2. . . . . . .  C ADDR   01B4H   A   
+DIGIT2_2. . . . . .  C ADDR   01A2H   A   
+DIGIT3. . . . . . .  C ADDR   01DBH   A   
+DIGIT3_2. . . . . .  C ADDR   01C9H   A   
+DIGIT4. . . . . . .  C ADDR   0202H   A   
+DIGIT4_2. . . . . .  C ADDR   01F0H   A   
+DIGIT5. . . . . . .  C ADDR   0229H   A   
+DIGIT5_2. . . . . .  C ADDR   0217H   A   
+DIGIT6. . . . . . .  C ADDR   0252H   A   
+DIGIT6_2. . . . . .  C ADDR   023EH   A   
+FIN_SEG . . . . . .  C ADDR   00B4H   A   
+HOURS_ALARM_DEC . .  N NUMB   0065H   A   
+HOURS_ALARM_UNITS .  N NUMB   0064H   A   
+HOURS_DEC . . . . .  N NUMB   0055H   A   
+HOURS_UNITS . . . .  N NUMB   0054H   A   
+IE. . . . . . . . .  D ADDR   00A8H   A   
+INC_SEC . . . . . .  C ADDR   00EBH   A   
+INTER_T0. . . . . .  C ADDR   00B6H   A   
+INT_MUL . . . . . .  C ADDR   0268H   A   
+MAIN. . . . . . . .  C ADDR   008AH   A   
+MINUTES_ALARM_DEC .  N NUMB   0063H   A   
+MINUTES_ALARM_UNITS  N NUMB   0062H   A   
+MINUTES_DEC . . . .  N NUMB   0053H   A   
+MINUTES_UNITS . . .  N NUMB   0052H   A   
+MULTIPLEX . . . . .  C ADDR   016EH   A   
+P0. . . . . . . . .  D ADDR   0080H   A   
+P1. . . . . . . . .  D ADDR   0090H   A   
+P2. . . . . . . . .  D ADDR   00A0H   A   
+P3. . . . . . . . .  D ADDR   00B0H   A   
+SECONDS_ALARM_DEC .  N NUMB   0061H   A   
+SECONDS_ALARM_UNITS  N NUMB   0060H   A   
+SECONDS_DEC . . . .  N NUMB   0051H   A   
+SECONDS_UNITS . . .  N NUMB   0050H   A   
+SHUT_DOWN . . . . .  C ADDR   00A2H   A   
+START . . . . . . .  C ADDR   0040H   A   
+SUM_MIN . . . . . .  C ADDR   013AH   A   
+SUM_MIN_ALARM . . .  C ADDR   00B7H   A   
+TH0 . . . . . . . .  D ADDR   008CH   A   
+TH1 . . . . . . . .  D ADDR   008DH   A   
+TL0 . . . . . . . .  D ADDR   008AH   A   
+TL1 . . . . . . . .  D ADDR   008BH   A   
+TMOD. . . . . . . .  D ADDR   0089H   A   
+TR0 . . . . . . . .  B ADDR   0088H.4 A   
+TR1 . . . . . . . .  B ADDR   0088H.6 A   
+UPDATE. . . . . . .  C ADDR   0264H   A   
+UPDATE2 . . . . . .  C ADDR   0267H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
+A51 MACRO ASSEMBLER  P_REPE                                                               06/28/2022 13:07:52 PAGE     8
+

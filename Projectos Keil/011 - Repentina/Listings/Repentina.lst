@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 18:51:17 PAGE     1
+A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 23:30:36 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
                       55                     ; Timer 0 | Segundos
 000B                  56                     ORG 000BH
 000B 01A4             57                     JMP COUNT_SEC
-A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 18:51:17 PAGE     2
+A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 23:30:36 PAGE     2
 
                       58     
                       59                     ; Timer 1 | Multiplexado
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
                      121     
                      122     ; Interrupción T0
 00A4 C28C            123     COUNT_SEC: CLR TR0
-A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 18:51:17 PAGE     3
+A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 23:30:36 PAGE     3
 
 00A6 758C3C          124                     MOV TH0, #HIGH MIL15
 00A9 758A3C          125                     MOV TL0, #HIGH MIL15
@@ -147,67 +147,67 @@ LOC  OBJ            LINE     SOURCE
                      133             
 00B5 0562            134     ALARM_VERIFY: INC MINS0_A
 00B7 E562            135                     MOV A, MINS0_A
-00B9 B40A36          136                     CJNE A, #0AH, ADD_SEG   ; Decenas de segundos
+00B9 B40A36          136                     CJNE A, #0AH, ADD_SEC   ; Decenas de segundos
                      137                     
 00BC 756200          138                     MOV MINS0_A, #0
 00BF 0563            139                     INC MINS1_A
 00C1 E563            140                     MOV A, MINS1_A
-00C3 B4062C          141                     CJNE A, #6H, ADD_SEG    ; Minuto
+00C3 B4062C          141                     CJNE A, #6H, ADD_SEC    ; Minuto
                      142                     
 00C6 756300          143                     MOV MINS1_A, #0
 00C9 0564            144                     INC HORS0_A
 00CB E564            145                     MOV A, HORS0_A
-00CD B4040D          146                     CJNE A, #4H, CHECK_HOUR3 ; Hora
+00CD B4040D          146                     CJNE A, #4H, ADD_HR_A ; Hora
                      147                     
 00D0 E565            148                     MOV A, HORS1_A
-00D2 B40208          149                     CJNE A, #2H, CHECK_HOUR3 ; Día
+00D2 B40208          149                     CJNE A, #2H, ADD_HR_A ; Día
                      150                     
 00D5 756400          151                     MOV HORS0_A, #0
 00D8 756500          152                     MOV HORS1_A, #0
-00DB 8015            153                     SJMP ADD_SEG
+00DB 8015            153                     SJMP ADD_SEC
                      154     
-00DD E564            155     CHECK_HOUR3: MOV A, HORS0_A
-00DF B40A10          156                     CJNE A, #0AH, ADD_SEG
+00DD E564            155     ADD_HR_A: MOV A, HORS0_A
+00DF B40A10          156                     CJNE A, #0AH, ADD_SEC
 00E2 756400          157                     MOV HORS0_A, #0
 00E5 0565            158                     INC HORS1_A
-00E7 8009            159                     SJMP ADD_SEG
+00E7 8009            159                     SJMP ADD_SEC
                      160     
-00E9 20B206          161     INC_SEC: JB P3.2, ADD_SEG
-00EC 30B349          162                     JNB P3.3,ADD_MIN
+00E9 20B206          161     INC_SEC: JB P3.2, ADD_SEC
+00EC 30B349          162                     JNB P3.3, ADD_MIN
 00EF 20B3C3          163                     JB P3.3, ALARM_VERIFY
                      164     
-00F2 0550            165     ADD_SEG: INC SEGS0
+00F2 0550            165     ADD_SEC: INC SEGS0
 00F4 E550            166                     MOV A, SEGS0
 00F6 B40AB9          167                     CJNE A, #0AH, END_SEG   ; Aumentar segundo
 00F9 755000          168                     MOV SEGS0, #0
                      169                     
 00FC 0551            170                     INC SEGS1
-00FE E551            171                     MOV A,SEGS1
+00FE E551            171                     MOV A, SEGS1
 0100 B406AF          172                     CJNE A, #6H, END_SEG    ; Aumentar decena
 0103 755100          173                     MOV SEGS1, #0
                      174                     
 0106 0552            175                     INC MINS0
-0108 E552            176                     MOV A,MINS0
+0108 E552            176                     MOV A, MINS0
 010A B40AA5          177                     CJNE A, #0AH, END_SEG   ; Aumentar minuto
 010D 755200          178                     MOV MINS0, #0
                      179                     
 0110 0553            180                     INC MINS1
-0112 E553            181                     MOV A,MINS1
+0112 E553            181                     MOV A, MINS1
 0114 B40A9B          182                     CJNE A, #0AH, END_SEG   ; Aumentar decena de minuto
 0117 755300          183                     MOV MINS1, #0
                      184                     
 011A 0554            185                     INC HORS0
-011C E554            186                     MOV A,HORS0
-011E B4040B          187                     CJNE A, #04D, CHECK_HOUR ; Aumentar hora
+011C E554            186                     MOV A, HORS0
+011E B4040B          187                     CJNE A, #04D, ADD_HR ; Aumentar hora
                      188                     
-0121 E555            189                     MOV A,HORS1
-A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 18:51:17 PAGE     4
+0121 E555            189                     MOV A, HORS1
+A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 23:30:36 PAGE     4
 
-0123 B40206          190                     CJNE A,#2H, CHECK_HOUR
+0123 B40206          190                     CJNE A, #2H, ADD_HR
 0126 755400          191                     MOV HORS0, #0
 0129 755500          192                     MOV HORS1, #0
                      193     
-012C E554            194     CHECK_HOUR: MOV A,HORS0
+012C E554            194     ADD_HR: MOV A, HORS0
 012E B40A81          195                     CJNE A, #0AH, END_SEG
 0131 755400          196                     MOV HORS0, #0
 0134 0555            197                     INC HORS1
@@ -215,178 +215,182 @@ LOC  OBJ            LINE     SOURCE
                      199     
 0138 0552            200     ADD_MIN: INC MINS0
 013A E552            201                     MOV A,MINS0
-013C B40AB3          202                     CJNE A, #0AH, ADD_SEG
-013F 755200          203                     MOV MINS0, #0
-0142 0553            204                     INC MINS1
-0144 E553            205                     MOV A,MINS1
-0146 B406A9          206                     CJNE A, #6H, ADD_SEG
-0149 755300          207                     MOV MINS1, #0
-014C 0554            208                     INC HORS0
-014E E554            209                     MOV A,HORS0
-0150 B4040D          210                     CJNE A, #4H, CHECK_HOUR2
-0153 E555            211                     MOV A,HORS1
-0155 B40208          212                     CJNE A,#2H, CHECK_HOUR2
-0158 755400          213                     MOV HORS0, #0
-015B 756500          214                     MOV HORS1_A, #0
-015E 8092            215                     SJMP ADD_SEG
-                     216     
-0160 E554            217     CHECK_HOUR2: MOV A,HORS0
-0162 B40A8D          218                     CJNE A, #0AH,ADD_SEG
-0165 755400          219                     MOV HORS0, #0
-0168 0555            220                     INC HORS1
-016A 8086            221                     SJMP ADD_SEG
-                     222     
-                     223     ; ------ MULTIPLEXADO DE DISPLAYS ------
-                     224     
-016C C28E            225     MUX:    CLR TR1
-016E 758DFC          226                     MOV TH1, #HIGH MIL60
-0171 758B18          227                     MOV TL1, #LOW MIL60
-0174 D28E            228                     SETB TR1
-0176 30B312          229                     JNB P3.3, DSP1
-                     230     
-0179 C281            231     DSP1_A: CLR P0.1
-017B BF0622          232                     CJNE R7, #6H, DSP2_A 
-017E 75A000          233                     MOV P2, #0
-0181 E560            234                     MOV A, SEGS0_A 
-0183 93              235                     MOVC A, @A + DPTR
-0184 F590            236                     MOV P1, A 
-0186 75A001          237                     MOV P2, #1H
-0189 4164            238                     JMP UPDATE2
-                     239     
-018B D281            240     DSP1:   SETB P0.1
-018D BE0622          241                     CJNE R6, #6H, DSP2
-0190 75A000          242                     MOV P2, #0
-0193 E550            243                     MOV A, SEGS0
-0195 93              244                     MOVC A, @A + DPTR
-0196 F590            245                     MOV P1, A
-0198 75A001          246                     MOV P2, #1H
-019B 4162            247                     JMP UPDATE
-019D 30B312          248                     JNB P3.3,DSP2
-                     249             
-01A0 C281            250     DSP2_A: CLR P0.1 
-01A2 BF0522          251                     CJNE R7, #5H, DSP3_A 
-01A5 75A000          252                     MOV P2, #0
-01A8 E561            253                     MOV A, SEGS1_A 
-01AA 93              254                     MOVC A, @A + DPTR 
-01AB F590            255                     MOV P1, A 
-A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 18:51:17 PAGE     5
+013C B40AB3          202                     CJNE A, #0AH, ADD_SEC
+                     203                     
+013F 755200          204                     MOV MINS0, #0
+0142 0553            205                     INC MINS1
+0144 E553            206                     MOV A, MINS1
+0146 B406A9          207                     CJNE A, #6H, ADD_SEC
+                     208                     
+0149 755300          209                     MOV MINS1, #0
+014C 0554            210                     INC HORS0
+014E E554            211                     MOV A, HORS0
+0150 B4040D          212                     CJNE A, #4H, ADD_HR_SC
+                     213                     
+0153 E555            214                     MOV A, HORS1
+0155 B40208          215                     CJNE A, #2H, ADD_HR_SC
+                     216                     
+0158 755400          217                     MOV HORS0, #0
+015B 756500          218                     MOV HORS1_A, #0
+015E 8092            219                     SJMP ADD_SEC
+                     220     
+0160 E554            221     ADD_HR_SC: MOV A, HORS0
+0162 B40A8D          222                     CJNE A, #0AH, ADD_SEC
+0165 755400          223                     MOV HORS0, #0
+0168 0555            224                     INC HORS1
+016A 8086            225                     SJMP ADD_SEC
+                     226     
+                     227     ; ------ MULTIPLEXADO DE DISPLAYS ------
+                     228     
+016C C28E            229     MUX:    CLR TR1
+016E 758DFC          230                     MOV TH1, #HIGH MIL60
+0171 758B18          231                     MOV TL1, #LOW MIL60
+0174 D28E            232                     SETB TR1
+0176 30B312          233                     JNB P3.3, DSP1
+                     234     
+0179 C281            235     DSP1_A: CLR P0.1
+017B BF0622          236                     CJNE R7, #6H, DSP2_A 
+017E 75A000          237                     MOV P2, #0
+0181 E560            238                     MOV A, SEGS0_A 
+0183 93              239                     MOVC A, @A + DPTR
+0184 F590            240                     MOV P1, A 
+0186 75A001          241                     MOV P2, #1H
+0189 4164            242                     JMP ALARM_MOD
+                     243     
+018B D281            244     DSP1:   SETB P0.1
+018D BE0622          245                     CJNE R6, #6H, DSP2
+0190 75A000          246                     MOV P2, #0
+0193 E550            247                     MOV A, SEGS0
+0195 93              248                     MOVC A, @A + DPTR
+0196 F590            249                     MOV P1, A
+0198 75A001          250                     MOV P2, #1H
+019B 4162            251                     JMP CLOCK_MOD
+019D 30B312          252                     JNB P3.3,DSP2
+                     253             
+01A0 C281            254     DSP2_A: CLR P0.1 
+01A2 BF0522          255                     CJNE R7, #5H, DSP3_A 
+A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 23:30:36 PAGE     5
 
-01AD 75A002          256                     MOV P2, #2H 
-01B0 4164            257                     JMP UPDATE2 
-                     258     
-01B2 D281            259     DSP2:   SETB P0.1
-01B4 BE0522          260                     CJNE R6, #5H, DSP3 
-01B7 75A000          261                     MOV P2, #0
-01BA E551            262                     MOV A, SEGS1
-01BC 93              263                     MOVC A, @A + DPTR
-01BD F590            264                     MOV P1, A
-01BF 75A002          265                     MOV P2, #2H
-01C2 4162            266                     JMP UPDATE
-01C4 30B312          267                     JNB P3.3,DSP3
-                     268     
-01C7 C281            269     DSP3_A: CLR P0.1
-01C9 BF0422          270                     CJNE R7, #4H, DSP4_A 
-01CC 75A000          271                     MOV P2, #0H
-01CF E562            272                     MOV A, MINS0_A 
-01D1 93              273                     MOVC A, @A + DPTR 
-01D2 F590            274                     MOV P1, A 
-01D4 75A004          275                     MOV P2, #4H 
-01D7 4164            276                     JMP UPDATE2
-                     277             
-01D9 D281            278     DSP3:   SETB P0.1
-01DB BE0422          279                     CJNE R6, #4H, DSP4 
-01DE 75A000          280                     MOV P2, #0
-01E1 E552            281                     MOV A, MINS0
-01E3 93              282                     MOVC A, @A + DPTR
-01E4 F590            283                     MOV P1, A
-01E6 75A004          284                     MOV P2, #4H
-01E9 8077            285                     SJMP UPDATE 
-01EB 30B312          286                     JNB P3.3, DSP4
-                     287     
-01EE C281            288     DSP4_A: CLR P0.1
-01F0 BF0322          289                     CJNE R7, #3H,DSP5_A
-01F3 75A000          290                     MOV P2, #0
-01F6 E563            291                     MOV A, MINS1_A
-01F8 93              292                     MOVC A, @A + DPTR
-01F9 F590            293                     MOV P1, A
-01FB 75A008          294                     MOV P2, #8H
-01FE 8064            295                     SJMP UPDATE2
-                     296     
-0200 D281            297     DSP4:   SETB P0.1
-0202 BE0322          298                     CJNE R6, #3H, DSP5
-0205 75A000          299                     MOV P2, #0
-0208 E553            300                     MOV A, MINS1
-020A 93              301                     MOVC A, @A + DPTR
-020B F590            302                     MOV P1, A
-020D 75A008          303                     MOV P2, #8H
-0210 8050            304                     SJMP UPDATE
-0212 30B312          305                     JNB P3.3, DSP5
-                     306     
-0215 C281            307     DSP5_A: CLR P0.1
-0217 BF0222          308                     CJNE R7, #2H, DSP6_A
-021A 75A000          309                     MOV P2, #0
-021D E564            310                     MOV A, HORS0_A
-021F 93              311                     MOVC A, @A + DPTR
-0220 F590            312                     MOV P1, A
-0222 75A010          313                     MOV P2, #10H
-0225 803D            314                     SJMP UPDATE2
-                     315     
-0227 D281            316     DSP5:   SETB P0.1
-0229 BE0224          317                     CJNE R6, #2H, DSP6
-022C 75A000          318                     MOV P2, #0
-022F E554            319                     MOV A, HORS0
-0231 93              320                     MOVC A, @A + DPTR
-0232 F590            321                     MOV P1, A
-A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 18:51:17 PAGE     6
+01A5 75A000          256                     MOV P2, #0
+01A8 E561            257                     MOV A, SEGS1_A 
+01AA 93              258                     MOVC A, @A + DPTR 
+01AB F590            259                     MOV P1, A 
+01AD 75A002          260                     MOV P2, #2H 
+01B0 4164            261                     JMP ALARM_MOD 
+                     262     
+01B2 D281            263     DSP2:   SETB P0.1
+01B4 BE0522          264                     CJNE R6, #5H, DSP3 
+01B7 75A000          265                     MOV P2, #0
+01BA E551            266                     MOV A, SEGS1
+01BC 93              267                     MOVC A, @A + DPTR
+01BD F590            268                     MOV P1, A
+01BF 75A002          269                     MOV P2, #2H
+01C2 4162            270                     JMP CLOCK_MOD
+01C4 30B312          271                     JNB P3.3,DSP3
+                     272     
+01C7 C281            273     DSP3_A: CLR P0.1
+01C9 BF0422          274                     CJNE R7, #4H, DSP4_A 
+01CC 75A000          275                     MOV P2, #0H
+01CF E562            276                     MOV A, MINS0_A 
+01D1 93              277                     MOVC A, @A + DPTR 
+01D2 F590            278                     MOV P1, A 
+01D4 75A004          279                     MOV P2, #4H 
+01D7 4164            280                     JMP ALARM_MOD
+                     281             
+01D9 D281            282     DSP3:   SETB P0.1
+01DB BE0422          283                     CJNE R6, #4H, DSP4 
+01DE 75A000          284                     MOV P2, #0
+01E1 E552            285                     MOV A, MINS0
+01E3 93              286                     MOVC A, @A + DPTR
+01E4 F590            287                     MOV P1, A
+01E6 75A004          288                     MOV P2, #4H
+01E9 8077            289                     SJMP CLOCK_MOD 
+01EB 30B312          290                     JNB P3.3, DSP4
+                     291     
+01EE C281            292     DSP4_A: CLR P0.1
+01F0 BF0322          293                     CJNE R7, #3H, DSP5_A
+01F3 75A000          294                     MOV P2, #0
+01F6 E563            295                     MOV A, MINS1_A
+01F8 93              296                     MOVC A, @A + DPTR
+01F9 F590            297                     MOV P1, A
+01FB 75A008          298                     MOV P2, #8H
+01FE 8064            299                     SJMP ALARM_MOD
+                     300     
+0200 D281            301     DSP4:   SETB P0.1
+0202 BE0322          302                     CJNE R6, #3H, DSP5
+0205 75A000          303                     MOV P2, #0
+0208 E553            304                     MOV A, MINS1
+020A 93              305                     MOVC A, @A + DPTR
+020B F590            306                     MOV P1, A
+020D 75A008          307                     MOV P2, #8H
+0210 8050            308                     SJMP CLOCK_MOD
+0212 30B312          309                     JNB P3.3, DSP5
+                     310     
+0215 C281            311     DSP5_A: CLR P0.1
+0217 BF0222          312                     CJNE R7, #2H, DSP6_A
+021A 75A000          313                     MOV P2, #0
+021D E564            314                     MOV A, HORS0_A
+021F 93              315                     MOVC A, @A + DPTR
+0220 F590            316                     MOV P1, A
+0222 75A010          317                     MOV P2, #10H
+0225 803D            318                     SJMP ALARM_MOD
+                     319     
+0227 D281            320     DSP5:   SETB P0.1
+0229 BE0224          321                     CJNE R6, #2H, DSP6
+A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 23:30:36 PAGE     6
 
-0234 75A010          322                     MOV P2, #10H
-0237 8029            323                     SJMP UPDATE
-0239 30B314          324                     JNB P3.3, DSP6
-                     325     
-023C C281            326     DSP6_A: CLR P0.1
-023E BF0123          327                     CJNE R7, #1H, UPDATE2
-0241 75A000          328                     MOV P2, #0
-0244 E565            329                     MOV A, HORS1_A
-0246 93              330                     MOVC A, @A + DPTR
-0247 F590            331                     MOV P1, A
-0249 75A020          332                     MOV P2, #20H
-024C 7F07            333                     MOV R7, #7H
-024E 8014            334                     SJMP UPDATE2
-                     335     
-0250 D281            336     DSP6:   SETB P0.1
-0252 BE010D          337                     CJNE R6, #1H, UPDATE
-0255 75A000          338                     MOV P2, #0
-0258 E555            339                     MOV A, HORS1
-025A 93              340                     MOVC A, @A + DPTR
-025B F590            341                     MOV P1, A 
-025D 75A020          342                     MOV P2, #20H
-0260 7E07            343                     MOV R6, #7H
-                     344     
-0262 1E              345     UPDATE: DEC R6
-0263 32              346                     RETI
-                     347     
-0264 1F              348     UPDATE2: DEC R7
-                     349     
-                     350     ; --------------------------------------
+022C 75A000          322                     MOV P2, #0
+022F E554            323                     MOV A, HORS0
+0231 93              324                     MOVC A, @A + DPTR
+0232 F590            325                     MOV P1, A
+0234 75A010          326                     MOV P2, #10H
+0237 8029            327                     SJMP CLOCK_MOD
+0239 30B314          328                     JNB P3.3, DSP6
+                     329     
+023C C281            330     DSP6_A: CLR P0.1
+023E BF0123          331                     CJNE R7, #1H, ALARM_MOD
+0241 75A000          332                     MOV P2, #0
+0244 E565            333                     MOV A, HORS1_A
+0246 93              334                     MOVC A, @A + DPTR
+0247 F590            335                     MOV P1, A
+0249 75A020          336                     MOV P2, #20H
+024C 7F07            337                     MOV R7, #7H
+024E 8014            338                     SJMP ALARM_MOD
+                     339     
+0250 D281            340     DSP6:   SETB P0.1
+0252 BE010D          341                     CJNE R6, #1H, CLOCK_MOD
+0255 75A000          342                     MOV P2, #0
+0258 E555            343                     MOV A, HORS1
+025A 93              344                     MOVC A, @A + DPTR
+025B F590            345                     MOV P1, A 
+025D 75A020          346                     MOV P2, #20H
+0260 7E07            347                     MOV R6, #7H
+                     348     
+0262 1E              349     CLOCK_MOD: DEC R6
+0263 32              350                     RETI
                      351     
-                     352     ; -- Valores codificados para display -- 
+0264 1F              352     ALARM_MOD: DEC R7
                      353     
-0400                 354             ORG 0400H
-0400 81              355             DB 081H ; 0
-0401 F3              356             DB 0F3H ; 1
-0402 49              357             DB 049H ; 2
-0403 61              358             DB 061H ; 3
-0404 33              359             DB 033H ; 4
-0405 25              360             DB 025H ; 5
-0406 05              361             DB 005H ; 6
-0407 71              362             DB 071H ; 7
-0408 01              363             DB 001H ; 8
-0409 21              364             DB 021H ; 9
-                     365                     
-                     366     ; ---------------------------------------
-                     367     
-                     368             END
-A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 18:51:17 PAGE     7
+                     354     ; --------------------------------------
+                     355     
+                     356     ; -- Valores codificados para display -- 
+                     357     
+0400                 358             ORG 0400H
+0400 81              359             DB 81H  ; 0
+0401 F3              360             DB 0F3H ; 1
+0402 49              361             DB 49H  ; 2
+0403 61              362             DB 61H  ; 3
+0404 33              363             DB 33H  ; 4
+0405 25              364             DB 25H  ; 5
+0406 05              365             DB 5H   ; 6
+0407 71              366             DB 71H  ; 7
+0408 01              367             DB 1H   ; 8
+0409 21              368             DB 21H  ; 9
+                     369                     
+                     370     ; ---------------------------------------
+                     371     
+                     372             END
+A51 MACRO ASSEMBLER  REPENTINA                                                            06/29/2022 23:30:36 PAGE     7
 
 SYMBOL TABLE LISTING
 ------ ----- -------
@@ -394,14 +398,16 @@ SYMBOL TABLE LISTING
 
 N A M E             T Y P E  V A L U E   ATTRIBUTES
 
+ADD_HR . . . . . .  C ADDR   012CH   A   
+ADD_HR_A . . . . .  C ADDR   00DDH   A   
+ADD_HR_SC. . . . .  C ADDR   0160H   A   
 ADD_MIN. . . . . .  C ADDR   0138H   A   
-ADD_SEG. . . . . .  C ADDR   00F2H   A   
+ADD_SEC. . . . . .  C ADDR   00F2H   A   
 ALARM_LOOP . . . .  C ADDR   008AH   A   
+ALARM_MOD. . . . .  C ADDR   0264H   A   
 ALARM_OFF. . . . .  C ADDR   00A2H   A   
 ALARM_VERIFY . . .  C ADDR   00B5H   A   
-CHECK_HOUR . . . .  C ADDR   012CH   A   
-CHECK_HOUR2. . . .  C ADDR   0160H   A   
-CHECK_HOUR3. . . .  C ADDR   00DDH   A   
+CLOCK_MOD. . . . .  C ADDR   0262H   A   
 COUNT_SEC. . . . .  C ADDR   00A4H   A   
 DSP1 . . . . . . .  C ADDR   018BH   A   
 DSP1_A . . . . . .  C ADDR   0179H   A   
@@ -446,8 +452,6 @@ TL1. . . . . . . .  D ADDR   008BH   A
 TMOD . . . . . . .  D ADDR   0089H   A   
 TR0. . . . . . . .  B ADDR   0088H.4 A   
 TR1. . . . . . . .  B ADDR   0088H.6 A   
-UPDATE . . . . . .  C ADDR   0262H   A   
-UPDATE2. . . . . .  C ADDR   0264H   A   
 
 
 REGISTER BANK(S) USED: 0 

@@ -1,4 +1,4 @@
 IGNORE
 UTILS
-**/*.vsdx
-**/*.docx
+*.vsdx
+*.docx

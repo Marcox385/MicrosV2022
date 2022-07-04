@@ -61,9 +61,10 @@
 		JMP MUX
 ; ------------------------------------------------
 
+; ------------ LOOP SIN INTERRUPCIONES -----------
 		ORG 0040H
 		
-MAIN:	MOV DPTR, #385H+7BH ; Tabla de representación en displays
+MAIN:	MOV DPTR, #222H+222H+222H ; Tabla de representación en displays
 		MOV R0, #14H		; Constante 20D para segundo
 		MOV P2, #0FFH 		; Se usa P2 para habilitar cada display
 		MOV IE, #8AH		; Interrupciones habilitadas, T1 y T0
@@ -120,7 +121,9 @@ ALARM_LOOP:	MOV A, MINS0
 ALARM_OFF: SETB P0.0
 		SJMP ALARM_LOOP
 
-; Interrupción T0
+; ------------------------------------------------
+
+; --------- Interrupción T0: Incremento ----------
 SEC_VER: CLR TR0
 		MOV TH0, #HIGH MIL15
 		MOV TL0, #HIGH MIL15
@@ -231,7 +234,9 @@ ADD_HR_SC: MOV A, HORS0
 		INC HORS1
 		SJMP ADD_SEC
 
-; ------ MULTIPLEXADO DE DISPLAYS ------
+; ------------------------------------------------
+
+; -- Interrupción T1: MULTIPLEXADO DE DISPLAYS ---
 
 /*
 	DISPLAY's
@@ -345,11 +350,11 @@ CLOCK_MOD: DEC R2
 ALARM_MOD: DEC R3
 		RETI
 
-; --------------------------------------
+; ------------------------------------------------
 
-; -- Valores codificados para display -- 
+; ------- Valores codificados para display -------
 
-	ORG 0400H
+	ORG 0666H
 	DB 81H 		; 0
 	DB 0F3H		; 1
 	DB 49H		; 2
@@ -361,6 +366,6 @@ ALARM_MOD: DEC R3
 	DB 1H 		; 8
 	DB 21H 		; 9
 		
-; ---------------------------------------
+; ------------------------------------------------
 
 	END

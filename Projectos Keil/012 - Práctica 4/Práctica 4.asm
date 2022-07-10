@@ -13,7 +13,7 @@
 	  primera posición de la primera línea.
 	- Input de teclado detectado por interrupciones.
 	- Función ALT para interpretar dos inputs de teclado como ASCII. 
-	  Solo al ingresar dos caracteres y al soltar ALT se mostrará.
+	  Después de pulso en botón, leer dos caracteres y desplegarlos.	
 	- Función SEND para enviar la información desplegada en pantalla
 	  mediante bluetooth a través de comunicación serial. También debe
 	  ser detectado por interrupción. Considerar debouncing.
@@ -21,51 +21,73 @@
 	------------------------------------------------------------------
 */
 			
-			RS 	 EQU P1.4				; Resister Select de LCD
-			E  	 EQU P1.5				; Enable de LCD
-			LCD  EQU P2					; Bus para LCD
-			KEYS EQU P1					; Tecla codificada
+			RS 	   EQU P1.4				; Resister Select de LCD
+			E  	   EQU P1.5				; Enable de LCD
+			LCD    EQU P2				; Bus para LCD
+			KEYS   EQU P1				; Tecla codificada
+			ALT    EQU P1.7				; Botón ALT
+			ALT_EN EQU 0D5H				; ALT activado
 				
-			CCNT EQU R2					; Contador de caracteres para display (max. 32 | 20H)
+			CCNT   EQU R2				; Contador de caracteres para display (max. 32 | 20H)
+			KYSC   EQU R3				; Contador de teclas ingresadas para ALT
+			KYSB   EQU R4				; Almacenamiento de teclas presionadas para ALT
 
-; --------- SECUENCIA DE INICIO DE DISPLAY EN RST ----------
-			ORG 0000H
-								
+
+			ORG 0000H					
 			JMP LCD_INIT
-			
-; ----------------------------------------------------------
-
-
 
 ; ------------------ INTERRUPCIÓN TECLADO ------------------
-
 			ORG 0003H
-			
-KEY_IN:		MOV A, KEYS
-			ANL A, #0FH
-			MOVC A, @A + DPTR
-			ACALL LCD_CHR
-			RETI
-
+			ACALL KEY_IN
 ; ----------------------------------------------------------
 
+
+; ------------------- INTERRUPCIÓN ALT ---------------------
+			ORG 000BH	
+			ACALL ALT_IN
+; ----------------------------------------------------------
 
 
 ; ----------------- INTERRUPCIÓN BLUETOOTH -----------------
-
-			ORG 0013H
-				
-SEND_ND:	SJMP $
-
+			ORG 0013H		
+			ACALL SEND_ND
 ; ----------------------------------------------------------
 
 
-
 ; -------------------- FLUJO PRINCIPAL ---------------------
-
 			ORG 0040H
-
 /* --------------------- SUBRUTINAS --------------------- */
+; Para interrupción externa 0 | Detección de tecla
+/*KEY_IN:		JNB ALT_EN, KEY_SGL
+			
+KEY_SGL:	MOV A, KEYS
+			ANL A, #0FH
+			MOVC A, @A + DPTR
+			ACALL LCD_CHR
+			SJMP KEY_END
+KEY_END:	RETI */
+
+KEY_IN:		MOV A, KEYS
+			ANL A, #0FH
+			MOVC A, @A + DPTR
+			JNB ALT_EN, KEY_SGL
+			
+			CJNE KYSC, #0, ALT_1		; Primer caracter
+			
+			
+KEY_SGL:	ACALL LCD_CHR
+			SJMP KEY_END
+KEY_END:	RETI
+
+; Para interrupción externa 1 | Envío a bluetooth
+SEND_ND:	
+			RETI
+			
+; Para detección de ALT
+ALT_IN:		JNB ALT, ALT_END
+			SETB ALT_EN
+ALT_END:	RETI
+
 ; Subrutina de atraso para dejar libres temporizadores
 DELAY: 		MOV R7, #30H
 D_0: 		MOV R6, #0FFH
@@ -118,12 +140,12 @@ LCD_INIT:	ACALL DELAY
 			ACALL DELAY
 			
 			MOV B, #4H
-			MOV A, #38H			; Modo de 8 bits, 2 líneas (4 veces)
+			MOV A, #38H					; Modo de 8 bits, 2 líneas (4 veces)
 LI_0:		ACALL LCD_CMD
 			ACALL DELAY
 			DJNZ B, LI_0
 			
-			MOV A, #0FH 		; Display, cursor y parpadeo encendidos
+			MOV A, #0FH 				; Display, cursor y parpadeo encendidos
 			ACALL LCD_CMD
 			
 			; Se incluye el siguiente comando por aseguramiento pero es omisible
@@ -131,11 +153,19 @@ LI_0:		ACALL LCD_CMD
 			MOV A, #6H
 			ACALL LCD_CMD
 			
-			ACALL LCD_CLR		; Limpiar LCD
-			ACALL LCD_FL		; Cursor inicial
+			ACALL LCD_CLR				; Limpiar LCD
+			ACALL LCD_FL				; Cursor inicial
 
 MAIN:		MOV DPTR, #0A8H * 0AH		; Posicionar apuntador en tabla de valores
-			MOV IE, #95H
+			CLR P1.7					; Limpiar para detección de ALT
+			
+			MOV IE, #97H				; 
+			MOV TMOD, #2H
+			MOV TH0, #0
+			MOV TL0, #0FBH
+			SETB TR0
+			
+			
 			SJMP $
 				
 ; ----------------------------------------------------------

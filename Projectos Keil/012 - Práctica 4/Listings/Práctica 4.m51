@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    07/10/2022  13:55:29  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    07/10/2022  14:47:01  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -53,65 +53,65 @@ SYMBOL TABLE OF MODULE:  .\Objects\Práctica 4 (PR_CTICA_4)
   D:00A0H         SYMBOL        P2
   B:0090H.4       SYMBOL        RS
   C:0013H         SYMBOL        SEND_ND
-  C:0000H         LINE#         34
-  C:0003H         LINE#         44
-  C:0005H         LINE#         45
-  C:0007H         LINE#         46
-  C:0008H         LINE#         47
-  C:000AH         LINE#         48
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  07/10/2022  13:55:29  PAGE 2
+  C:0000H         LINE#         33
+  C:0003H         LINE#         39
+  C:0005H         LINE#         40
+  C:0007H         LINE#         41
+  C:0008H         LINE#         42
+  C:000AH         LINE#         43
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  07/10/2022  14:47:01  PAGE 2
 
 
-  C:0013H         LINE#         58
-  C:0040H         LINE#         70
-  C:0042H         LINE#         71
-  C:0044H         LINE#         72
-  C:0046H         LINE#         73
-  C:0048H         LINE#         74
-  C:0049H         LINE#         76
-  C:004BH         LINE#         77
-  C:004DH         LINE#         79
-  C:004FH         LINE#         80
-  C:0051H         LINE#         83
-  C:0053H         LINE#         84
-  C:0055H         LINE#         85
-  C:0057H         LINE#         86
-  C:0059H         LINE#         87
-  C:005BH         LINE#         88
-  C:005DH         LINE#         89
-  C:005EH         LINE#         92
-  C:0060H         LINE#         94
-  C:0063H         LINE#         95
-  C:0065H         LINE#         96
-  C:0067H         LINE#         97
-  C:0069H         LINE#         99
-  C:006CH         LINE#         100
-  C:006EH         LINE#         101
-  C:0070H         LINE#         103
-  C:0072H         LINE#         104
-  C:0074H         LINE#         105
-  C:0076H         LINE#         106
-  C:0078H         LINE#         107
-  C:007AH         LINE#         108
-  C:007CH         LINE#         109
-  C:007EH         LINE#         110
-  C:007FH         LINE#         111
-  C:0080H         LINE#         117
-  C:0082H         LINE#         118
-  C:0084H         LINE#         120
-  C:0087H         LINE#         121
-  C:0089H         LINE#         122
-  C:008BH         LINE#         123
-  C:008DH         LINE#         124
-  C:0090H         LINE#         126
-  C:0092H         LINE#         127
-  C:0094H         LINE#         131
-  C:0096H         LINE#         132
-  C:0098H         LINE#         134
-  C:009AH         LINE#         135
-  C:009CH         LINE#         137
-  C:009FH         LINE#         138
-  C:00A2H         LINE#         139
+  C:0013H         LINE#         53
+  C:0040H         LINE#         65
+  C:0042H         LINE#         66
+  C:0044H         LINE#         67
+  C:0046H         LINE#         68
+  C:0048H         LINE#         69
+  C:0049H         LINE#         71
+  C:004BH         LINE#         72
+  C:004DH         LINE#         74
+  C:004FH         LINE#         75
+  C:0051H         LINE#         78
+  C:0053H         LINE#         79
+  C:0055H         LINE#         80
+  C:0057H         LINE#         81
+  C:0059H         LINE#         82
+  C:005BH         LINE#         83
+  C:005DH         LINE#         84
+  C:005EH         LINE#         87
+  C:0060H         LINE#         89
+  C:0063H         LINE#         90
+  C:0065H         LINE#         91
+  C:0067H         LINE#         92
+  C:0069H         LINE#         94
+  C:006CH         LINE#         95
+  C:006EH         LINE#         96
+  C:0070H         LINE#         98
+  C:0072H         LINE#         99
+  C:0074H         LINE#         100
+  C:0076H         LINE#         101
+  C:0078H         LINE#         102
+  C:007AH         LINE#         103
+  C:007CH         LINE#         104
+  C:007EH         LINE#         105
+  C:007FH         LINE#         106
+  C:0080H         LINE#         112
+  C:0082H         LINE#         113
+  C:0084H         LINE#         115
+  C:0087H         LINE#         116
+  C:0089H         LINE#         117
+  C:008BH         LINE#         118
+  C:008DH         LINE#         119
+  C:0090H         LINE#         121
+  C:0092H         LINE#         122
+  C:0094H         LINE#         126
+  C:0096H         LINE#         127
+  C:0098H         LINE#         129
+  C:009AH         LINE#         130
+  C:009CH         LINE#         132
+  C:009FH         LINE#         133
+  C:00A2H         LINE#         134
   -------         ENDMOD        PR_CTICA_4
 
 ******************************************************************************
@@ -119,7 +119,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\Práctica 4 (PR_CTICA_4)
 ******************************************************************************
 
 Program Size: data=8.0 xdata=0 code=1696
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  07/10/2022  13:55:29  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  07/10/2022  14:47:01  PAGE 3
 
 
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

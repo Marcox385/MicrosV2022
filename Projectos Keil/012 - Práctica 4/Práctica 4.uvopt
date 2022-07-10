@@ -150,7 +150,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>Práctica 4.asm</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\PR_CTICA_4\44</Expression>
         </Bp>
       </Breakpoint>
       <MemoryWindow1>

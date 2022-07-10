@@ -1,0 +1,125 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    07/10/2022  13:55:29  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Práctica 4.obj TO .\Objects\Práctica 4 PRINT (.\Listings\Práctica 4.m51) RAMSIZE (
+>> 256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Práctica 4.obj (PR_CTICA_4)
+
+
+LINK MAP OF MODULE:  .\Objects\Práctica 4 (PR_CTICA_4)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     06A0H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Práctica 4 (PR_CTICA_4)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PR_CTICA_4
+  D:00F0H         SYMBOL        B
+  C:0040H         SYMBOL        DELAY
+  C:0042H         SYMBOL        D_0
+  C:0044H         SYMBOL        D_1
+  B:0090H.5       SYMBOL        E
+  D:00A8H         SYMBOL        IE
+  D:0090H         SYMBOL        KEYS
+  C:0003H         SYMBOL        KEY_IN
+  D:00A0H         SYMBOL        LCD
+  C:005EH         SYMBOL        LCD_CHR
+  C:0049H         SYMBOL        LCD_CLR
+  C:0051H         SYMBOL        LCD_CMD
+  C:0069H         SYMBOL        LCD_EFL
+  C:0060H         SYMBOL        LCD_ESL
+  C:004DH         SYMBOL        LCD_FL
+  C:0080H         SYMBOL        LCD_INIT
+  C:0070H         SYMBOL        LCD_SND
+  C:0089H         SYMBOL        LI_0
+  C:009CH         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  B:0090H.4       SYMBOL        RS
+  C:0013H         SYMBOL        SEND_ND
+  C:0000H         LINE#         34
+  C:0003H         LINE#         44
+  C:0005H         LINE#         45
+  C:0007H         LINE#         46
+  C:0008H         LINE#         47
+  C:000AH         LINE#         48
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  07/10/2022  13:55:29  PAGE 2
+
+
+  C:0013H         LINE#         58
+  C:0040H         LINE#         70
+  C:0042H         LINE#         71
+  C:0044H         LINE#         72
+  C:0046H         LINE#         73
+  C:0048H         LINE#         74
+  C:0049H         LINE#         76
+  C:004BH         LINE#         77
+  C:004DH         LINE#         79
+  C:004FH         LINE#         80
+  C:0051H         LINE#         83
+  C:0053H         LINE#         84
+  C:0055H         LINE#         85
+  C:0057H         LINE#         86
+  C:0059H         LINE#         87
+  C:005BH         LINE#         88
+  C:005DH         LINE#         89
+  C:005EH         LINE#         92
+  C:0060H         LINE#         94
+  C:0063H         LINE#         95
+  C:0065H         LINE#         96
+  C:0067H         LINE#         97
+  C:0069H         LINE#         99
+  C:006CH         LINE#         100
+  C:006EH         LINE#         101
+  C:0070H         LINE#         103
+  C:0072H         LINE#         104
+  C:0074H         LINE#         105
+  C:0076H         LINE#         106
+  C:0078H         LINE#         107
+  C:007AH         LINE#         108
+  C:007CH         LINE#         109
+  C:007EH         LINE#         110
+  C:007FH         LINE#         111
+  C:0080H         LINE#         117
+  C:0082H         LINE#         118
+  C:0084H         LINE#         120
+  C:0087H         LINE#         121
+  C:0089H         LINE#         122
+  C:008BH         LINE#         123
+  C:008DH         LINE#         124
+  C:0090H         LINE#         126
+  C:0092H         LINE#         127
+  C:0094H         LINE#         131
+  C:0096H         LINE#         132
+  C:0098H         LINE#         134
+  C:009AH         LINE#         135
+  C:009CH         LINE#         137
+  C:009FH         LINE#         138
+  C:00A2H         LINE#         139
+  -------         ENDMOD        PR_CTICA_4
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0080H BYTE ( 6%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=1696
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  07/10/2022  13:55:29  PAGE 3
+
+
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,215 @@
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/10/2022 13:55:29 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Práctica 4.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Práctica 4.asm SET(SMALL) DEBUG PRINT(.\Listings\Práctica 4.lst) OBJECT
+                      (.\Objects\Práctica 4.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+                       3     
+                       4     
+                       5     
+                       6     
+                       7     
+                       8     
+                       9     
+                      10     
+                      11     
+                      12     
+                      13     
+                      14     
+                      15     
+                      16     
+                      17     
+                      18     
+                      19     
+                      20     
+                      21     
+                      22     
+                      23                             
+  0094                24                             RS       EQU P1.4                               ; Resister Select d
+                             e LCD
+  0095                25                             E        EQU P1.5                               ; Enable de LCD
+  00A0                26                             LCD  EQU P2                                     ; Bus para LCD
+  0090                27                             KEYS EQU P1                                     ; Tecla codificada
+                      28                                     
+  REG                 29                             CCNT EQU R2                                     ; Contador de carac
+                             teres para display (max. 32 | 20H)
+                      30     
+                      31     ; --------- SECUENCIA DE INICIO DE DISPLAY EN RST ----------
+0000                  32                             ORG 0000H
+                      33                                                                     
+0000 807E             34                             JMP LCD_INIT
+                      35                             
+                      36     ; ----------------------------------------------------------
+                      37     
+                      38     
+                      39     
+                      40     ; ------------------ INTERRUPCIÓN TECLADO ------------------
+                      41     
+0003                  42                             ORG 0003H
+                      43                             
+0003 E590             44     KEY_IN:         MOV A, KEYS
+0005 540F             45                             ANL A, #0FH
+0007 93               46                             MOVC A, @A + DPTR
+0008 115E             47                             ACALL LCD_CHR
+000A 32               48                             RETI
+                      49     
+                      50     ; ----------------------------------------------------------
+                      51     
+                      52     
+                      53     
+                      54     ; ----------------- INTERRUPCIÓN BLUETOOTH -----------------
+                      55     
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/10/2022 13:55:29 PAGE     2
+
+0013                  56                             ORG 0013H
+                      57                                     
+0013 80FE             58     SEND_ND:        SJMP $
+                      59     
+                      60     ; ----------------------------------------------------------
+                      61     
+                      62     
+                      63     
+                      64     ; -------------------- FLUJO PRINCIPAL ---------------------
+                      65     
+0040                  66                             ORG 0040H
+                      67     
+                      68     
+                      69     ; Subrutina de atraso para dejar libres temporizadores
+0040 7F30             70     DELAY:          MOV R7, #30H
+0042 7EFF             71     D_0:            MOV R6, #0FFH
+0044 DEFE             72     D_1:            DJNZ R6, D_1
+0046 DFFA             73                             DJNZ R7, D_0
+0048 22               74                             RET
+                      75     
+0049 7401             76     LCD_CLR:        MOV A, #1H                                      ; 20H a cada posición | Lim
+                             piar pantalla
+004B 1151             77                             ACALL LCD_CMD
+                      78                             
+004D 7480             79     LCD_FL:         MOV A, #80H                                     ; Cursor en primera línea, 
+                             primera posición
+004F 1151             80                             ACALL LCD_CMD
+                      81     
+                      82     ; Subrutina para enviar comandos a LCD
+0051 F5A0             83     LCD_CMD:        MOV LCD, A                                      ; Posicionar comando
+0053 C294             84                             CLR RS                                          ; Modo comando
+0055 D295             85                             SETB E
+0057 1140             86                             ACALL DELAY
+0059 C295             87                             CLR E                                           ; Enviar comando
+005B 1140             88                             ACALL DELAY
+005D 22               89                             RET
+                      90     
+                      91     ; Subrutina para enviar datos/caracteres a LCD
+005E C0E0             92     LCD_CHR:        PUSH 0E0H                                       ; Guardar dato a desplegar
+                      93     
+0060 BA2006           94     LCD_ESL:        CJNE CCNT, #20H, LCD_EFL        ; Fin de segunda línea
+0063 1149             95                             ACALL LCD_CLR                           ; Limpiar pantalla
+0065 114D             96                             ACALL LCD_FL                            ; y resetear a primera posi
+                             ción
+0067 7A00             97                             MOV CCNT, #0                            ; Resetear conteo de caract
+                             eres
+                      98                             
+0069 BA1004           99     LCD_EFL:        CJNE CCNT, #10H, LCD_SND        ; Fin de primera línea
+006C 74C0            100                             MOV A, #0C0H                            ; Cursor en segunda línea, 
+                             primera posición
+006E 1151            101                             ACALL LCD_CMD
+                     102                             
+0070 D0E0            103     LCD_SND:        POP 0E0H                                        ; Recuperar dato a desplegar
+0072 F5A0            104                             MOV LCD, A                                      ; Posicionar datos
+0074 D294            105                             SETB RS                                         ; Modo datos
+0076 D295            106                             SETB E
+0078 1140            107                             ACALL DELAY
+007A C295            108                             CLR E                                           ; Enviar datos
+007C 1140            109                             ACALL DELAY
+007E 0A              110                             INC CCNT
+007F 22              111                             RET
+                     112     
+                     113     
+                     114     
+                     115     ; Usar RAM general de 0x30 a 0x4F para tranmisión serial
+                     116     
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/10/2022 13:55:29 PAGE     3
+
+0080 1140            117     LCD_INIT:       ACALL DELAY
+0082 1140            118                             ACALL DELAY
+                     119                             
+0084 75F004          120                             MOV B, #4H
+0087 7438            121                             MOV A, #38H                     ; Modo de 8 bits, 2 líneas (4 veces)
+0089 1151            122     LI_0:           ACALL LCD_CMD
+008B 1140            123                             ACALL DELAY
+008D D5F0F9          124                             DJNZ B, LI_0
+                     125                             
+0090 740F            126                             MOV A, #0FH             ; Display, cursor y parpadeo encendidos
+0092 1151            127                             ACALL LCD_CMD
+                     128                             
+                     129                             ; Se incluye el siguiente comando por aseguramiento pero es omisible
+                     130                             ; Incrementar posición, desplazamiento desactivado
+0094 7406            131                             MOV A, #6H
+0096 1151            132                             ACALL LCD_CMD
+                     133                             
+0098 1149            134                             ACALL LCD_CLR           ; Limpiar LCD
+009A 114D            135                             ACALL LCD_FL            ; Cursor inicial
+                     136     
+009C 900690          137     MAIN:           MOV DPTR, #0A8H * 0AH           ; Posicionar apuntador en tabla de valores
+009F 75A895          138                             MOV IE, #95H
+00A2 80FE            139                             SJMP $
+                     140                                     
+                     141     ; ----------------------------------------------------------
+                     142     
+                     143     
+                     144     
+                     145     ; ------------- TABLAS PARA DECODIFICAR TECLAS -------------
+                     146     
+0690                 147                             ORG 0690H
+                     148                             
+0690 31323341        149                             DB      '1', '2', '3', 'A'
+0694 34353642        150                             DB      '4', '5', '6', 'B'
+0698 37383943        151                             DB      '7', '8', '9', 'C'
+069C 45304644        152                             DB      'E', '0', 'F', 'D'
+                     153     
+                     154     ; ----------------------------------------------------------
+                     155     
+                     156                             END
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/10/2022 13:55:29 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+B. . . . . . . . .  D ADDR   00F0H   A   
+CCNT . . . . . . .    REG    R2          
+DELAY. . . . . . .  C ADDR   0040H   A   
+D_0. . . . . . . .  C ADDR   0042H   A   
+D_1. . . . . . . .  C ADDR   0044H   A   
+E. . . . . . . . .  B ADDR   0090H.5 A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+KEYS . . . . . . .  D ADDR   0090H   A   
+KEY_IN . . . . . .  C ADDR   0003H   A   
+LCD. . . . . . . .  D ADDR   00A0H   A   
+LCD_CHR. . . . . .  C ADDR   005EH   A   
+LCD_CLR. . . . . .  C ADDR   0049H   A   
+LCD_CMD. . . . . .  C ADDR   0051H   A   
+LCD_EFL. . . . . .  C ADDR   0069H   A   
+LCD_ESL. . . . . .  C ADDR   0060H   A   
+LCD_FL . . . . . .  C ADDR   004DH   A   
+LCD_INIT . . . . .  C ADDR   0080H   A   
+LCD_SND. . . . . .  C ADDR   0070H   A   
+LI_0 . . . . . . .  C ADDR   0089H   A   
+MAIN . . . . . . .  C ADDR   009CH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+RS . . . . . . . .  B ADDR   0090H.4 A   
+SEND_ND. . . . . .  C ADDR   0013H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,61 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    07/10/2022  18:38:29  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\Puerto Serial.obj TO .\Objects\Puerto Serial PRINT (.\Listings\Puerto Serial.m51) 
+>> RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Puerto Serial.obj (PUERTO_SERIAL)
+
+
+LINK MAP OF MODULE:  .\Objects\Puerto Serial (PUERTO_SERIAL)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     005AH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Puerto Serial (PUERTO_SERIAL)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PUERTO_SERIAL
+  C:0050H         SYMBOL        ESPERA
+  C:0040H         SYMBOL        MAIN
+  D:0099H         SYMBOL        SBUF
+  D:0098H         SYMBOL        SCON
+  D:008DH         SYMBOL        TH1
+  B:0098H.1       SYMBOL        TI
+  D:008BH         SYMBOL        TL1
+  D:0089H         SYMBOL        TMOD
+  B:0088H.6       SYMBOL        TR1
+  C:0000H         LINE#         2
+  C:0040H         LINE#         5
+  C:0043H         LINE#         6
+  C:0046H         LINE#         7
+  C:0049H         LINE#         8
+  C:004CH         LINE#         9
+  C:004EH         LINE#         10
+  C:0050H         LINE#         12
+  C:0053H         LINE#         13
+  C:0055H         LINE#         14
+  C:0057H         LINE#         15
+  C:0058H         LINE#         16
+  -------         ENDMOD        PUERTO_SERIAL
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 001CH BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=90
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,3 @@
+".\Objects\Puerto Serial.obj" 
+TO ".\Objects\Puerto Serial" 
+PRINT(".\Listings\Puerto Serial.m51") RAMSIZE(256) 

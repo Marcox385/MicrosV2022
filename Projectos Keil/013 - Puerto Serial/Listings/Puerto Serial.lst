@@ -1,0 +1,51 @@
+A51 MACRO ASSEMBLER  PUERTO_SERIAL                                                        07/10/2022 18:38:29 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Puerto Serial.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Puerto Serial.asm SET(SMALL) DEBUG PRINT(.\Listings\Puerto Serial.lst) 
+                      OBJECT(.\Objects\Puerto Serial.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                     ORG 0000H
+0000 803E              2                     SJMP MAIN
+                       3     
+0040                   4                     ORG 0040H
+0040 759842            5     MAIN:   MOV SCON, #42H          ; #01000010B
+0043 758920            6                     MOV TMOD, #20H          ; #00100000b
+0046 758DFD            7                     MOV TH1, #0FDH
+0049 758BFD            8                     MOV TL1, #(-3)
+004C D28E              9                     SETB TR1
+004E 7415             10                     MOV A, #21
+                      11                     
+0050 3099FD           12     ESPERA: JNB TI, ESPERA
+0053 C299             13                     CLR TI
+0055 F599             14                     MOV SBUF, A
+0057 04               15                     INC A
+0058 80F6             16                     SJMP ESPERA
+                      17                     
+                      18                     END
+A51 MACRO ASSEMBLER  PUERTO_SERIAL                                                        07/10/2022 18:38:29 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ESPERA . . . . . .  C ADDR   0050H   A   
+MAIN . . . . . . .  C ADDR   0040H   A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

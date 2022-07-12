@@ -132,32 +132,32 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDP51</Key>
-          <Name>(98=-1,-1,-1,-1,0)(82=225,186,433,301,0)(83=1048,175,1256,290,1)(84=1043,288,1251,403,1)(85=1047,403,1255,518,1)(3003=-1,-1,-1,-1,0)(91=1264,117,1474,392,1)(92=1265,389,1475,664,1)(94=-1,-1,-1,-1,0)(5023=-1,-1,-1,-1,0)</Name>
+          <Name>(98=150,104,493,398,0)(82=225,186,433,301,0)(83=1048,175,1256,290,1)(84=1043,288,1251,403,1)(85=1047,403,1255,518,1)(3003=822,122,1033,398,1)(91=1264,94,1474,369,1)(92=1261,366,1471,641,1)(94=-1,-1,-1,-1,0)(5023=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint>
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>57</LineNumber>
+          <LineNumber>224</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>-16777197</Address>
+          <Address>0</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
+          <BreakIfRCount>0</BreakIfRCount>
           <Filename>Práctica 4.asm</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\PR_CTICA_4\57</Expression>
+          <Expression></Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>45</LineNumber>
+          <LineNumber>111</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>-16777213</Address>
+          <Address>-16777082</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -166,14 +166,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>Práctica 4.asm</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\PR_CTICA_4\45</Expression>
+          <Expression></Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>255</LineNumber>
+          <LineNumber>117</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>-16776914</Address>
+          <Address>-16777070</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -196,16 +196,16 @@
       <MemoryWindow2>
         <Mm>
           <WinNumber>2</WinNumber>
-          <SubType>0</SubType>
-          <ItemText>I:0x00</ItemText>
+          <SubType>8</SubType>
+          <ItemText>I:0x30</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow2>
       <MemoryWindow3>
         <Mm>
           <WinNumber>3</WinNumber>
-          <SubType>259</SubType>
-          <ItemText>x:0x3000</ItemText>
+          <SubType>0</SubType>
+          <ItemText>i:0x20</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow3>

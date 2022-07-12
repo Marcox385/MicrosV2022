@@ -31,7 +31,6 @@
 			CHARR  EQU 030H				; Inicio de arreglo para caracteres a enviar
 				
 			CHR_P  EQU R0				; Posición de delimitador de arreglo
-			CH_P_B EQU R1				; Posición de arreglo para bluetooth
 			CHR_S  EQU R2				; Tamaño de arreglo
 			CCNT   EQU R3				; Contador de caracteres para display (max. 32 | 20H)
 			KYSB   EQU R4				; Almacenamiento de teclas presionadas para ALT
@@ -99,45 +98,27 @@ SND_DT:		ANL A, #0FH					; Valores de segunda tabla
 			MOVC A, @A + DPTR
 			RET
 
+
 ; Para interrupción externa 1 | Envío a bluetooth
 SEND_ND:	ACALL DELAY
 			ACALL DELAY
 			ACALL DELAY
-			MOV CHR_P, #0
 			MOV TH1, #0FDH
 			MOV TL1, #0FDH				; Estándar de 9600 baudios
 			SETB TR1
-
-SN_L0:		JNB TI, SN_L0
+			
+			MOV CHR_P, #CHARR
+			MOV B, CCNT
+SN_L0:		MOV SBUF, @CHR_P
+			INC CHR_P
+			JNB TI, $
 			CLR TI
-			MOV A, #CHARR				; Inicio de arreglo
-			ADD A, CHR_P				; Desplazamiento de posición
-			MOV CH_P_B, A				; Posición actual en arreglo
-			MOV SBUF, @CH_P_B			; Cargar elemento de arreglo
-			INC CHR_P					; Siguiente caracter
-			INC CH_P_B					; Comprobación de delimitador
-			
-			CJNE CH_P_B, #10H, SN_L0	; Verificar fin de arreglo
-			CLR TR1
-			RETI
-
-/*SN_L0:		MOV A, #CHARR
-			ADD A, CHR_P
-			MOV CH_P_B, A
-			
-			CJNE @CH_P_B, #10H, SN_L1	; Verificar fin de arreglo	
+			DJNZ B, SN_L0
 			CLR TR1
 			ACALL DELAY
 			ACALL DELAY
 			ACALL DELAY
 			RETI
-SN_L1:		JNB TI, SN_L1
-			CLR TI
-			MOV SBUF, @CH_P_B			; Cargar elemento de arreglo
-			INC CHR_P					; Siguiente caracter
-			INC CH_P_B					; Comprobación de delimitador
-			SJMP SN_L0*/
-
 
 ; Para detección de ALT
 ALT_IN:		JNB ALT, ALT_END
@@ -197,17 +178,15 @@ LCD_SND:	POP 0E0H					; Recuperar dato a desplegar
 
 
 ; Almacenar en arreglo de caracteres
-; Delimitador de arreglo: 10H (por omisión en datasheet)
 ; Inicio de arreglo: 30H
 ARR_SAVE:	MOV A, #CHARR				; Inicio de arreglo
 			ADD A, CCNT					; Desplazamiento según caracteres actuales
 			MOV CHR_P, A				; Posición actual de arreglo
 			MOV @CHR_P, LCD				; Guardar elemento en posición actual
 			INC CCNT					; Aumentar cantidad de elementos almacenados actuales
-			INC CHR_P					; Siguiente posición
-			MOV @CHR_P, #10H			; Guardar delimitador
+			/*INC CHR_P					; Siguiente posición
+			MOV @CHR_P, #10H			; Guardar delimitador*/
 			RET
-; No es necesario resetear el arreglo gracios al delimitador
 
 /* ------------------------------------------------------ */
 
@@ -232,15 +211,13 @@ LI_0:		ACALL LCD_CMD
 			
 			ACALL LCD_FL				; Cursor inicial
 
-			MOV CHARR, #10H				; Delimitador en primer posición de arreglo
-
+			MOV CCNT, #0				; Resetear contador de caracteres en matriz
 
 MAIN:		MOV DPTR, #0A8H * 0AH		; Posicionar apuntador en tabla de valores
-			CLR P1.7					; Limpiar para detección de ALT
+			CLR ALT						; Limpiar para detección de ALT
 			
 			MOV SCON, #42H				; Habilitación de comunicación serial
 			
-			; MOV IE, #97H				; Interrupciones para serial, externas y T0
 			MOV IE, #87H				; Interrupciones externas y T0 habilitadas
 			MOV TMOD, #22H				; T0 y T1 en modo autorrecarga
 			
@@ -267,23 +244,6 @@ MAIN:		MOV DPTR, #0A8H * 0AH		; Posicionar apuntador en tabla de valores
 			DB	04H, 05H, 06H, 0BH
 			DB	07H, 08H, 09H, 0CH
 			DB	0EH, 00H, 0FH, 0DH
-				
-			/*DB 'D', 'F', '0', 'E'
-			DB 'C', '9', '8', '7'
-			DB 'B', '6', '5', '4'
-			DB 'A', '3', '2', '1'
-				
-				1111 0111 1011 0011
-				1101 0101 1001 0001
-				1110 0110 1010 0010
-				1100 0100 1000 0000 
-				
-			PARA ASCII:	
-				0 1 2 3
-				4 5 6 7
-				8 9 A B
-				C D E F
-				*/
 
 ; ----------------------------------------------------------
 

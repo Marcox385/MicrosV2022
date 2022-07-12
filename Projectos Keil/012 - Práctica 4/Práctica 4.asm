@@ -83,18 +83,9 @@ KEY_END:	ACALL DELAY
 KEY_ALT:	JB KYSC, ALT_1				;  Primer caracter
 						
 			ACALL SND_DT				; Posicionar primera mitad del ASCII
-			SUBB A, #1H					; Comprobaciones para
-			JZ KEY_END					; saltar caracteres
-			ADD A, #1H					; inválidos según
-			SUBB A, #8H					; datasheets (1X, 8X, 9X)
-			JZ KEY_END
-			ADD A, #8H
-			SUBB A, #9H
-			JZ KEY_END
-			ADD A, #9H
 			SWAP A
 			MOV KYSB, A
-			SETB KYSC					; Se indica que ya hay un caracter
+			SETB KYSC					; Se indica la presencia del primer nibble
 			SJMP KEY_END
 			
 ALT_1:		ACALL SND_DT				; Posicionar segunda mitad del ASCII
@@ -103,8 +94,8 @@ ALT_1:		ACALL SND_DT				; Posicionar segunda mitad del ASCII
 			CLR ALT_EN					; Resetear banderas para siguiente ASCII
 			SJMP KEY_SHW				; Enviar ASCII
 
-SND_DT:		ANL A, #0FH					
-			ADD A, #0FH
+SND_DT:		ANL A, #0FH					; Valores de segunda tabla
+			ADD A, #10H
 			MOVC A, @A + DPTR
 			RET
 

@@ -32,8 +32,9 @@
 				
 			CHR_P  EQU R0				; Posición de delimitador de arreglo
 			CH_P_B EQU R1				; Posición de arreglo para bluetooth
-			CCNT   EQU R2				; Contador de caracteres para display (max. 32 | 20H)
-			KYSB   EQU R3				; Almacenamiento de teclas presionadas para ALT
+			CHR_S  EQU R2				; Tamaño de arreglo
+			CCNT   EQU R3				; Contador de caracteres para display (max. 32 | 20H)
+			KYSB   EQU R4				; Almacenamiento de teclas presionadas para ALT
 
 
 			ORG 0000H					
@@ -61,80 +62,117 @@
 			ORG 0040H
 /* --------------------- SUBRUTINAS --------------------- */
 ; Para interrupción externa 0 | Detección de tecla o ASCII
-KEY_IN:		MOV A, KEYS
+KEY_IN:		ACALL DELAY
+			ACALL DELAY
+			ACALL DELAY
+			ACALL DELAY
+			MOV A, KEYS
+			CPL A
+			
 			JNB ALT_EN, KEY_SGL
-			
-			JB KYSC, ALT_1				; Primer caracter
-			SUBB A, #'1'				; Comprobaciones para
-			JZ KEY_END					; saltar caracteres
-			ADD A, #'1'					; inválidos según
-			SUBB A, #'8'				; datasheets (1X, 8X, 9X)
-			JZ KEY_END
-			ADD A, #'8'
-			SUBB A, #'9'
-			JZ KEY_END
-			ADD A, #'9'
-			
-			SWAP A
-			ANL A, #0F0H
-			MOV KYSB, A
-			SETB KYSC
-			SJMP KEY_END
-			
-ALT_1:		ANL A, #0FH					; Segundo caracter
-			ADD A, KYSB					
-			CLR KYSC
-			SJMP KEY_SHW				; Enviar ASCII
-			CLR ALT_EN
-
+			SJMP KEY_ALT		
 			
 KEY_SGL:	ANL A, #0FH
 			MOVC A, @A + DPTR			; Decodificar caracter
 KEY_SHW:	ACALL LCD_CHR				; Enviar caracter a LCD
-KEY_END:	RETI
+KEY_END:	ACALL DELAY
+			ACALL DELAY
+			ACALL DELAY
+			RETI
 
+KEY_ALT:	JB KYSC, ALT_1				;  Primer caracter
+						
+			ACALL SND_DT				; Posicionar primera mitad del ASCII
+			SUBB A, #1H					; Comprobaciones para
+			JZ KEY_END					; saltar caracteres
+			ADD A, #1H					; inválidos según
+			SUBB A, #8H					; datasheets (1X, 8X, 9X)
+			JZ KEY_END
+			ADD A, #8H
+			SUBB A, #9H
+			JZ KEY_END
+			ADD A, #9H
+			SWAP A
+			MOV KYSB, A
+			SETB KYSC					; Se indica que ya hay un caracter
+			SJMP KEY_END
+			
+ALT_1:		ACALL SND_DT				; Posicionar segunda mitad del ASCII
+			ADD A, KYSB					
+			CLR KYSC					
+			CLR ALT_EN					; Resetear banderas para siguiente ASCII
+			SJMP KEY_SHW				; Enviar ASCII
+
+SND_DT:		ANL A, #0FH					
+			ADD A, #0FH
+			MOVC A, @A + DPTR
+			RET
 
 ; Para interrupción externa 1 | Envío a bluetooth
-SEND_ND:	MOV CHR_P, #0
+SEND_ND:	ACALL DELAY
+			ACALL DELAY
+			ACALL DELAY
+			MOV CHR_P, #0
 			MOV TH1, #0FDH
-			MOV TL0, #0FDH				; Estándar de 9600 baudios
+			MOV TL1, #0FDH				; Estándar de 9600 baudios
 			SETB TR1
 
 SN_L0:		JNB TI, SN_L0
 			CLR TI
-			MOV A, #CHARR
+			MOV A, #CHARR				; Inicio de arreglo
+			ADD A, CHR_P				; Desplazamiento de posición
+			MOV CH_P_B, A				; Posición actual en arreglo
+			MOV SBUF, @CH_P_B			; Cargar elemento de arreglo
+			INC CHR_P					; Siguiente caracter
+			INC CH_P_B					; Comprobación de delimitador
+			
+			CJNE CH_P_B, #10H, SN_L0	; Verificar fin de arreglo
+			CLR TR1
+			RETI
+
+/*SN_L0:		MOV A, #CHARR
 			ADD A, CHR_P
 			MOV CH_P_B, A
-			MOV SBUF, @CH_P_B
-			INC CHR_P
-			INC CH_P_B
 			
-			CJNE CH_P_B, #10H, SN_L0
-			CLR TR0
+			CJNE @CH_P_B, #10H, SN_L1	; Verificar fin de arreglo	
+			CLR TR1
+			ACALL DELAY
+			ACALL DELAY
+			ACALL DELAY
 			RETI
+SN_L1:		JNB TI, SN_L1
+			CLR TI
+			MOV SBUF, @CH_P_B			; Cargar elemento de arreglo
+			INC CHR_P					; Siguiente caracter
+			INC CH_P_B					; Comprobación de delimitador
+			SJMP SN_L0*/
 
 
 ; Para detección de ALT
 ALT_IN:		JNB ALT, ALT_END
-			SETB ALT_EN
+			SETB ALT_EN					; Entrar en modo ALT
 ALT_END:	RETI
 
 
-; Subrutina de atraso para dejar libres temporizadores
+; Atraso genérico para dejar libres temporizadores
 DELAY: 		MOV R7, #30H
 D_0: 		MOV R6, #0FFH
 D_1: 		DJNZ R6, D_1
 			DJNZ R7, D_0
 			RET
 
+
+; Limpiar LCD
 LCD_CLR:	MOV A, #1H					; 20H a cada posición | Limpiar pantalla
 			ACALL LCD_CMD
-			
+
+
+; Posicionar en primera línea, primera posición de LCD
 LCD_FL:		MOV A, #80H					; Cursor en primera línea, primera posición
 			ACALL LCD_CMD
 
 
-; Subrutina para enviar comandos a LCD
+; Enviar comandos a LCD
 LCD_CMD: 	MOV LCD, A					; Posicionar comando
 			CLR RS 						; Modo comando
 			SETB E
@@ -144,7 +182,7 @@ LCD_CMD: 	MOV LCD, A					; Posicionar comando
 			RET
 
 
-; Subrutina para enviar datos/caracteres a LCD
+; Enviar datos/caracteres a LCD
 LCD_CHR: 	PUSH 0E0H					; Guardar dato a desplegar
 
 LCD_ESL:	CJNE CCNT, #20H, LCD_EFL	; Fin de segunda línea
@@ -163,26 +201,27 @@ LCD_SND:	POP 0E0H					; Recuperar dato a desplegar
 			ACALL DELAY
 			CLR E						; Enviar datos
 			ACALL DELAY
-			ACALL ARR_SAVE
+			ACALL ARR_SAVE				; Guardar caracter introducido en arreglo
 			RET
 
 
-; Subrutina para almacenar o resetear arreglo de caracteres
+; Almacenar en arreglo de caracteres
 ; Delimitador de arreglo: 10H (por omisión en datasheet)
 ; Inicio de arreglo: 30H
-ARR_SAVE:	MOV A, #CHARR
-			ADD A, CCNT
-			MOV CHR_P, A
-			MOV @CHR_P, LCD
-			INC CCNT
-			INC CHR_P
-			MOV @CHR_P, #10H
+ARR_SAVE:	MOV A, #CHARR				; Inicio de arreglo
+			ADD A, CCNT					; Desplazamiento según caracteres actuales
+			MOV CHR_P, A				; Posición actual de arreglo
+			MOV @CHR_P, LCD				; Guardar elemento en posición actual
+			INC CCNT					; Aumentar cantidad de elementos almacenados actuales
+			INC CHR_P					; Siguiente posición
+			MOV @CHR_P, #10H			; Guardar delimitador
 			RET
+; No es necesario resetear el arreglo gracios al delimitador
 
 /* ------------------------------------------------------ */
 
 LCD_INIT:	ACALL DELAY
-			ACALL DELAY
+			ACALL DELAY					; Asegurar espera inicial
 			
 			MOV B, #4H
 			MOV A, #38H					; Modo de 8 bits, 2 líneas (4 veces)
@@ -190,16 +229,19 @@ LI_0:		ACALL LCD_CMD
 			ACALL DELAY
 			DJNZ B, LI_0
 			
-			MOV A, #0FH 				; Display, cursor y parpadeo encendidos
-			ACALL LCD_CMD
+			ACALL LCD_CLR				; Limpiar LCD
 			
-			; Se incluye el siguiente comando por aseguramiento pero es omisible
+			; Se incluye el siguiente comando por recomendación pero es omisible
 			; Incrementar posición, desplazamiento desactivado
 			MOV A, #6H
 			ACALL LCD_CMD
 			
-			ACALL LCD_CLR				; Limpiar LCD
+			MOV A, #0FH 				; Display, cursor y parpadeo encendidos
+			ACALL LCD_CMD
+			
 			ACALL LCD_FL				; Cursor inicial
+
+			MOV CHARR, #10H				; Delimitador en primer posición de arreglo
 
 
 MAIN:		MOV DPTR, #0A8H * 0AH		; Posicionar apuntador en tabla de valores
@@ -208,21 +250,20 @@ MAIN:		MOV DPTR, #0A8H * 0AH		; Posicionar apuntador en tabla de valores
 			MOV SCON, #42H				; Habilitación de comunicación serial
 			
 			; MOV IE, #97H				; Interrupciones para serial, externas y T0
-			MOV IE, #87H
-			MOV TMOD, #22H				; T0 modo autorrecarga | T1 modo autorrecarga
+			MOV IE, #87H				; Interrupciones externas y T0 habilitadas
+			MOV TMOD, #22H				; T0 y T1 en modo autorrecarga
 			
 			MOV TH0, #0
 			MOV TL0, #0FBH				; Contar 500 nanosegundos
-			
 			SETB TR0
 			
-			SJMP $						; Continuar ejecución
+			SJMP $						; Loop principal
 				
 ; ----------------------------------------------------------
 
 
 
-; ------------- TABLAS PARA DECODIFICAR TECLAS -------------
+; -------------- TABLA PARA DECODIFICAR TECLAS -------------
 
 			ORG 0690H
 			
@@ -230,6 +271,28 @@ MAIN:		MOV DPTR, #0A8H * 0AH		; Posicionar apuntador en tabla de valores
 			DB	'4', '5', '6', 'B'
 			DB	'7', '8', '9', 'C'
 			DB	'E', '0', 'F', 'D'
+			
+			DB	01H, 02H, 03H, 0AH
+			DB	04H, 05H, 06H, 0BH
+			DB	07H, 08H, 09H, 0CH
+			DB	0EH, 00H, 0FH, 0DH
+				
+			/*DB 'D', 'F', '0', 'E'
+			DB 'C', '9', '8', '7'
+			DB 'B', '6', '5', '4'
+			DB 'A', '3', '2', '1'
+				
+				1111 0111 1011 0011
+				1101 0101 1001 0001
+				1110 0110 1010 0010
+				1100 0100 1000 0000 
+				
+			PARA ASCII:	
+				0 1 2 3
+				4 5 6 7
+				8 9 A B
+				C D E F
+				*/
 
 ; ----------------------------------------------------------
 

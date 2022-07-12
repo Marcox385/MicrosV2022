@@ -1,0 +1,174 @@
+A51 MACRO ASSEMBLER  EXAMEN_2                                                             07/11/2022 13:00:18 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Examen 2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Examen 2.asm SET(SMALL) DEBUG PRINT(.\Listings\Examen 2.lst) OBJECT(.\O
+                      bjects\Examen 2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; NOTA: Se intuye un cristal de 11.0592MHz
+                       2     
+  0097                 3                             LUZ EQU P1.7    ; Comunicación con conmutador
+  0030                 4                             DLT EQU 30H             ; Desfase para ASCII
+  00D1                 5                             DIG EQU 0D1H    ; Bandera para ASCII's
+  00A0                 6                             HUM EQU P2              ; Sensor de humedad
+  00D5                 7                             CMP EQU 0D5H    ; Bandera para comprobación
+  REG                  8                             DBL EQU R2              ; Doble envío
+                       9     
+0000                  10                             ORG 0000H
+0000 01BA             11                             JMP MAIN
+                      12     
+                      13     ; ------------ INTERRUPCIÓN PARA LUMINARIA ------------ 
+000B                  14                             ORG 000BH
+000B 8033             15                             JMP L_ON_OFF
+                      16     ; -----------------------------------------------------
+                      17     
+                      18     ; ------------ INTERRUPCIÓN PARA SERIAL --------------- 
+0023                  19                             ORG 0023H
+0023 8035             20                             JMP DATA_SEND
+                      21     ; -----------------------------------------------------
+                      22     
+0040                  23                             ORG 0040H
+                      24     
+                      25     ; Subrutina para encender/apagar luminaria
+0040 C28C             26     L_ON_OFF:       CLR TR0
+0042 B297             27                             CPL LUZ
+0044 209708           28                             JB LUZ, L_OFF
+0047 758CFF           29                             MOV TH0, #0FFH
+004A 758ABB           30                             MOV TL0, #0BBH  ; Para 75us
+004D 8008             31                             SJMP L_END
+004F 758CFF           32     L_OFF:          MOV TH0, #0FFH
+0052 758A8D           33                             MOV TL0, #08DH  ; Para 125us
+0055 8000             34                             SJMP L_END
+0057 D28C             35     L_END:          SETB TR0
+0059 32               36                             RETI
+                      37     
+                      38     ; Subrutina para comunicaciones serial
+005A D290             39     DATA_SEND:      SETB P1.0
+005C 7A00             40                             MOV DBL, #0
+005E E5A0             41                             MOV A, HUM
+0060 11A6             42                             ACALL ASCII_CONV ; Convertir valor
+0062 3099FD           43     DI_0:           JNB TI, $
+0065 C299             44                             CLR TI
+                      45                             
+0067 20D106           46                             JB DIG, ASC_2
+006A E541             47                             MOV A, 41H              ; Primer caracter
+006C D2D1             48                             SETB DIG
+006E 8006             49                             SJMP ASC_C
+                      50                             
+0070 E542             51     ASC_2:          MOV A, 42H              ; Segundo caracter
+0072 C2D1             52                             CLR DIG
+0074 D2D5             53                             SETB CMP
+                      54                             
+0076 F599             55     ASC_C:          MOV SBUF, A
+0078 30D5E7           56                             JNB CMP, DI_0   ; ¿Se transmitieron ambos caracteres?
+007B C2D5             57                             CLR CMP
+A51 MACRO ASSEMBLER  EXAMEN_2                                                             07/11/2022 13:00:18 PAGE     2
+
+007D 0A               58                             INC DBL
+007E BA02D9           59                             CJNE DBL, #2H, DATA_SEND
+                      60                             
+0081 3098FD           61     DI_1:           JNB RI, $
+0084 C298             62                             CLR RI
+0086 E599             63                             MOV A, SBUF
+                      64                             
+0088 20D106           65                             JB DIG, ASC_3
+008B F543             66                             MOV 43H, A                      ; Primer caracter
+008D D2D1             67                             SETB DIG
+008F 8006             68                             SJMP ASC_C_2
+                      69                             
+0091 F544             70     ASC_3:          MOV 44H, A                      ; Segundo caracter con complemento
+0093 C2D1             71                             CLR DIG
+0095 D2D5             72                             SETB CMP
+                      73                             
+0097 30D5E7           74     ASC_C_2:        JNB CMP, DI_1
+009A C2D5             75                             CLR CMP
+009C 11B7             76                             ACALL INV_CA2
+009E B54201           77                             CJNE A, 42H, ERROR              
+00A1 32               78     DS_END:         RETI
+00A2 C290             79     ERROR:          CLR P1.0
+00A4 80FB             80                             SJMP DS_END
+                      81     
+                      82     ; Subrutina para convertir un byte en dos ASCII's
+00A6 E540             83     ASCII_CONV:     MOV A, 40H              ; Dígito en 8 bits
+00A8 75F00A           84                             MOV B, #0AH             ; Decenas
+00AB 84               85                             DIV AB
+00AC 2430             86                             ADD A, #DLT             ; Desfase para ASCII
+00AE F541             87                             MOV 41H, A
+00B0 E5F0             88                             MOV A, B                ; Unidades
+00B2 2430             89                             ADD A, #DLT             ; Mismo desfase
+00B4 F542             90                             MOV 42H, A
+00B6 22               91                             RET
+                      92     
+                      93     ; Subrutina para convertir de complemento a 2
+00B7 F4               94     INV_CA2:        CPL A
+00B8 04               95                             INC A
+00B9 22               96                             RET
+                      97     
+00BA 75A88A           98     MAIN:           MOV IE, #8AH
+00BD 759842           99                             MOV SCON, #42H
+00C0 758921          100                             MOV TMOD, #21H
+                     101                             
+00C3 758CFF          102                             MOV TH0, #0FFH
+00C6 758A8D          103                             MOV TL0, #08DH  ; Para 125us
+00C9 D28C            104                             SETB TR0                ; Temporizador de luminaria
+                     105                             
+00CB 758DED          106                             MOV TH1, #0EDH
+00CE 758BED          107                             MOV TL1, #0EDH  ; Para 1500 baudios (aprox. 1516)
+00D1 D28E            108                             SETB TR1                ; Temporizador para serial
+                     109                             
+00D3 80FE            110                             SJMP $                  ; Loop principal
+                     111                             
+                     112                             END
+A51 MACRO ASSEMBLER  EXAMEN_2                                                             07/11/2022 13:00:18 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ASCII_CONV . . . .  C ADDR   00A6H   A   
+ASC_2. . . . . . .  C ADDR   0070H   A   
+ASC_3. . . . . . .  C ADDR   0091H   A   
+ASC_C. . . . . . .  C ADDR   0076H   A   
+ASC_C_2. . . . . .  C ADDR   0097H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+CMP. . . . . . . .  N NUMB   00D5H   A   
+DATA_SEND. . . . .  C ADDR   005AH   A   
+DBL. . . . . . . .    REG    R2          
+DIG. . . . . . . .  N NUMB   00D1H   A   
+DI_0 . . . . . . .  C ADDR   0062H   A   
+DI_1 . . . . . . .  C ADDR   0081H   A   
+DLT. . . . . . . .  N NUMB   0030H   A   
+DS_END . . . . . .  C ADDR   00A1H   A   
+ERROR. . . . . . .  C ADDR   00A2H   A   
+HUM. . . . . . . .  D ADDR   00A0H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INV_CA2. . . . . .  C ADDR   00B7H   A   
+LUZ. . . . . . . .  B ADDR   0090H.7 A   
+L_END. . . . . . .  C ADDR   0057H   A   
+L_OFF. . . . . . .  C ADDR   004FH   A   
+L_ON_OFF . . . . .  C ADDR   0040H   A   
+MAIN . . . . . . .  C ADDR   00BAH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

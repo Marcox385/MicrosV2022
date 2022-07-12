@@ -29,14 +29,14 @@
 			INICIO_B   EQU 3000H
 			INICIO_RES EQU 5000H
 				
-			A_ROW	   EQU 20H
-			A_COL	   EQU 21H
-			B_ROW	   EQU 22H
-			B_COL	   EQU 23H
-			RES_POS    EQU 24H
+			A_ROW	   EQU 20H		; Renglones de A
+			A_COL	   EQU 21H		; Columnas de A
+			B_ROW	   EQU 22H		; Renglones de B
+			B_COL	   EQU 23H		; Columnas de B
+			RES_POS    EQU 24H		; Posición actual de matriz
 				
-			A_DIR	   EQU 0E0H
-			B_DIR	   EQU 0F0H
+			A_DIR	   EQU 0E0H		; Apuntador a acumulador A
+			B_DIR	   EQU 0F0H		; Apuntador a acumulador B
 
 			ORG 0000H
 			SJMP MAIN

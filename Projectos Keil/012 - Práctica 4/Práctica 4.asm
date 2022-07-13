@@ -103,18 +103,18 @@ SND_DT:		ANL A, #0FH					; Valores de segunda tabla
 SEND_ND:	ACALL DELAY
 			ACALL DELAY
 			ACALL DELAY
-			MOV TH1, #0FDH
+			/*MOV TH1, #0FDH
 			MOV TL1, #0FDH				; Estándar de 9600 baudios
-			SETB TR1
+			SETB TR1*/
 			
 			MOV CHR_P, #CHARR
-			MOV B, CCNT
+			MOV A, CCNT
+			JZ ALT_END
 SN_L0:		MOV SBUF, @CHR_P
 			INC CHR_P
 			JNB TI, $
 			CLR TI
-			DJNZ B, SN_L0
-			CLR TR1
+			DJNZ ACC, SN_L0
 			ACALL DELAY
 			ACALL DELAY
 			ACALL DELAY
@@ -184,8 +184,6 @@ ARR_SAVE:	MOV A, #CHARR				; Inicio de arreglo
 			MOV CHR_P, A				; Posición actual de arreglo
 			MOV @CHR_P, LCD				; Guardar elemento en posición actual
 			INC CCNT					; Aumentar cantidad de elementos almacenados actuales
-			/*INC CHR_P					; Siguiente posición
-			MOV @CHR_P, #10H			; Guardar delimitador*/
 			RET
 
 /* ------------------------------------------------------ */
@@ -224,6 +222,12 @@ MAIN:		MOV DPTR, #0A8H * 0AH		; Posicionar apuntador en tabla de valores
 			MOV TH0, #0
 			MOV TL0, #0FBH				; Contar 500 nanosegundos
 			SETB TR0
+			
+			MOV TH1, #0FDH
+			MOV TL1, #0FDH				; Estándar de 9600 baudios
+			SETB TR1
+			
+			CLR TI
 			
 			SJMP $						; Loop principal
 				

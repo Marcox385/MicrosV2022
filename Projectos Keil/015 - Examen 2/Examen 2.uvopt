@@ -132,16 +132,16 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDP51</Key>
-          <Name>(98=-1,-1,-1,-1,0)(82=779,85,987,200,1)(83=784,206,992,321,1)(84=784,318,992,433,1)(85=785,434,993,549,1)(3003=-1,-1,-1,-1,0)(91=1008,20,1218,295,1)(92=995,305,1205,580,1)(94=-1,-1,-1,-1,0)(5023=-1,-1,-1,-1,0)</Name>
+          <Name>(98=769,295,1112,589,1)(82=1091,68,1299,183,1)(83=1090,184,1298,299,1)(84=1093,301,1301,416,1)(85=1091,418,1299,533,1)(3003=871,6,1082,282,1)(91=1294,37,1504,312,1)(92=1298,315,1508,590,1)(94=-1,-1,-1,-1,0)(5023=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint>
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>12</LineNumber>
+          <LineNumber>83</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>-16777205</Address>
+          <Address>-16777052</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -150,7 +150,23 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>C:\Users\marck\OneDrive\Escritorio\Micros\Projectos Keil\015 - Examen 2\Examen 2.asm</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\EXAMEN_2\12</Expression>
+          <Expression>\EXAMEN_2\83</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>44</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>-16777122</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>C:\Users\marck\OneDrive\Escritorio\Micros\Projectos Keil\015 - Examen 2\Examen 2.asm</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\EXAMEN_2\44</Expression>
         </Bp>
       </Breakpoint>
       <MemoryWindow1>
@@ -169,7 +185,7 @@
         <periodic>1</periodic>
         <aLwin>1</aLwin>
         <aCover>0</aCover>
-        <aSer1>0</aSer1>
+        <aSer1>1</aSer1>
         <aSer2>0</aSer2>
         <aPa>0</aPa>
         <viewmode>1</viewmode>
@@ -181,7 +197,7 @@
         <AscS3>0</AscS3>
         <aSer3>0</aSer3>
         <eProf>0</eProf>
-        <aLa>0</aLa>
+        <aLa>1</aLa>
         <aPa1>0</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
@@ -203,6 +219,13 @@
       <pszMrulep></pszMrulep>
       <pSingCmdsp></pSingCmdsp>
       <pMultCmdsp></pMultCmdsp>
+      <LogicAnalyzers>
+        <Wi>
+          <IntNumber>0</IntNumber>
+          <FirstString>P1</FirstString>
+          <SecondString>FF00000000000000000000000000000000E06F400000000000000000000000000000000050310000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000F03F0D00000000000000000000000000000000000000620000FF</SecondString>
+        </Wi>
+      </LogicAnalyzers>
     </TargetOption>
   </Target>
 

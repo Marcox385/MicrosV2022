@@ -103,9 +103,6 @@ SND_DT:		ANL A, #0FH					; Valores de segunda tabla
 SEND_ND:	ACALL DELAY
 			ACALL DELAY
 			ACALL DELAY
-			/*MOV TH1, #0FDH
-			MOV TL1, #0FDH				; Estándar de 9600 baudios
-			SETB TR1*/
 			
 			MOV CHR_P, #CHARR
 			MOV A, CCNT
@@ -155,7 +152,7 @@ LCD_CMD: 	MOV LCD, A					; Posicionar comando
 
 
 ; Enviar datos/caracteres a LCD
-LCD_CHR: 	PUSH 0E0H					; Guardar dato a desplegar
+LCD_CHR: 	PUSH ACC					; Guardar dato a desplegar
 
 LCD_ESL:	CJNE CCNT, #20H, LCD_EFL	; Fin de segunda línea
 			ACALL LCD_CLR				; Limpiar pantalla
@@ -166,7 +163,7 @@ LCD_EFL:	CJNE CCNT, #10H, LCD_SND	; Fin de primera línea
 			MOV A, #0C0H				; Cursor en segunda línea, primera posición
 			ACALL LCD_CMD
 			
-LCD_SND:	POP 0E0H					; Recuperar dato a desplegar
+LCD_SND:	POP ACC					; Recuperar dato a desplegar
 			MOV LCD, A 					; Posicionar datos
 			SETB RS 					; Modo datos
 			SETB E

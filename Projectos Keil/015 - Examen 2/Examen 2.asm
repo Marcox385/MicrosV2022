@@ -1,4 +1,5 @@
-; NOTA: Se intuye un cristal de 11.0592MHz
+; NOTA: Se intuye un cristal de 11.0592MHz (Erróneo)
+; NOTA: Este examen fue acreedor a un 64.7 en conjunto de otros entregables, no basarse en él como punto de referencia.
 
 			LUZ EQU P1.7	; Comunicación con conmutador
 			DLT EQU 30H		; Desfase para ASCII
@@ -14,6 +15,9 @@
 			ORG 000BH
 			JMP L_ON_OFF
 ; -----------------------------------------------------
+
+			ORG 001BH
+			RETI
 
 ; ------------ INTERRUPCIÓN PARA SERIAL --------------- 
 			ORG 0023H

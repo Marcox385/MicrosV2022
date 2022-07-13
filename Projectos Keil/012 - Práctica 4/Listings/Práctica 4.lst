@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/12/2022 19:14:03 PAGE     1
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 17:51:58 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
 000B                  49                             ORG 000BH       
 000B 0193             50                             JMP ALT_IN
                       51     ; ----------------------------------------------------------
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/12/2022 19:14:03 PAGE     2
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 17:51:58 PAGE     2
 
                       52     
                       53     
@@ -125,178 +125,175 @@ LOC  OBJ            LINE     SOURCE
 0078 1199            104                             ACALL DELAY
 007A 1199            105                             ACALL DELAY
                      106                             
-                     107     
-                     108     
-                     109                             
-007C 7830            110                             MOV CHR_P, #CHARR
-007E EB              111                             MOV A, CCNT
-007F 6017            112                             JZ ALT_END
-0081 8699            113     SN_L0:          MOV SBUF, @CHR_P
-0083 08              114                             INC CHR_P
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/12/2022 19:14:03 PAGE     3
+007C 7830            107                             MOV CHR_P, #CHARR
+007E EB              108                             MOV A, CCNT
+007F 6017            109                             JZ ALT_END
+0081 8699            110     SN_L0:          MOV SBUF, @CHR_P
+0083 08              111                             INC CHR_P
+0084 3099FD          112                             JNB TI, $
+0087 C299            113                             CLR TI
+0089 D5E0F5          114                             DJNZ ACC, SN_L0
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 17:51:58 PAGE     3
 
-0084 3099FD          115                             JNB TI, $
-0087 C299            116                             CLR TI
-0089 D5E0F5          117                             DJNZ ACC, SN_L0
-008C 1199            118                             ACALL DELAY
-008E 1199            119                             ACALL DELAY
-0090 1199            120                             ACALL DELAY
-0092 32              121                             RETI
-                     122     
-                     123     ; Para detección de ALT
-0093 309702          124     ALT_IN:         JNB ALT, ALT_END
-0096 D2D5            125                             SETB ALT_EN                                     ; Entrar en modo ALT
-0098 32              126     ALT_END:        RETI
-                     127     
-                     128     
-                     129     ; Atraso genérico para dejar libres temporizadores
-0099 7F30            130     DELAY:          MOV R7, #30H
-009B 7EFF            131     D_0:            MOV R6, #0FFH
-009D DEFE            132     D_1:            DJNZ R6, D_1
-009F DFFA            133                             DJNZ R7, D_0
-00A1 22              134                             RET
-                     135     
-                     136     
-                     137     ; Limpiar LCD
-00A2 7401            138     LCD_CLR:        MOV A, #1H                                      ; 20H a cada posición | Lim
+008C 1199            115                             ACALL DELAY
+008E 1199            116                             ACALL DELAY
+0090 1199            117                             ACALL DELAY
+0092 32              118                             RETI
+                     119     
+                     120     ; Para detección de ALT
+0093 309702          121     ALT_IN:         JNB ALT, ALT_END
+0096 D2D5            122                             SETB ALT_EN                                     ; Entrar en modo ALT
+0098 32              123     ALT_END:        RETI
+                     124     
+                     125     
+                     126     ; Atraso genérico para dejar libres temporizadores
+0099 7F30            127     DELAY:          MOV R7, #30H
+009B 7EFF            128     D_0:            MOV R6, #0FFH
+009D DEFE            129     D_1:            DJNZ R6, D_1
+009F DFFA            130                             DJNZ R7, D_0
+00A1 22              131                             RET
+                     132     
+                     133     
+                     134     ; Limpiar LCD
+00A2 7401            135     LCD_CLR:        MOV A, #1H                                      ; 20H a cada posición | Lim
                              piar pantalla
-00A4 11AA            139                             ACALL LCD_CMD
-                     140     
-                     141     
-                     142     ; Posicionar en primera línea, primera posición de LCD
-00A6 7480            143     LCD_FL:         MOV A, #80H                                     ; Cursor en primera línea, 
+00A4 11AA            136                             ACALL LCD_CMD
+                     137     
+                     138     
+                     139     ; Posicionar en primera línea, primera posición de LCD
+00A6 7480            140     LCD_FL:         MOV A, #80H                                     ; Cursor en primera línea, 
                              primera posición
-00A8 11AA            144                             ACALL LCD_CMD
-                     145     
-                     146     
-                     147     ; Enviar comandos a LCD
-00AA F5A0            148     LCD_CMD:        MOV LCD, A                                      ; Posicionar comando
-00AC C294            149                             CLR RS                                          ; Modo comando
-00AE D295            150                             SETB E
-00B0 1199            151                             ACALL DELAY
-00B2 C295            152                             CLR E                                           ; Enviar comando
-00B4 1199            153                             ACALL DELAY
-00B6 22              154                             RET
-                     155     
+00A8 11AA            141                             ACALL LCD_CMD
+                     142     
+                     143     
+                     144     ; Enviar comandos a LCD
+00AA F5A0            145     LCD_CMD:        MOV LCD, A                                      ; Posicionar comando
+00AC C294            146                             CLR RS                                          ; Modo comando
+00AE D295            147                             SETB E
+00B0 1199            148                             ACALL DELAY
+00B2 C295            149                             CLR E                                           ; Enviar comando
+00B4 1199            150                             ACALL DELAY
+00B6 22              151                             RET
+                     152     
+                     153     
+                     154     ; Enviar datos/caracteres a LCD
+00B7 C0E0            155     LCD_CHR:        PUSH ACC                                        ; Guardar dato a desplegar
                      156     
-                     157     ; Enviar datos/caracteres a LCD
-00B7 C0E0            158     LCD_CHR:        PUSH 0E0H                                       ; Guardar dato a desplegar
-                     159     
-00B9 BB2006          160     LCD_ESL:        CJNE CCNT, #20H, LCD_EFL        ; Fin de segunda línea
-00BC 11A2            161                             ACALL LCD_CLR                           ; Limpiar pantalla
-00BE 11A6            162                             ACALL LCD_FL                            ; y resetear a primera posi
+00B9 BB2006          157     LCD_ESL:        CJNE CCNT, #20H, LCD_EFL        ; Fin de segunda línea
+00BC 11A2            158                             ACALL LCD_CLR                           ; Limpiar pantalla
+00BE 11A6            159                             ACALL LCD_FL                            ; y resetear a primera posi
                              ción
-00C0 7B00            163                             MOV CCNT, #0                            ; Resetear conteo de caract
+00C0 7B00            160                             MOV CCNT, #0                            ; Resetear conteo de caract
                              eres
-                     164                             
-00C2 BB1004          165     LCD_EFL:        CJNE CCNT, #10H, LCD_SND        ; Fin de primera línea
-00C5 74C0            166                             MOV A, #0C0H                            ; Cursor en segunda línea, 
+                     161                             
+00C2 BB1004          162     LCD_EFL:        CJNE CCNT, #10H, LCD_SND        ; Fin de primera línea
+00C5 74C0            163                             MOV A, #0C0H                            ; Cursor en segunda línea, 
                              primera posición
-00C7 11AA            167                             ACALL LCD_CMD
-                     168                             
-00C9 D0E0            169     LCD_SND:        POP 0E0H                                        ; Recuperar dato a desplegar
-00CB F5A0            170                             MOV LCD, A                                      ; Posicionar datos
-00CD D294            171                             SETB RS                                         ; Modo datos
-00CF D295            172                             SETB E
-00D1 1199            173                             ACALL DELAY
-00D3 C295            174                             CLR E                                           ; Enviar datos
-00D5 1199            175                             ACALL DELAY
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/12/2022 19:14:03 PAGE     4
-
-00D7 11DA            176                             ACALL ARR_SAVE                          ; Guardar caracter introduc
+00C7 11AA            164                             ACALL LCD_CMD
+                     165                             
+00C9 D0E0            166     LCD_SND:        POP ACC                                 ; Recuperar dato a desplegar
+00CB F5A0            167                             MOV LCD, A                                      ; Posicionar datos
+00CD D294            168                             SETB RS                                         ; Modo datos
+00CF D295            169                             SETB E
+00D1 1199            170                             ACALL DELAY
+00D3 C295            171                             CLR E                                           ; Enviar datos
+00D5 1199            172                             ACALL DELAY
+00D7 11DA            173                             ACALL ARR_SAVE                          ; Guardar caracter introduc
                              ido en arreglo
-00D9 22              177                             RET
-                     178     
-                     179     
-                     180     ; Almacenar en arreglo de caracteres
-                     181     ; Inicio de arreglo: 30H
-00DA 7430            182     ARR_SAVE:       MOV A, #CHARR                           ; Inicio de arreglo
-00DC 2B              183                             ADD A, CCNT                                     ; Desplazamiento se
-                             gún caracteres actuales
-00DD F8              184                             MOV CHR_P, A                            ; Posición actual de arreglo
-00DE A6A0            185                             MOV @CHR_P, LCD                         ; Guardar elemento en posic
-                             ión actual
-00E0 0B              186                             INC CCNT                                        ; Aumentar cantidad
-                              de elementos almacenados actuales
-00E1 22              187                             RET
-                     188     
-                     189     
-                     190     
-00E2 1199            191     LCD_INIT:       ACALL DELAY
-00E4 1199            192                             ACALL DELAY                                     ; Asegurar espera i
-                             nicial
-                     193                             
-00E6 75F004          194                             MOV B, #4H
-00E9 7438            195                             MOV A, #38H                                     ; Modo de 8 bits, 2
-                              líneas (4 veces)
-00EB 11AA            196     LI_0:           ACALL LCD_CMD
-00ED 1199            197                             ACALL DELAY
-00EF D5F0F9          198                             DJNZ B, LI_0
-                     199                             
-00F2 11A2            200                             ACALL LCD_CLR                           ; Limpiar LCD
-                     201                             
-                     202                             ; Se incluye el siguiente comando por recomendación pero es omisible
-                     203                             ; Incrementar posición, desplazamiento desactivado
-00F4 7406            204                             MOV A, #6H
-00F6 11AA            205                             ACALL LCD_CMD
-                     206                             
-00F8 740F            207                             MOV A, #0FH                             ; Display, cursor y parpade
-                             o encendidos
-00FA 11AA            208                             ACALL LCD_CMD
-                     209                             
-00FC 11A6            210                             ACALL LCD_FL                            ; Cursor inicial
-                     211     
-00FE 7B00            212                             MOV CCNT, #0                            ; Resetear contador de cara
-                             cteres en matriz
-                     213     
-0100 900690          214     MAIN:           MOV DPTR, #0A8H * 0AH           ; Posicionar apuntador en tabla de valores
-0103 C297            215                             CLR ALT                                         ; Limpiar para dete
-                             cción de ALT
-                     216                             
-0105 759842          217                             MOV SCON, #42H                          ; Habilitación de comunicac
-                             ión serial
-                     218                             
-0108 75A887          219                             MOV IE, #87H                            ; Interrupciones externas y
-                              T0 habilitadas
-010B 758922          220                             MOV TMOD, #22H                          ; T0 y T1 en modo autorreca
-                             rga
-                     221                             
-010E 758C00          222                             MOV TH0, #0
-0111 758AFB          223                             MOV TL0, #0FBH                          ; Contar 500 nanosegundos
-0114 D28C            224                             SETB TR0
-                     225                             
-0116 758DFD          226                             MOV TH1, #0FDH
-0119 758BFD          227                             MOV TL1, #0FDH                          ; Estándar de 9600 baudios
-011C D28E            228                             SETB TR1
-                     229                             
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/12/2022 19:14:03 PAGE     5
+00D9 22              174                             RET
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 17:51:58 PAGE     4
 
-011E C299            230                             CLR TI
-                     231                             
-0120 80FE            232                             SJMP $                                          ; Loop principal
-                     233                                     
-                     234     ; ----------------------------------------------------------
-                     235     
+                     175     
+                     176     
+                     177     ; Almacenar en arreglo de caracteres
+                     178     ; Inicio de arreglo: 30H
+00DA 7430            179     ARR_SAVE:       MOV A, #CHARR                           ; Inicio de arreglo
+00DC 2B              180                             ADD A, CCNT                                     ; Desplazamiento se
+                             gún caracteres actuales
+00DD F8              181                             MOV CHR_P, A                            ; Posición actual de arreglo
+00DE A6A0            182                             MOV @CHR_P, LCD                         ; Guardar elemento en posic
+                             ión actual
+00E0 0B              183                             INC CCNT                                        ; Aumentar cantidad
+                              de elementos almacenados actuales
+00E1 22              184                             RET
+                     185     
+                     186     
+                     187     
+00E2 1199            188     LCD_INIT:       ACALL DELAY
+00E4 1199            189                             ACALL DELAY                                     ; Asegurar espera i
+                             nicial
+                     190                             
+00E6 75F004          191                             MOV B, #4H
+00E9 7438            192                             MOV A, #38H                                     ; Modo de 8 bits, 2
+                              líneas (4 veces)
+00EB 11AA            193     LI_0:           ACALL LCD_CMD
+00ED 1199            194                             ACALL DELAY
+00EF D5F0F9          195                             DJNZ B, LI_0
+                     196                             
+00F2 11A2            197                             ACALL LCD_CLR                           ; Limpiar LCD
+                     198                             
+                     199                             ; Se incluye el siguiente comando por recomendación pero es omisible
+                     200                             ; Incrementar posición, desplazamiento desactivado
+00F4 7406            201                             MOV A, #6H
+00F6 11AA            202                             ACALL LCD_CMD
+                     203                             
+00F8 740F            204                             MOV A, #0FH                             ; Display, cursor y parpade
+                             o encendidos
+00FA 11AA            205                             ACALL LCD_CMD
+                     206                             
+00FC 11A6            207                             ACALL LCD_FL                            ; Cursor inicial
+                     208     
+00FE 7B00            209                             MOV CCNT, #0                            ; Resetear contador de cara
+                             cteres en matriz
+                     210     
+0100 900690          211     MAIN:           MOV DPTR, #0A8H * 0AH           ; Posicionar apuntador en tabla de valores
+0103 C297            212                             CLR ALT                                         ; Limpiar para dete
+                             cción de ALT
+                     213                             
+0105 759842          214                             MOV SCON, #42H                          ; Habilitación de comunicac
+                             ión serial
+                     215                             
+0108 75A887          216                             MOV IE, #87H                            ; Interrupciones externas y
+                              T0 habilitadas
+010B 758922          217                             MOV TMOD, #22H                          ; T0 y T1 en modo autorreca
+                             rga
+                     218                             
+010E 758C00          219                             MOV TH0, #0
+0111 758AFB          220                             MOV TL0, #0FBH                          ; Contar 500 nanosegundos
+0114 D28C            221                             SETB TR0
+                     222                             
+0116 758DFD          223                             MOV TH1, #0FDH
+0119 758BFD          224                             MOV TL1, #0FDH                          ; Estándar de 9600 baudios
+011C D28E            225                             SETB TR1
+                     226                             
+011E C299            227                             CLR TI
+                     228                             
+0120 80FE            229                             SJMP $                                          ; Loop principal
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 17:51:58 PAGE     5
+
+                     230                                     
+                     231     ; ----------------------------------------------------------
+                     232     
+                     233     
+                     234     
+                     235     ; -------------- TABLA PARA DECODIFICAR TECLAS -------------
                      236     
-                     237     
-                     238     ; -------------- TABLA PARA DECODIFICAR TECLAS -------------
-                     239     
-0690                 240                             ORG 0690H
-                     241                             
-0690 31323341        242                             DB      '1', '2', '3', 'A'
-0694 34353642        243                             DB      '4', '5', '6', 'B'
-0698 37383943        244                             DB      '7', '8', '9', 'C'
-069C 45304644        245                             DB      'E', '0', 'F', 'D'
-                     246                             
-06A0 0102030A        247                             DB      01H, 02H, 03H, 0AH
-06A4 0405060B        248                             DB      04H, 05H, 06H, 0BH
-06A8 0708090C        249                             DB      07H, 08H, 09H, 0CH
-06AC 0E000F0D        250                             DB      0EH, 00H, 0FH, 0DH
-                     251     
-                     252     ; ----------------------------------------------------------
-                     253     
-                     254                             END
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/12/2022 19:14:03 PAGE     6
+0690                 237                             ORG 0690H
+                     238                             
+0690 31323341        239                             DB      '1', '2', '3', 'A'
+0694 34353642        240                             DB      '4', '5', '6', 'B'
+0698 37383943        241                             DB      '7', '8', '9', 'C'
+069C 45304644        242                             DB      'E', '0', 'F', 'D'
+                     243                             
+06A0 0102030A        244                             DB      01H, 02H, 03H, 0AH
+06A4 0405060B        245                             DB      04H, 05H, 06H, 0BH
+06A8 0708090C        246                             DB      07H, 08H, 09H, 0CH
+06AC 0E000F0D        247                             DB      0EH, 00H, 0FH, 0DH
+                     248     
+                     249     ; ----------------------------------------------------------
+                     250     
+                     251                             END
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 17:51:58 PAGE     6
 
 SYMBOL TABLE LISTING
 ------ ----- -------

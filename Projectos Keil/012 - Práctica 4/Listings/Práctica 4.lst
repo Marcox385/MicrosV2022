@@ -1,4 +1,4 @@
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 20:35:49 PAGE     1
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 21:17:29 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.7.0
@@ -65,7 +65,7 @@ LOC  OBJ            LINE     SOURCE
                       50     ; ----------------------------------------------------------
                       51     
                       52     
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 20:35:49 PAGE     2
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 21:17:29 PAGE     2
 
                       53     ; ----------------- INTERRUPCIÓN BLUETOOTH -----------------
 0013                  54                             ORG 0013H               
@@ -133,7 +133,7 @@ LOC  OBJ            LINE     SOURCE
 007E 1190            107                             ACALL DEBOUNCER
 0080 32              108                             RETI
                      109     
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 20:35:49 PAGE     3
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 21:17:29 PAGE     3
 
                      110     ; Para detección de ALT
 0081 309702          111     ALT_IN:         JNB ALT, ALT_END
@@ -201,7 +201,7 @@ LOC  OBJ            LINE     SOURCE
 00C8 C295            168                             CLR E                                           ; Enviar datos
 00CA 1187            169                             ACALL GEN_DEL
 00CC 11CF            170                             ACALL ARR_SAVE                          ; Guardar caracter introduc
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 20:35:49 PAGE     4
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 21:17:29 PAGE     4
 
                              ido en arreglo
 00CE 22              171                             RET
@@ -269,7 +269,7 @@ LOC  OBJ            LINE     SOURCE
 0111 C299            223                             CLR TI
                      224                             
 0113 80FE            225                             SJMP $                                          ; Loop principal
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 20:35:49 PAGE     5
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 21:17:29 PAGE     5
 
                      226                                     
                      227     ; ----------------------------------------------------------
@@ -293,7 +293,7 @@ LOC  OBJ            LINE     SOURCE
                      245     ; ----------------------------------------------------------
                      246     
                      247                             END
-A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 20:35:49 PAGE     6
+A51 MACRO ASSEMBLER  PR_CTICA_4                                                           07/13/2022 21:17:29 PAGE     6
 
 SYMBOL TABLE LISTING
 ------ ----- -------

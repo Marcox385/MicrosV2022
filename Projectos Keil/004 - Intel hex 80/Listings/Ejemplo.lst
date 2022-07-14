@@ -1,0 +1,77 @@
+A51 MACRO ASSEMBLER  EJEMPLO                                                              07/13/2022 21:41:51 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\Ejemplo.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Ejemplo.asm SET(SMALL) DEBUG PRINT(.\Listings\Ejemplo.lst) OBJECT(.\Obj
+                      ects\Ejemplo.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; NOTA: Las X no se toman en cuenta ya que son directivas dse compilador y no afectan en el
+                              HEX generado
+                       2     
+                       3                                                                     ; DIR           OPCODE
+0000                   4                     ORG 0000H                               ; X                     X
+0000 803E              5                     SJMP MAIN                               ; 0000          80 3E
+                       6                     
+0040                   7                     ORG 0040H                               ; X                     X
+0040 7455              8     MAIN:   MOV A, #55H                             ; 0040          74 55
+0042 7455              9                     MOV A, #55H                             ; 0042          74 55
+0044 7455             10                     MOV A, #55H                             ; 0044          74 55
+0046 7455             11                     MOV A, #55H                             ; 0046          74 55
+0048 7455             12                     MOV A, #55H                             ; 0048          74 55
+004A 7455             13                     MOV A, #55H                             ; 004A          74 55
+004C 7455             14                     MOV A, #55H                             ; 004C          74 55
+004E 7455             15                     MOV A, #55H                             ; 004E          74 55
+0050 00               16                     NOP                                             ; 0050          00
+0051 00               17                     NOP                                             ; 0051          00
+0052 00               18                     NOP                                             ; 0052          00
+0053 00               19                     NOP                                             ; 0053          00
+0054 00               20                     NOP                                             ; 0054          00
+0055 00               21                     NOP                                             ; 0055          00
+0056 00               22                     NOP                                             ; 0056          00
+0057 00               23                     NOP                                             ; 0057          00
+                      24     
+0058 7455             25     CICLO:  MOV A, #55H                             ; 0058          74 55
+005A 7455             26                     MOV A, #55H                             ; 005A          74 55
+005C 7455             27                     MOV A, #55H                             ; 005C          74 55
+005E 7455             28                     MOV A, #55H                             ; 005E          74 55
+0060 7805             29                     MOV R0, #05H                    ; 0060          78 05
+0062 D8F4             30                     DJNZ R0, CICLO                  ; 0062          D8 F4
+                      31     
+0064 00               32     CICLO2: NOP                                             ; 0064          00
+0065 00               33                     NOP                                             ; 0066          00
+0066 00               34                     NOP                                             ; 0068          00
+0067 00               35                     NOP                                             ; 006A          00
+0068 7807             36                     MOV R0, #07H                    ; 006B          78 07
+006A D8F8             37                     DJNZ R0, CICLO2                 ; 006D          D8 F8
+006C 80D2             38                     SJMP MAIN                               ; 0070          80 D2
+                      39                     
+                      40                     END                                             ; X                     X
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+A51 MACRO ASSEMBLER  EJEMPLO                                                              07/13/2022 21:41:51 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CICLO. . . . . . .  C ADDR   0058H   A   
+CICLO2 . . . . . .  C ADDR   0064H   A   
+MAIN . . . . . . .  C ADDR   0040H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
